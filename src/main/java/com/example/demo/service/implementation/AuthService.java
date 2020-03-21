@@ -34,13 +34,14 @@ public class AuthService implements IAuthService {
     public LoginResponse login(LoginRequest request) throws Exception {
         User user = _userRepository.findOneByEmail(request.getUsername());
 
+        if (!_passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new Exception("Wrong password");
+        }
+
         if (user == null) {
             throw new Exception(String.format("User with email does not exist"));
         }
 
-        if (!_passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new Exception("Wrong password");
-        }
 
         if (user.getUserType().equals(UserType.PATIENT)) {
             user.setFirstTimeLoggedIn(new Date());
