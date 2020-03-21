@@ -51,6 +51,7 @@ public class PatientService implements IPatientService {
 
         Patient patient = new Patient();
         patient.setUser(user);
+        patient.setActive(false);
 
         Patient savedPatient = _patientRepository.save(patient);
 
@@ -83,8 +84,9 @@ public class PatientService implements IPatientService {
     @Override
     public void deletePatient(UUID id) {
         Patient patient = _patientRepository.findOneById(id);
-        patient.setDeleted(true);
-        _patientRepository.save(patient);
+        User user = patient.getUser();
+        user.setDeleted(true);
+        _userRepository.save(user);
     }
 
     private PatientResponse mapPatientToPatientResponse(Patient patient) {

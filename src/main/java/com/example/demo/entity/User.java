@@ -43,4 +43,6 @@ public class User extends BaseEntity {
     private UserType userType;
 
     private Date firstTimeLoggedIn;
+
+    private boolean deleted;
 }
