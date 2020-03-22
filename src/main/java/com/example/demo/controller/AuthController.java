@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.request.CreateAdminRequest;
 import com.example.demo.dto.request.CreatePatientRequest;
 import com.example.demo.dto.request.LoginRequest;
+import com.example.demo.dto.response.AdminResponse;
 import com.example.demo.dto.response.LoginResponse;
 import com.example.demo.dto.response.PatientResponse;
+import com.example.demo.service.IAdminService;
 import com.example.demo.service.IAuthService;
 import com.example.demo.service.IPatientService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +22,12 @@ public class AuthController {
 
     private final IAuthService _authService;
 
-    public AuthController(IPatientService patientService, IAuthService authService) {
+    private final IAdminService _adminService;
+
+    public AuthController(IPatientService patientService, IAuthService authService, IAdminService adminService) {
         _patientService = patientService;
         _authService = authService;
+        _adminService = adminService;
     }
 
     @PostMapping("/login")
@@ -36,5 +42,11 @@ public class AuthController {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    @PostMapping()
+    public AdminResponse createAdmin(@RequestBody CreateAdminRequest adminRequest) throws Exception {
+
+        return _adminService.createAdmin(adminRequest);
     }
 }

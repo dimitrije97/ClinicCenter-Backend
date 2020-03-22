@@ -62,7 +62,6 @@ public class AuthService implements IAuthService {
             }
         }
 
-
         UserResponse userResponse = mapUserToUserResponse(user);
 
         LoginResponse loginResponse = new LoginResponse();
