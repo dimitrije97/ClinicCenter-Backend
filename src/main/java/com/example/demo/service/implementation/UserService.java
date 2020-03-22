@@ -23,7 +23,7 @@ public class UserService implements IUserService {
     @Override
     public UserResponse createUser(CreateUserRequest request) throws Exception{
         if (!request.getPassword().equals(request.getRePassword())) {
-            throw new Exception("Password must match");
+            throw new Exception("Lozinke se ne podudaraju.");
         }
 
         User user = new User();
@@ -47,8 +47,8 @@ public class UserService implements IUserService {
 
     private UserResponse mapUserToUserResponse(User user) {
         UserResponse userResponse = new UserResponse();
-        userResponse.setEmail(user.getEmail());
         userResponse.setId(user.getId());
+        userResponse.setEmail(user.getEmail());
         userResponse.setAddress(user.getAddress());
         userResponse.setCity(user.getCity());
         userResponse.setCountry(user.getCountry());

@@ -16,4 +16,6 @@ public interface IPatientRepository extends JpaRepository<Patient, UUID> {
     Patient findOneByUser_Id(UUID id);
 
     Set<Patient> findAllByRequestTypeAndUser_Deleted(RequestType requestType, boolean deleted);
+
+    Set<Patient> findAllByRequestType(RequestType requestType);
 }

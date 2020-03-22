@@ -34,6 +34,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @Column(unique = true)
     private String ssn;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

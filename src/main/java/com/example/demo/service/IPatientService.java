@@ -17,4 +17,8 @@ public interface IPatientService {
     PatientResponse updatePatient(UpdatePatientRequest request, UUID id);
 
     void deletePatient(UUID id);
+
+    Set<PatientResponse> getAllPatients();
+
+    Set<PatientResponse> getAllPendingRequests();
 }

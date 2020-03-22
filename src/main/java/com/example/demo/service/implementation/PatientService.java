@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientService implements IPatientService {
@@ -91,11 +92,27 @@ public class PatientService implements IPatientService {
         _userRepository.save(user);
     }
 
+    @Override
+    public Set<PatientResponse> getAllPatients() {
+        Set<Patient> patients = _patientRepository.findAllByRequestTypeAndUser_Deleted(RequestType.APPROVED, false);
+
+        return patients.stream().map(patient -> mapPatientToPatientResponse(patient))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<PatientResponse> getAllPendingRequests() {
+        Set<Patient> patients = _patientRepository.findAllByRequestType(RequestType.PENDING);
+
+        return patients.stream().map(patient -> mapPatientToPatientResponse(patient))
+                .collect(Collectors.toSet());
+    }
+
     private PatientResponse mapPatientToPatientResponse(Patient patient) {
         PatientResponse patientResponse = new PatientResponse();
         User user = patient.getUser();
         patientResponse.setEmail(user.getEmail());
-        patientResponse.setId(user.getId());
+        patientResponse.setId(patient.getId());
         patientResponse.setAddress(user.getAddress());
         patientResponse.setCity(user.getCity());
         patientResponse.setCountry(user.getCountry());

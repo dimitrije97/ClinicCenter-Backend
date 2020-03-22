@@ -7,6 +7,7 @@ import com.example.demo.repository.IPatientRepository;
 import com.example.demo.service.IPatientService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -35,5 +36,15 @@ public class PatientController {
     @DeleteMapping("/{id}/patient")
     public void deletePatient(@PathVariable UUID id) {
         _patientService.deletePatient(id);
+    }
+
+    @GetMapping
+    public Set<PatientResponse> getAllPatients() {
+        return _patientService.getAllPatients();
+    }
+
+    @GetMapping("/requests")
+    public Set<PatientResponse> getAllRequests() {
+        return _patientService.getAllPendingRequests();
     }
 }
