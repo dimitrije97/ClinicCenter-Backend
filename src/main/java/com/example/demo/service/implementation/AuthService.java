@@ -3,10 +3,12 @@ package com.example.demo.service.implementation;
 import com.example.demo.dto.request.LoginRequest;
 import com.example.demo.dto.response.LoginResponse;
 import com.example.demo.dto.response.UserResponse;
+import com.example.demo.entity.Patient;
 import com.example.demo.entity.User;
 import com.example.demo.repository.IPatientRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.IAuthService;
+import com.example.demo.util.enums.RequestType;
 import com.example.demo.util.enums.UserType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,19 +36,32 @@ public class AuthService implements IAuthService {
     public LoginResponse login(LoginRequest request) throws Exception {
         User user = _userRepository.findOneByEmail(request.getUsername());
 
-        if (!_passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new Exception("Wrong password");
-        }
-
         if (user == null) {
-            throw new Exception(String.format("User with email does not exist"));
+            throw new Exception(String.format("Ne postoji korisnik sa datim emailom."));
         }
 
-
-        if (user.getUserType().equals(UserType.PATIENT)) {
-            user.setFirstTimeLoggedIn(new Date());
-            _userRepository.save(user);
+        if (!_passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new Exception("Pogresna lozinka.");
         }
+
+        if(user.isDeleted()){
+            throw new Exception("Vas nalog je obrisan.");
+        }
+
+        if(user.getUserType().equals(UserType.PATIENT)){
+            Patient patient = _patientRepository.findOneByUser_Id(user.getId());
+            if(patient.getRequestType().equals(RequestType.PENDING)){
+                throw new Exception("Vas nalog i dalje nije prihvacen od strane administratora klinickog centra.");
+            }else if(patient.getRequestType().equals(RequestType.DENIED)){
+                throw new Exception("Vas nalog je odbijen od strane administratora klinickog centra.");
+            }
+
+            if(user.getFirstTimeLoggedIn() == null){
+                user.setFirstTimeLoggedIn(new Date());
+                _userRepository.save(user);
+            }
+        }
+
 
         UserResponse userResponse = mapUserToUserResponse(user);
 

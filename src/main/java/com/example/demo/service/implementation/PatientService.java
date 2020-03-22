@@ -11,9 +11,11 @@ import com.example.demo.repository.IPatientRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.IPatientService;
 import com.example.demo.service.IUserService;
+import com.example.demo.util.enums.RequestType;
 import com.example.demo.util.enums.UserType;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -51,7 +53,7 @@ public class PatientService implements IPatientService {
 
         Patient patient = new Patient();
         patient.setUser(user);
-        patient.setActive(false);
+        patient.setRequestType(RequestType.PENDING);
 
         Patient savedPatient = _patientRepository.save(patient);
 

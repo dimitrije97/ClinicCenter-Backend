@@ -5,6 +5,7 @@ import com.example.demo.dto.request.UpdatePatientRequest;
 import com.example.demo.dto.response.PatientResponse;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface IPatientService {

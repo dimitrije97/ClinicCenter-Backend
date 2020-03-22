@@ -31,4 +31,9 @@ public class PatientController {
     public PatientResponse getPatient(@PathVariable UUID id) {
         return _patientService.getPatient(id);
     }
+
+    @DeleteMapping("/{id}/patient")
+    public void deletePatient(@PathVariable UUID id) {
+        _patientService.deletePatient(id);
+    }
 }
