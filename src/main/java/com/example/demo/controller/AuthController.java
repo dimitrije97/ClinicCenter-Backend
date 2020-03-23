@@ -1,14 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.CreateAdminRequest;
-import com.example.demo.dto.request.CreatePatientRequest;
-import com.example.demo.dto.request.LoginRequest;
-import com.example.demo.dto.request.NewPasswordRequest;
+import com.example.demo.dto.request.*;
 import com.example.demo.dto.response.AdminResponse;
+import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.LoginResponse;
 import com.example.demo.dto.response.PatientResponse;
 import com.example.demo.service.IAdminService;
 import com.example.demo.service.IAuthService;
+import com.example.demo.service.IDoctorService;
 import com.example.demo.service.IPatientService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +23,13 @@ public class AuthController {
 
     private final IAdminService _adminService;
 
-    public AuthController(IPatientService patientService, IAuthService authService, IAdminService adminService) {
+    private final IDoctorService _doctorService;
+
+    public AuthController(IPatientService patientService, IAuthService authService, IAdminService adminService, IDoctorService doctorService) {
         _patientService = patientService;
         _authService = authService;
         _adminService = adminService;
+        _doctorService = doctorService;
     }
 
     @PostMapping("/login")
@@ -53,5 +55,11 @@ public class AuthController {
     public AdminResponse createAdmin(@RequestBody CreateAdminRequest adminRequest) throws Exception {
 
         return _adminService.createAdmin(adminRequest);
+    }
+
+    @PostMapping("/doctors")
+    public DoctorResponse createDoctor(@RequestBody CreateDoctorRequest doctorRequest) throws Exception {
+
+        return _doctorService.createDoctor(doctorRequest);
     }
 }
