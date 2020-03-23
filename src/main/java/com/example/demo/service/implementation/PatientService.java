@@ -62,11 +62,7 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public PatientResponse getPatient(UUID id) {
-        Patient patient = _patientRepository.findOneById(id);
-
-        return mapPatientToPatientResponse(patient);
-    }
+    public PatientResponse getPatient(UUID id) { return mapPatientToPatientResponse(_patientRepository.findOneById(id)); }
 
     @Override
     public PatientResponse updatePatient(UpdatePatientRequest request, UUID id) {
