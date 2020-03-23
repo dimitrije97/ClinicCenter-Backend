@@ -61,12 +61,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public AdminResponse getAdmin(UUID id) {
-
-        Admin admin = _adminRepository.findOneById(id);
-
-        return mapAdminToAdminResponse(admin);
-    }
+    public AdminResponse getAdmin(UUID id) { return mapAdminToAdminResponse(_adminRepository.findOneById(id)); }
 
     @Override
     public void deleteAdmin(UUID id) {
