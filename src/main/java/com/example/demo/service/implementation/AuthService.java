@@ -1,10 +1,13 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.LoginRequest;
+import com.example.demo.dto.request.NewPasswordRequest;
 import com.example.demo.dto.response.LoginResponse;
 import com.example.demo.dto.response.UserResponse;
+import com.example.demo.entity.Admin;
 import com.example.demo.entity.Patient;
 import com.example.demo.entity.User;
+import com.example.demo.repository.IAdminRepository;
 import com.example.demo.repository.IPatientRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.IAuthService;
@@ -25,11 +28,14 @@ public class AuthService implements IAuthService {
 
     private final IPatientRepository _patientRepository;
 
+    private final IAdminRepository _adminRepository;
+
     public AuthService(PasswordEncoder passwordEncoder, IUserRepository userRepository,
-                       IPatientRepository patientRepository) {
+                       IPatientRepository patientRepository, IAdminRepository adminRepository) {
         _passwordEncoder = passwordEncoder;
         _userRepository = userRepository;
         _patientRepository = patientRepository;
+        _adminRepository = adminRepository;
     }
 
     @Override
@@ -70,12 +76,57 @@ public class AuthService implements IAuthService {
         return loginResponse;
     }
 
+    @Override
+    public LoginResponse setNewPassword(UUID id, NewPasswordRequest request) throws Exception {
+        if (!request.getPassword().equals(request.getRePassword())) {
+            throw new Exception("Lozinke koje ste uneli se ne podudaraju!");
+        }
+
+        Admin admin = _adminRepository.findOneById(id);
+
+        User user = null;
+
+        if(admin != null){
+            user = admin.getUser();
+        }else if(false){
+
+        }else if(false){
+
+        }else if(false){
+
+        }
+
+        user.setPassword(_passwordEncoder.encode(request.getPassword()));
+
+        if(user.getFirstTimeLoggedIn() == null){
+            user.setFirstTimeLoggedIn(new Date());
+        }
+
+        _adminRepository.save(admin);
+
+
+        UserResponse userResponse = mapUserToUserResponse(user);
+
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setUserResponse(userResponse);
+
+        return loginResponse;
+    }
+
     private UserResponse mapUserToUserResponse(User user) {
         UserResponse userResponse = new UserResponse();
         userResponse.setEmail(user.getEmail());
         UUID id = null;
         if (user.getUserType().equals(UserType.PATIENT)) {
             id = user.getPatient().getId();
+        }else if(user.getUserType().equals(UserType.ADMIN)){
+            id = user.getAdmin().getId();
+        }else if(user.getUserType().equals(UserType.CLINIC_CENTER_ADMIN)){
+
+        }else if(user.getUserType().equals(UserType.DOCTOR)){
+
+        }else if(user.getUserType().equals(UserType.NURSE)){
+
         }
         userResponse.setId(id);
         userResponse.setAddress(user.getAddress());
