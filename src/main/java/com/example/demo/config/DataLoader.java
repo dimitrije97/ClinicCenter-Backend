@@ -3,9 +3,11 @@ package com.example.demo.config;
 import com.example.demo.dto.request.CreateUserRequest;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.entity.Admin;
+import com.example.demo.entity.Doctor;
 import com.example.demo.entity.Patient;
 import com.example.demo.entity.User;
 import com.example.demo.repository.IAdminRepository;
+import com.example.demo.repository.IDoctorRepository;
 import com.example.demo.repository.IPatientRepository;
 import com.example.demo.service.IUserService;
 import com.example.demo.util.enums.UserType;
@@ -30,6 +32,9 @@ public class DataLoader implements ApplicationRunner {
     private IAdminRepository adminRepository;
 
     @Autowired
+    private IDoctorRepository doctorRepository;
+
+    @Autowired
     private IUserService userService;
 
     private void setupIds() {
@@ -44,12 +49,18 @@ public class DataLoader implements ApplicationRunner {
         ids.add(UUID.fromString("a82468e6-8913-48dd-b842-4be4e37aeb35"));
         ids.add(UUID.fromString("f9fda70a-7761-43f7-9fe6-00046bb12a02"));
         ids.add(UUID.fromString("4e58f698-f022-4eee-95ab-810b5ffdcd99"));
+
+        ids.add(UUID.fromString("adfa0bd5-c1b5-41d7-adc4-b6951beb9055"));
+        ids.add(UUID.fromString("8dbea129-360a-4d77-afca-5c5bb94174c1"));
+        ids.add(UUID.fromString("b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a"));
+        ids.add(UUID.fromString("9608b8fe-4cff-49ee-8997-2ef2494e21cb"));
+        ids.add(UUID.fromString("f130446d-5b2e-4908-a6be-1c0218e15d52"));
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         setupIds();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 15; i++) {
             CreateUserRequest request = new CreateUserRequest();
             if (i < 5) {
                 Patient patient = null;
@@ -91,6 +102,26 @@ public class DataLoader implements ApplicationRunner {
                 user.setId(userResponse.getId());
                 admin.setUser(user);
                 adminRepository.save(admin);
+            }else if(i >= 10 && i < 15){
+                Doctor doctor = null;
+                doctor = doctorRepository.findOneById(ids.get(i));
+                request.setUserType(UserType.DOCTOR);
+                request.setEmail(String.format("doctor%s@gmail.com", i + 1));
+                request.setSsn(String.format("333333333333%s", i + 1));
+                request.setAddress(String.format("Adresa%s", i + 1));
+                request.setCity(String.format("Grad%s", i + 1));
+                request.setCountry(String.format("Drzava%s", i + 1));
+                request.setFirstName(String.format("Ime%s", i + 1));
+                request.setLastName(String.format("Prezime%s", i + 1));
+                request.setPhone(String.format("Telefon%s", i + 1));
+                request.setPassword(String.format("doctor"));
+                request.setRePassword(String.format("doctor"));
+                UserResponse userResponse = userService.createUser(request);
+                User user = new User();
+                user.setDeleted(false);
+                user.setId(userResponse.getId());
+                doctor.setUser(user);
+                doctorRepository.save(doctor);
             }
         }
     }

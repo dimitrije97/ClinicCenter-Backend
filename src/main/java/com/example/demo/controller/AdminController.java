@@ -33,6 +33,9 @@ public class AdminController {
         return _adminService.getAllAdmins();
     }
 
+    @GetMapping("/{id}/clinic")
+    public Set<AdminResponse> getAllAdminsOfClinic(@PathVariable UUID id) { return _adminService.getAllAdminsOfClinic(id); }
+
     @DeleteMapping("/{id}/admin")
     public void deleteAdmin(@PathVariable UUID id) {
         _adminService.deleteAdmin(id);

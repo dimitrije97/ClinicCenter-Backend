@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.request.CreateClinicRequest;
 import com.example.demo.dto.request.NewClinicAdminRequest;
 import com.example.demo.dto.request.UpdateClinicRequest;
 import com.example.demo.dto.response.ClinicResponse;

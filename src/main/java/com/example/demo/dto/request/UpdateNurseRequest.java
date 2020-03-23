@@ -2,16 +2,12 @@ package com.example.demo.dto.request;
 
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-public class CreateAdminRequest {
+public class UpdateNurseRequest {
 
     private String firstName;
 
     private String lastName;
-
-    private String email;
 
     private String country;
 
@@ -20,12 +16,4 @@ public class CreateAdminRequest {
     private String address;
 
     private String phone;
-
-    private String ssn;
-
-    private String password;
-
-    private String rePassword;
-
-    private UUID clinicId;
 }

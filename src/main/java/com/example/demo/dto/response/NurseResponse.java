@@ -1,11 +1,17 @@
-package com.example.demo.dto.request;
+package com.example.demo.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Data
-public class CreateAdminRequest {
+@AllArgsConstructor
+@NoArgsConstructor
+public class NurseResponse {
+
+    private UUID id;
 
     private String firstName;
 
@@ -22,10 +28,4 @@ public class CreateAdminRequest {
     private String phone;
 
     private String ssn;
-
-    private String password;
-
-    private String rePassword;
-
-    private UUID clinicId;
 }
