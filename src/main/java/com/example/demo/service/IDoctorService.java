@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface IDoctorService {
 
-    DoctorResponse createDoctor(CreateDoctorRequest doctorRequest) throws Exception;
+    DoctorResponse createDoctor(CreateDoctorRequest doctorRequest, UUID clinicId) throws Exception;
 
     DoctorResponse updateDoctor(UpdateDoctorRequest updateDoctorRequest, UUID id) throws Exception;
 
@@ -18,4 +18,6 @@ public interface IDoctorService {
     DoctorResponse getDoctor(UUID id);
 
     Set<DoctorResponse> getAllDoctors();
+
+    Set<DoctorResponse> getAllDoctorsOfClinic(UUID clinicId);
 }

@@ -20,4 +20,6 @@ public interface IAdminService {
 
     Set<AdminResponse> getAllAdmins();
 
+    Set<AdminResponse> getAllAdminsOfClinic(UUID clinicId);
+
 }

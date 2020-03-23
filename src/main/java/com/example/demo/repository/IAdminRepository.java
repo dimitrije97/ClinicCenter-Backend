@@ -14,4 +14,6 @@ public interface IAdminRepository extends JpaRepository<Admin, UUID> {
 
     Set<Admin> findAllByUser_Deleted(boolean deleted);
 
+    Set<Admin> findAllByClinic_IdAndUser_Deleted(UUID clinicId, boolean deleted);
+
 }

@@ -13,4 +13,6 @@ public interface IDoctorRepository extends JpaRepository<Doctor, UUID> {
     Doctor findOneById(UUID id);
 
     Set<Doctor> findAllByUser_Deleted(boolean deleted);
+
+    Set<Doctor> findAllByClinic_IdAndUser_Deleted(UUID clinicId, boolean deleted);
 }

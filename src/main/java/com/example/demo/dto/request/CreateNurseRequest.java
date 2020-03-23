@@ -2,10 +2,8 @@ package com.example.demo.dto.request;
 
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-public class CreateAdminRequest {
+public class CreateNurseRequest {
 
     private String firstName;
 
@@ -26,6 +24,4 @@ public class CreateAdminRequest {
     private String password;
 
     private String rePassword;
-
-    private UUID clinicId;
 }

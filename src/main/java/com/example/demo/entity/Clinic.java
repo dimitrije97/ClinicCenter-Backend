@@ -8,7 +8,8 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +25,13 @@ public class Clinic extends BaseEntity {
     private String description;
 
     @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Admin> admins;
+    private List<Admin> admins = new ArrayList<>();
 
     private boolean deleted;
+
+    @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Doctor> doctors = new ArrayList<>();
+
+    @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Nurse> nurses = new ArrayList<>();
 }

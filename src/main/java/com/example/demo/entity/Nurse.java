@@ -7,12 +7,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
-public class Doctor extends BaseEntity {
+@NoArgsConstructor
+public class Nurse extends BaseEntity {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

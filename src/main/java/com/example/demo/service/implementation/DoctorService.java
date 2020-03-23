@@ -5,8 +5,10 @@ import com.example.demo.dto.request.CreateUserRequest;
 import com.example.demo.dto.request.UpdateDoctorRequest;
 import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.UserResponse;
+import com.example.demo.entity.Clinic;
 import com.example.demo.entity.Doctor;
 import com.example.demo.entity.User;
+import com.example.demo.repository.IClinicRepository;
 import com.example.demo.repository.IDoctorRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.IDoctorService;
@@ -27,14 +29,17 @@ public class DoctorService implements IDoctorService {
 
     private final IDoctorRepository _doctorRepository;
 
-    public DoctorService(IUserService userService, IUserRepository userRepository, IDoctorRepository doctorRepository) {
+    private final IClinicRepository _clinicRepository;
+
+    public DoctorService(IUserService userService, IUserRepository userRepository, IDoctorRepository doctorRepository, IClinicRepository clinicRepository) {
         _userService = userService;
         _userRepository = userRepository;
         _doctorRepository = doctorRepository;
+        _clinicRepository = clinicRepository;
     }
 
     @Override
-    public DoctorResponse createDoctor(CreateDoctorRequest doctorRequest) throws Exception {
+    public DoctorResponse createDoctor(CreateDoctorRequest doctorRequest, UUID clinicId) throws Exception {
 
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setPassword(doctorRequest.getPassword());
@@ -54,6 +59,9 @@ public class DoctorService implements IDoctorService {
 
         Doctor doctor = new Doctor();
         doctor.setUser(user);
+
+        Clinic clinic = _clinicRepository.findOneById(clinicId);
+        doctor.setClinic(clinic);
 
         Doctor savedDoctor = _doctorRepository.save(doctor);
 
@@ -83,7 +91,7 @@ public class DoctorService implements IDoctorService {
 
         Doctor doctor = _doctorRepository.findOneById(id);
         doctor.getUser().setDeleted(true);
-        Doctor savedDoctor = _doctorRepository.save(doctor);
+        _doctorRepository.save(doctor);
     }
 
     @Override
@@ -93,6 +101,15 @@ public class DoctorService implements IDoctorService {
     public Set<DoctorResponse> getAllDoctors() {
 
         Set<Doctor> doctors = _doctorRepository.findAllByUser_Deleted(false);
+
+        return doctors.stream().map(doctor -> mapDoctorToDoctorResponse(doctor))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<DoctorResponse> getAllDoctorsOfClinic(UUID clinicId) {
+
+        Set<Doctor> doctors = _doctorRepository.findAllByClinic_IdAndUser_Deleted(clinicId, false);
 
         return doctors.stream().map(doctor -> mapDoctorToDoctorResponse(doctor))
                 .collect(Collectors.toSet());

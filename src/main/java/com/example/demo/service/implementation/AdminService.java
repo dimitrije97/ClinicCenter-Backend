@@ -6,8 +6,10 @@ import com.example.demo.dto.request.UpdateAdminRequest;
 import com.example.demo.dto.response.AdminResponse;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.entity.Admin;
+import com.example.demo.entity.Clinic;
 import com.example.demo.entity.User;
 import com.example.demo.repository.IAdminRepository;
+import com.example.demo.repository.IClinicRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.IAdminService;
 import com.example.demo.service.IUserService;
@@ -27,10 +29,13 @@ public class AdminService implements IAdminService {
 
     private final IAdminRepository _adminRepository;
 
-    public AdminService(IUserService userService, IUserRepository userRepository, IAdminRepository adminRepository) {
+    private final IClinicRepository _clinicRepository;
+
+    public AdminService(IUserService userService, IUserRepository userRepository, IAdminRepository adminRepository, IClinicRepository clinicRepository) {
         _userService = userService;
         _userRepository = userRepository;
         _adminRepository = adminRepository;
+        _clinicRepository = clinicRepository;
     }
 
     @Override
@@ -54,6 +59,9 @@ public class AdminService implements IAdminService {
 
         Admin admin = new Admin();
         admin.setUser(user);
+
+        Clinic clinic = _clinicRepository.findOneById(request.getClinicId());
+        admin.setClinic(clinic);
 
         Admin savedAdmin = _adminRepository.save(admin);
 
@@ -93,6 +101,15 @@ public class AdminService implements IAdminService {
     public Set<AdminResponse> getAllAdmins() {
 
         Set<Admin> admins = _adminRepository.findAllByUser_Deleted(false);
+
+        return admins.stream().map(admin -> mapAdminToAdminResponse(admin))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<AdminResponse> getAllAdminsOfClinic(UUID clinicId) {
+
+        Set<Admin> admins = _adminRepository.findAllByClinic_IdAndUser_Deleted(clinicId, false);
 
         return admins.stream().map(admin -> mapAdminToAdminResponse(admin))
                 .collect(Collectors.toSet());

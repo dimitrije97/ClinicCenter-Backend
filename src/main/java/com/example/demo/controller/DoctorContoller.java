@@ -32,6 +32,9 @@ public class DoctorContoller {
         return _doctorService.getAllDoctors();
     }
 
+    @GetMapping("/{id}/clinic")
+    public Set<DoctorResponse> getAllDoctorsOfClinic(@PathVariable UUID id) { return _doctorService.getAllDoctorsOfClinic(id); }
+
     @DeleteMapping("/{id}/doctor")
     public void deleteDoctor(@PathVariable UUID id) {
         _doctorService.deleteDoctor(id);
