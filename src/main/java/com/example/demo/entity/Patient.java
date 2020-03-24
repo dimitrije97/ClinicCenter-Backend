@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,4 +23,7 @@ public class Patient extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private RequestType requestType;
+
+    @ManyToMany(mappedBy = "patients")
+    private Set<Doctor> doctors = new HashSet<>();
 }

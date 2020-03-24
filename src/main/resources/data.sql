@@ -24,19 +24,19 @@ insert into examination_type(id, name, price, deleted) values
 ('b26933ae-484a-4b3f-a15b-1e1796e0a8ad', 'Kardio', '3000', 'false'),
 ('342265d1-3282-4bb7-b689-cefb42b92818', 'Plucni', '2500', 'false');
 
-insert into doctor(id, clinic_id, examination_type_id) values
-('adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b','4e7079a6-807a-4aec-bf69-177bea1dcce5'),
-('8dbea129-360a-4d77-afca-5c5bb94174c1', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b', 'e823e955-6001-434a-9fd3-c80e490d0184'),
-('b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '7833aba3-bf46-4d25-a856-651d7d7ba279', 'e823e955-6001-434a-9fd3-c80e490d0184'),
-('9608b8fe-4cff-49ee-8997-2ef2494e21cb', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a', 'b26933ae-484a-4b3f-a15b-1e1796e0a8ad'),
-('f130446d-5b2e-4908-a6be-1c0218e15d52', '229c6688-afd8-4137-8d15-92655b1f05ee', '342265d1-3282-4bb7-b689-cefb42b92818');
+insert into doctor(id, clinic_id, examination_type_id, start_at, end_at) values
+('adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b','4e7079a6-807a-4aec-bf69-177bea1dcce5', '08:00:00', '16:00:00'),
+('8dbea129-360a-4d77-afca-5c5bb94174c1', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b', 'e823e955-6001-434a-9fd3-c80e490d0184', '16:00:00', '23:00:00'),
+('b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '7833aba3-bf46-4d25-a856-651d7d7ba279', 'e823e955-6001-434a-9fd3-c80e490d0184', '08:00:00', '20:00:00'),
+('9608b8fe-4cff-49ee-8997-2ef2494e21cb', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a', 'b26933ae-484a-4b3f-a15b-1e1796e0a8ad', '01:00:00', '09:00:00'),
+('f130446d-5b2e-4908-a6be-1c0218e15d52', '229c6688-afd8-4137-8d15-92655b1f05ee', '342265d1-3282-4bb7-b689-cefb42b92818', '08:00:00', '20:00:00');
 
-insert into nurse(id, clinic_id) values
-('358359e1-9a6d-4196-95a3-af8fdc294fd4', '7833aba3-bf46-4d25-a856-651d7d7ba279'),
-('767609d0-dd8a-487f-9ef0-a2433b71d49b', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b'),
-('b7b8e9ee-44f2-4722-a0c0-5343e1595f1e', '7833aba3-bf46-4d25-a856-651d7d7ba279'),
-('eb8381fb-fd8d-4e8f-bd31-ed82626230bd', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a'),
-('88a23210-81ff-4088-9b1b-1d235016162f', '229c6688-afd8-4137-8d15-92655b1f05ee');
+insert into nurse(id, clinic_id, start_at, end_at) values
+('358359e1-9a6d-4196-95a3-af8fdc294fd4', '7833aba3-bf46-4d25-a856-651d7d7ba279', '08:00:00', '20:00:00'),
+('767609d0-dd8a-487f-9ef0-a2433b71d49b', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b', '16:00:00', '22:00:00'),
+('b7b8e9ee-44f2-4722-a0c0-5343e1595f1e', '7833aba3-bf46-4d25-a856-651d7d7ba279', '01:00:00', '10:00:00'),
+('eb8381fb-fd8d-4e8f-bd31-ed82626230bd', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a', '09:00:00', '18:00:00'),
+('88a23210-81ff-4088-9b1b-1d235016162f', '229c6688-afd8-4137-8d15-92655b1f05ee', '16:00:00', '22:00:00');
 
 insert into clinic_center_admin(id) values
 ('d2f71233-b6de-42ba-98ba-5d4befc02efe'),
