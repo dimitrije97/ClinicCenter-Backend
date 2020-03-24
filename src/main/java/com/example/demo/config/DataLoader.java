@@ -2,13 +2,8 @@ package com.example.demo.config;
 
 import com.example.demo.dto.request.CreateUserRequest;
 import com.example.demo.dto.response.UserResponse;
-import com.example.demo.entity.Admin;
-import com.example.demo.entity.Doctor;
-import com.example.demo.entity.Patient;
-import com.example.demo.entity.User;
-import com.example.demo.repository.IAdminRepository;
-import com.example.demo.repository.IDoctorRepository;
-import com.example.demo.repository.IPatientRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.IUserService;
 import com.example.demo.util.enums.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +32,12 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private INurseRepository nurseRepository;
+
+    @Autowired
+    private IClinicCenterAdminRepository clinicCenterAdminRepository;
+
     private void setupIds() {
         ids.add(UUID.fromString("e14cf27c-cd22-4004-b0f7-c94fcd13aabf"));
         ids.add(UUID.fromString("170dccaf-cf4d-4e9e-aa4e-1e3498d17a97"));
@@ -55,12 +56,21 @@ public class DataLoader implements ApplicationRunner {
         ids.add(UUID.fromString("b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a"));
         ids.add(UUID.fromString("9608b8fe-4cff-49ee-8997-2ef2494e21cb"));
         ids.add(UUID.fromString("f130446d-5b2e-4908-a6be-1c0218e15d52"));
+
+        ids.add(UUID.fromString("358359e1-9a6d-4196-95a3-af8fdc294fd4"));
+        ids.add(UUID.fromString("767609d0-dd8a-487f-9ef0-a2433b71d49b"));
+        ids.add(UUID.fromString("b7b8e9ee-44f2-4722-a0c0-5343e1595f1e"));
+        ids.add(UUID.fromString("eb8381fb-fd8d-4e8f-bd31-ed82626230bd"));
+        ids.add(UUID.fromString("88a23210-81ff-4088-9b1b-1d235016162f"));
+
+        ids.add(UUID.fromString("d2f71233-b6de-42ba-98ba-5d4befc02efe"));
+        ids.add(UUID.fromString("ff453f1b-a5fe-49ee-a22a-be037a55a78a"));
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         setupIds();
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 22; i++) {
             CreateUserRequest request = new CreateUserRequest();
             if (i < 5) {
                 Patient patient = null;
@@ -87,7 +97,11 @@ public class DataLoader implements ApplicationRunner {
                 admin = adminRepository.findOneById(ids.get(i));
                 request.setUserType(UserType.ADMIN);
                 request.setEmail(String.format("admin%s@gmail.com", i + 1));
-                request.setSsn(String.format("222222222222%s", i + 1));
+                if(i != 9) {
+                    request.setSsn(String.format("222222222222%s", i + 1));
+                } else{
+                    request.setSsn(String.format("22222222222%s", i + 1));
+                }
                 request.setAddress(String.format("Adresa%s", i + 1));
                 request.setCity(String.format("Grad%s", i + 1));
                 request.setCountry(String.format("Drzava%s", i + 1));
@@ -107,7 +121,7 @@ public class DataLoader implements ApplicationRunner {
                 doctor = doctorRepository.findOneById(ids.get(i));
                 request.setUserType(UserType.DOCTOR);
                 request.setEmail(String.format("doctor%s@gmail.com", i + 1));
-                request.setSsn(String.format("333333333333%s", i + 1));
+                request.setSsn(String.format("33333333333%s", i + 1));
                 request.setAddress(String.format("Adresa%s", i + 1));
                 request.setCity(String.format("Grad%s", i + 1));
                 request.setCountry(String.format("Drzava%s", i + 1));
@@ -122,6 +136,46 @@ public class DataLoader implements ApplicationRunner {
                 user.setId(userResponse.getId());
                 doctor.setUser(user);
                 doctorRepository.save(doctor);
+            }else if(i >= 15 && i < 20){
+                Nurse nurse = null;
+                nurse = nurseRepository.findOneById(ids.get(i));
+                request.setUserType(UserType.NURSE);
+                request.setEmail(String.format("nurse%s@gmail.com", i + 1));
+                request.setSsn(String.format("44444444444%s", i + 1));
+                request.setAddress(String.format("Adresa%s", i + 1));
+                request.setCity(String.format("Grad%s", i + 1));
+                request.setCountry(String.format("Drzava%s", i + 1));
+                request.setFirstName(String.format("Ime%s", i + 1));
+                request.setLastName(String.format("Prezime%s", i + 1));
+                request.setPhone(String.format("Telefon%s", i + 1));
+                request.setPassword(String.format("nurse"));
+                request.setRePassword(String.format("nurse"));
+                UserResponse userResponse = userService.createUser(request);
+                User user = new User();
+                user.setDeleted(false);
+                user.setId(userResponse.getId());
+                nurse.setUser(user);
+                nurseRepository.save(nurse);
+            }else if(i >= 20){
+                ClinicCenterAdmin clinicCenterAdmin = null;
+                clinicCenterAdmin = clinicCenterAdminRepository.findOneById(ids.get(i));
+                request.setUserType(UserType.CLINIC_CENTER_ADMIN);
+                request.setEmail(String.format("ccadmin%s@gmail.com", i + 1));
+                request.setSsn(String.format("55555555555%s", i + 1));
+                request.setAddress(String.format("Adresa%s", i + 1));
+                request.setCity(String.format("Grad%s", i + 1));
+                request.setCountry(String.format("Drzava%s", i + 1));
+                request.setFirstName(String.format("Ime%s", i + 1));
+                request.setLastName(String.format("Prezime%s", i + 1));
+                request.setPhone(String.format("Telefon%s", i + 1));
+                request.setPassword(String.format("ccadmin"));
+                request.setRePassword(String.format("ccadmin"));
+                UserResponse userResponse = userService.createUser(request);
+                User user = new User();
+                user.setDeleted(false);
+                user.setId(userResponse.getId());
+                clinicCenterAdmin.setUser(user);
+                clinicCenterAdminRepository.save(clinicCenterAdmin);
             }
         }
     }

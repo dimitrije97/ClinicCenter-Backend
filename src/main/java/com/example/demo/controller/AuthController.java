@@ -23,13 +23,19 @@ public class AuthController {
 
     private final INurseService _nurseService;
 
-    public AuthController(IPatientService patientService, IAuthService authService, IAdminService adminService, IDoctorService doctorService, IClinicService clinicService, INurseService nurseService) {
+    private final IClinicCenterAdminService _clinicCenterAdminService;
+
+    private final IEmergencyRoomService _emergencyRoomService;
+
+    public AuthController(IPatientService patientService, IAuthService authService, IAdminService adminService, IDoctorService doctorService, IClinicService clinicService, INurseService nurseService, IClinicCenterAdminService clinicCenterAdminService, IEmergencyRoomService emergencyRoomService) {
         _patientService = patientService;
         _authService = authService;
         _adminService = adminService;
         _doctorService = doctorService;
         _clinicService = clinicService;
         _nurseService = nurseService;
+        _clinicCenterAdminService = clinicCenterAdminService;
+        _emergencyRoomService = emergencyRoomService;
     }
 
     @PostMapping("/login")
@@ -69,6 +75,21 @@ public class AuthController {
         return _nurseService.createNurse(nurseRequest, clinicId);
     }
 
+    @PostMapping("/clinic-center-admins")
+    public ClinicCenterAdminResponse createClinicCenterAdmin(@RequestBody CreateClinicCenterAdminRequest clinicCenterAdminRequest) throws Exception {
+
+        return _clinicCenterAdminService.createClinicCenterAdmin(clinicCenterAdminRequest);
+    }
+
     @PostMapping("/clinics")
-    public ClinicResponse createClinic(@RequestBody CreateClinicRequest request) { return  _clinicService.createClinic(request); }
+    public ClinicResponse createClinic(@RequestBody CreateClinicRequest request) {
+
+        return  _clinicService.createClinic(request);
+    }
+
+    @PostMapping("/emergency-rooms/{id}/clinic")
+    public EmergencyRoomResponse createEmergencyRoom(@RequestBody CreateEmergencyRoomRequest request, @PathVariable UUID id) throws Exception {
+
+        return _emergencyRoomService.createEmergencyRoom(request, id);
+    }
 }

@@ -49,6 +49,9 @@ public class User extends BaseEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Nurse nurse;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private ClinicCenterAdmin clinicCenterAdmin;
+
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
