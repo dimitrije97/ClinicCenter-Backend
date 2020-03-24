@@ -7,9 +7,11 @@ import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.entity.Clinic;
 import com.example.demo.entity.Doctor;
+import com.example.demo.entity.ExaminationType;
 import com.example.demo.entity.User;
 import com.example.demo.repository.IClinicRepository;
 import com.example.demo.repository.IDoctorRepository;
+import com.example.demo.repository.IExaminationTypeRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.IDoctorService;
 import com.example.demo.service.IUserService;
@@ -31,11 +33,14 @@ public class DoctorService implements IDoctorService {
 
     private final IClinicRepository _clinicRepository;
 
-    public DoctorService(IUserService userService, IUserRepository userRepository, IDoctorRepository doctorRepository, IClinicRepository clinicRepository) {
+    private final IExaminationTypeRepository _examinationTypeRepository;
+
+    public DoctorService(IUserService userService, IUserRepository userRepository, IDoctorRepository doctorRepository, IClinicRepository clinicRepository, IExaminationTypeRepository examinationTypeRepository) {
         _userService = userService;
         _userRepository = userRepository;
         _doctorRepository = doctorRepository;
         _clinicRepository = clinicRepository;
+        _examinationTypeRepository = examinationTypeRepository;
     }
 
     @Override
@@ -62,6 +67,8 @@ public class DoctorService implements IDoctorService {
 
         Clinic clinic = _clinicRepository.findOneById(clinicId);
         doctor.setClinic(clinic);
+
+        doctor.setExaminationType(_examinationTypeRepository.findOneById(doctorRequest.getExaminationTypeId()));
 
         Doctor savedDoctor = _doctorRepository.save(doctor);
 
@@ -127,6 +134,7 @@ public class DoctorService implements IDoctorService {
         doctorResponse.setLastName(user.getLastName());
         doctorResponse.setPhone(user.getPhone());
         doctorResponse.setSsn(user.getSsn());
+        doctorResponse.setExaminationTypeId(doctor.getExaminationType().getId());
         return doctorResponse;
     }
 }
