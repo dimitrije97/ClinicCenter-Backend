@@ -58,6 +58,8 @@ public class NurseService implements INurseService {
 
         Nurse nurse = new Nurse();
         nurse.setUser(user);
+        nurse.setStartAt(request.getStartAt());
+        nurse.setEndAt(request.getEndAt());
 
         Clinic clinic = _clinicRepository.findOneById(clinicId);
         nurse.setClinic(clinic);
@@ -121,6 +123,8 @@ public class NurseService implements INurseService {
         nurseResponse.setFirstName(user.getFirstName());
         nurseResponse.setLastName(user.getLastName());
         nurseResponse.setPhone(user.getPhone());
+        nurseResponse.setStartAt(nurse.getStartAt());
+        nurseResponse.setEndAt(nurse.getEndAt());
 
         return nurseResponse;
     }

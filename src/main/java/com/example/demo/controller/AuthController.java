@@ -66,16 +66,16 @@ public class AuthController {
         return _adminService.createAdmin(adminRequest);
     }
 
-    @PostMapping("/doctors")
-    public DoctorResponse createDoctor(@RequestBody CreateDoctorRequest doctorRequest, @PathVariable UUID clinicId) throws Exception {
+    @PostMapping("/doctors/{id}/clinic")
+    public DoctorResponse createDoctor(@RequestBody CreateDoctorRequest doctorRequest, @PathVariable UUID id) throws Exception {
 
-        return _doctorService.createDoctor(doctorRequest, clinicId);
+        return _doctorService.createDoctor(doctorRequest, id);
     }
 
-    @PostMapping("/nurses")
-    public NurseResponse createNurse(@RequestBody CreateNurseRequest nurseRequest, @PathVariable UUID clinicId) throws Exception {
+    @PostMapping("/nurses/{id}/clinic")
+    public NurseResponse createNurse(@RequestBody CreateNurseRequest nurseRequest, @PathVariable UUID id) throws Exception {
 
-        return _nurseService.createNurse(nurseRequest, clinicId);
+        return _nurseService.createNurse(nurseRequest, id);
     }
 
     @PostMapping("/clinic-center-admins")

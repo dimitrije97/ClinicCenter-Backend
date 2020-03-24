@@ -69,6 +69,8 @@ public class DoctorService implements IDoctorService {
         doctor.setClinic(clinic);
 
         doctor.setExaminationType(_examinationTypeRepository.findOneById(doctorRequest.getExaminationTypeId()));
+        doctor.setStartAt(doctorRequest.getStartAt());
+        doctor.setEndAt((doctorRequest.getEndAt()));
 
         Doctor savedDoctor = _doctorRepository.save(doctor);
 
@@ -124,6 +126,7 @@ public class DoctorService implements IDoctorService {
 
     private DoctorResponse mapDoctorToDoctorResponse(Doctor doctor) {
         DoctorResponse doctorResponse = new DoctorResponse();
+
         User user = doctor.getUser();
         doctorResponse.setEmail(user.getEmail());
         doctorResponse.setId(doctor.getId());
@@ -135,6 +138,9 @@ public class DoctorService implements IDoctorService {
         doctorResponse.setPhone(user.getPhone());
         doctorResponse.setSsn(user.getSsn());
         doctorResponse.setExaminationTypeId(doctor.getExaminationType().getId());
+        doctorResponse.setStartAt(doctor.getStartAt());
+        doctorResponse.setEndAt(doctor.getEndAt());
+
         return doctorResponse;
     }
 }

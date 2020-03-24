@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Data
@@ -30,4 +31,8 @@ public class DoctorResponse {
     private String ssn;
 
     private UUID examinationTypeId;
+
+    private LocalTime startAt;
+
+    private LocalTime endAt;
 }

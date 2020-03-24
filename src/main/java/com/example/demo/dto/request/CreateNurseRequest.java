@@ -2,6 +2,8 @@ package com.example.demo.dto.request;
 
 import lombok.Data;
 
+import java.time.LocalTime;
+
 @Data
 public class CreateNurseRequest {
 
@@ -24,4 +26,8 @@ public class CreateNurseRequest {
     private String password;
 
     private String rePassword;
+
+    private LocalTime startAt;
+
+    private LocalTime endAt;
 }
