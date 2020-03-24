@@ -2,6 +2,8 @@ package com.example.demo.dto.request;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class CreateDoctorRequest {
 
@@ -24,4 +26,6 @@ public class CreateDoctorRequest {
     private String password;
 
     private String rePassword;
+
+    private UUID examinationTypeId;
 }

@@ -27,7 +27,9 @@ public class AuthController {
 
     private final IEmergencyRoomService _emergencyRoomService;
 
-    public AuthController(IPatientService patientService, IAuthService authService, IAdminService adminService, IDoctorService doctorService, IClinicService clinicService, INurseService nurseService, IClinicCenterAdminService clinicCenterAdminService, IEmergencyRoomService emergencyRoomService) {
+    private final IExaminationTypeService _examinationTypeService;
+
+    public AuthController(IPatientService patientService, IAuthService authService, IAdminService adminService, IDoctorService doctorService, IClinicService clinicService, INurseService nurseService, IClinicCenterAdminService clinicCenterAdminService, IEmergencyRoomService emergencyRoomService, IExaminationTypeService examinationTypeService) {
         _patientService = patientService;
         _authService = authService;
         _adminService = adminService;
@@ -36,6 +38,7 @@ public class AuthController {
         _nurseService = nurseService;
         _clinicCenterAdminService = clinicCenterAdminService;
         _emergencyRoomService = emergencyRoomService;
+        _examinationTypeService = examinationTypeService;
     }
 
     @PostMapping("/login")
@@ -91,5 +94,11 @@ public class AuthController {
     public EmergencyRoomResponse createEmergencyRoom(@RequestBody CreateEmergencyRoomRequest request, @PathVariable UUID id) throws Exception {
 
         return _emergencyRoomService.createEmergencyRoom(request, id);
+    }
+
+    @PostMapping("/examination-types")
+    public ExaminationTypeResponse createExaminationType(@RequestBody CreateExaminationTypeRequest request) throws Exception {
+
+        return _examinationTypeService.createExaminationType(request);
     }
 }

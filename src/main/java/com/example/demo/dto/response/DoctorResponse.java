@@ -28,4 +28,6 @@ public class DoctorResponse {
     private String phone;
 
     private String ssn;
+
+    private UUID examinationTypeId;
 }
