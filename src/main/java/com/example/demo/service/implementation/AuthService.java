@@ -4,12 +4,8 @@ import com.example.demo.dto.request.LoginRequest;
 import com.example.demo.dto.request.NewPasswordRequest;
 import com.example.demo.dto.response.LoginResponse;
 import com.example.demo.dto.response.UserResponse;
-import com.example.demo.entity.Admin;
-import com.example.demo.entity.Patient;
-import com.example.demo.entity.User;
-import com.example.demo.repository.IAdminRepository;
-import com.example.demo.repository.IPatientRepository;
-import com.example.demo.repository.IUserRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.IAuthService;
 import com.example.demo.util.enums.RequestType;
 import com.example.demo.util.enums.UserType;
@@ -30,12 +26,21 @@ public class AuthService implements IAuthService {
 
     private final IAdminRepository _adminRepository;
 
+    private final IDoctorRepository _doctorRepository;
+
+    private final INurseRepository _nurseRepository;
+
+    private final IClinicCenterAdminRepository _clinicCenterAdminRepository;
+
     public AuthService(PasswordEncoder passwordEncoder, IUserRepository userRepository,
-                       IPatientRepository patientRepository, IAdminRepository adminRepository) {
+                       IPatientRepository patientRepository, IAdminRepository adminRepository, IDoctorRepository doctorRepository, INurseRepository nurseRepository, IClinicCenterAdminRepository clinicCenterAdminRepository) {
         _passwordEncoder = passwordEncoder;
         _userRepository = userRepository;
         _patientRepository = patientRepository;
         _adminRepository = adminRepository;
+        _doctorRepository = doctorRepository;
+        _nurseRepository = nurseRepository;
+        _clinicCenterAdminRepository = clinicCenterAdminRepository;
     }
 
     @Override
@@ -83,17 +88,20 @@ public class AuthService implements IAuthService {
         }
 
         Admin admin = _adminRepository.findOneById(id);
+        Doctor doctor = _doctorRepository.findOneById(id);
+        Nurse nurse = _nurseRepository.findOneById(id);
+        ClinicCenterAdmin clinicCenterAdmin = _clinicCenterAdminRepository.findOneById(id);
 
         User user = null;
 
         if(admin != null){
             user = admin.getUser();
-        }else if(false){
-
-        }else if(false){
-
-        }else if(false){
-
+        }else if(doctor != null){
+            user = doctor.getUser();
+        }else if(nurse != null){
+            user = nurse.getUser();
+        }else if(clinicCenterAdmin != null){
+            user = clinicCenterAdmin.getUser();
         }
 
         user.setPassword(_passwordEncoder.encode(request.getPassword()));
@@ -102,8 +110,15 @@ public class AuthService implements IAuthService {
             user.setFirstTimeLoggedIn(new Date());
         }
 
-        _adminRepository.save(admin);
-
+        if(admin != null){
+            _adminRepository.save(admin);
+        }else if(doctor != null){
+            _doctorRepository.save(doctor);
+        }else if(nurse != null){
+            _nurseRepository.save(nurse);
+        }else if(clinicCenterAdmin != null){
+            _clinicCenterAdminRepository.save(clinicCenterAdmin);
+        }
 
         UserResponse userResponse = mapUserToUserResponse(user);
 
@@ -122,11 +137,11 @@ public class AuthService implements IAuthService {
         }else if(user.getUserType().equals(UserType.ADMIN)){
             id = user.getAdmin().getId();
         }else if(user.getUserType().equals(UserType.CLINIC_CENTER_ADMIN)){
-
+            id = user.getClinicCenterAdmin().getId();
         }else if(user.getUserType().equals(UserType.DOCTOR)){
-
+            id = user.getDoctor().getId();
         }else if(user.getUserType().equals(UserType.NURSE)){
-
+            id = user.getNurse().getId();
         }
         userResponse.setId(id);
         userResponse.setAddress(user.getAddress());

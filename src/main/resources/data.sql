@@ -24,3 +24,21 @@ insert into doctor(id, clinic_id) values
 ('b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '7833aba3-bf46-4d25-a856-651d7d7ba279'),
 ('9608b8fe-4cff-49ee-8997-2ef2494e21cb', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a'),
 ('f130446d-5b2e-4908-a6be-1c0218e15d52', '229c6688-afd8-4137-8d15-92655b1f05ee');
+
+insert into nurse(id, clinic_id) values
+('358359e1-9a6d-4196-95a3-af8fdc294fd4', '7833aba3-bf46-4d25-a856-651d7d7ba279'),
+('767609d0-dd8a-487f-9ef0-a2433b71d49b', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b'),
+('b7b8e9ee-44f2-4722-a0c0-5343e1595f1e', '7833aba3-bf46-4d25-a856-651d7d7ba279'),
+('eb8381fb-fd8d-4e8f-bd31-ed82626230bd', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a'),
+('88a23210-81ff-4088-9b1b-1d235016162f', '229c6688-afd8-4137-8d15-92655b1f05ee');
+
+insert into clinic_center_admin(id) values
+('d2f71233-b6de-42ba-98ba-5d4befc02efe'),
+('ff453f1b-a5fe-49ee-a22a-be037a55a78a');
+
+insert into emergency_room(id, name, number, deleted, clinic_id) values
+('3210eb49-a55a-422b-9b9f-0ca04caf65db', 'SalaA', '1001', 'false', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b'),
+('2ccc671f-aa07-4d1c-be28-9d83e11bdddb', 'SalaB', '2001', 'false', '7833aba3-bf46-4d25-a856-651d7d7ba279'),
+('5baa8f38-0198-4d85-b725-2a1dc6b266ce', 'SalaC', '3001', 'false', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a'),
+('4e129247-36f4-48bc-8970-ffbbb5de95ec', 'SalaD', '3002', 'false', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a'),
+('05a4c407-834c-47ed-be62-1ab76c70a629', 'SalaE', '4001', 'true', '229c6688-afd8-4137-8d15-92655b1f05ee');
