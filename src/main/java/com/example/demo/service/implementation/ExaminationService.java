@@ -82,6 +82,8 @@ public class ExaminationService implements IExaminationService {
         examination.setStatus(RequestType.APPROVED);
         examination.getSchedule().setReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         examination.getSchedule().setApproved(true);
+        examination.getSchedule().getPatient().getDoctors().add(examination.getSchedule().getDoctor());
+        examination.getSchedule().getDoctor().getPatients().add(examination.getSchedule().getPatient());
         Examination savedExamination = _examinationRepository.save(examination);
 
         return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
@@ -211,6 +213,8 @@ public class ExaminationService implements IExaminationService {
         examination.getSchedule().setPatient(_patientRepository.findOneById(request.getPatientId()));
         examination.getSchedule().setReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         examination.getSchedule().setApproved(true);
+        examination.getSchedule().getPatient().getDoctors().add(examination.getSchedule().getDoctor());
+        examination.getSchedule().getDoctor().getPatients().add(examination.getSchedule().getPatient());
         Examination savedExamination = _examinationRepository.save(examination);
 
         return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
