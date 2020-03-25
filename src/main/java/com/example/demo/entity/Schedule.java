@@ -36,4 +36,6 @@ public class Schedule extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ReasonOfUnavailability reasonOfUnavailability;
+
+    private boolean approved;
 }
