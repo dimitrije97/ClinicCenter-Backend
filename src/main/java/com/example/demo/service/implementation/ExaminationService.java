@@ -1,0 +1,239 @@
+package com.example.demo.service.implementation;
+
+import com.example.demo.dto.request.*;
+import com.example.demo.dto.response.ExaminationResponse;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
+import com.example.demo.service.IExaminationService;
+import com.example.demo.util.enums.ReasonOfUnavailability;
+import com.example.demo.util.enums.RequestType;
+import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+public class ExaminationService implements IExaminationService {
+
+    private final IExaminationRepository _examinationRepository;
+
+    private final IExaminationTypeRepository _examinationTypeRepository;
+
+    private final IEmergencyRoomRepository _emergencyRoomRepository;
+
+    private final IDoctorRepository _doctorRepository;
+
+    private final IPatientRepository _patientRepository;
+
+    private final IScheduleRepository _scheduleRepository;
+
+    private final IClinicRepository _clinicRepository;
+
+    public ExaminationService(IExaminationRepository examinationRepository, IExaminationTypeRepository examinationTypeRepository, IEmergencyRoomRepository emergencyRoomRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository, IScheduleRepository scheduleRepository, IClinicRepository clinicRepository) {
+        _examinationRepository = examinationRepository;
+        _examinationTypeRepository = examinationTypeRepository;
+        _emergencyRoomRepository = emergencyRoomRepository;
+        _doctorRepository = doctorRepository;
+        _patientRepository = patientRepository;
+        _scheduleRepository = scheduleRepository;
+        _clinicRepository = clinicRepository;
+    }
+
+    @Override
+    public ExaminationResponse createExaminationRequestByPatient(CreateExaminationRequestByPatient request) {
+
+        Examination examination = new Examination();
+        Schedule schedule = new Schedule();
+        Patient patient = _patientRepository.findOneById(request.getPatientId());
+        Doctor doctor = _doctorRepository.findOneById(request.getDoctorId());
+        schedule.setDate(request.getDate());
+        schedule.setStartAt(request.getStartAt());
+        schedule.setEndAt(request.getEndAt());
+        schedule.setDoctor(doctor);
+        schedule.setPatient(patient);
+        examination.setStatus(RequestType.PENDING);
+        schedule.setExamination(examination);
+        schedule.setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_EXAMINATION);
+        schedule.setApproved(false);
+        Schedule savedScherdule = _scheduleRepository.save(schedule);
+        examination.setSchedule(savedScherdule);
+
+        Examination savedExamination = _examinationRepository.save(examination);
+
+        return mapExaminationToExaminationResponse(savedExamination, savedScherdule);
+    }
+
+    @Override
+    public ExaminationResponse confirmExaminationRequestByAdmin(CreateExaminationRequestByAdmin request) {
+        Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+        examination.setEmergencyRoom(_emergencyRoomRepository.findOneById(request.getEmergencyRoomId()));
+        examination.setStatus(RequestType.CONFIRMING);
+        Examination savedExamination = _examinationRepository.save(examination);
+
+        return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
+    }
+
+    @Override
+    public ExaminationResponse approveExamination(ApproveExaminationRequest request) {
+        Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+        examination.setStatus(RequestType.APPROVED);
+        examination.getSchedule().setReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        examination.getSchedule().setApproved(true);
+        Examination savedExamination = _examinationRepository.save(examination);
+
+        return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
+    }
+
+    @Override
+    public void denyExaminationRequest(ApproveExaminationRequest request) {
+        Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+        examination.setStatus(RequestType.DENIED);
+        _examinationRepository.save(examination);
+    }
+
+    @Override
+    public ExaminationResponse createPotentialExaminationByDoctor(CreateExaminationRequestByDoctor request) {
+        Examination examination = new Examination();
+        Schedule schedule = new Schedule();
+        schedule.setApproved(false);
+        schedule.setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_EXAMINATION);
+        schedule.setDoctor(_doctorRepository.findOneById(request.getDoctorId()));
+        schedule.setDate(request.getDate());
+        schedule.setStartAt(request.getStartAt());
+        schedule.setEndAt(request.getEndAt());
+        schedule.setExamination(examination);
+        Schedule savedSchedule = _scheduleRepository.save(schedule);
+        examination.setStatus(RequestType.CONFIRMING);
+        examination.setEmergencyRoom(_emergencyRoomRepository.findOneById(request.getEmergencyRoomId()));
+        examination.setSchedule(savedSchedule);
+        Examination savedExamination = _examinationRepository.save(examination);
+
+        return mapExaminationToExaminationResponse(savedExamination, savedSchedule);
+    }
+
+    @Override
+    public Set<ExaminationResponse> getAllExaminations() {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Set<Examination> examinations = new HashSet<>();
+        for(int i = 0;i < allExaminations.size();i++){
+            if(allExaminations.get(i).getStatus().equals(RequestType.APPROVED)){
+                examinations.add(allExaminations.get(i));
+            }
+        }
+
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public ExaminationResponse getExamination(UUID id) {
+        Examination examination = _examinationRepository.findOneById(id);
+        return mapExaminationToExaminationResponse(examination, examination.getSchedule());
+    }
+
+    @Override
+    public Set<ExaminationResponse> getAllExaminationByPatient(UUID id) {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Set<Examination> examinations = new HashSet<>();
+        for(int i = 0;i < allExaminations.size();i++){
+            if(allExaminations.get(i).getStatus().equals(RequestType.APPROVED) && allExaminations.get(i).getSchedule().getPatient().getId().equals(id)){
+                examinations.add(allExaminations.get(i));
+            }
+        }
+
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<ExaminationResponse> getAllExaminationByDoctor(UUID id) {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Set<Examination> examinations = new HashSet<>();
+        for(int i = 0;i < allExaminations.size();i++){
+            if(allExaminations.get(i).getStatus().equals(RequestType.APPROVED) && allExaminations.get(i).getSchedule().getDoctor().getId().equals(id)){
+                examinations.add(allExaminations.get(i));
+            }
+        }
+
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<ExaminationResponse> getAllPotentialExaminations() {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Set<Examination> examinations = new HashSet<>();
+        for(int i = 0;i < allExaminations.size();i++){
+            if(allExaminations.get(i).getSchedule().getPatient() == null){
+                examinations.add(allExaminations.get(i));
+            }
+        }
+
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<ExaminationResponse> getAllPendingExaminations() {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Set<Examination> examinations = new HashSet<>();
+        for(int i = 0;i < allExaminations.size();i++){
+            if(allExaminations.get(i).getStatus().equals(RequestType.PENDING)){
+                examinations.add(allExaminations.get(i));
+            }
+        }
+
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<ExaminationResponse> getAllConfirmingExaminationsByPatient(UUID id) {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Set<Examination> examinations = new HashSet<>();
+        for(int i = 0;i < allExaminations.size();i++){
+            if(allExaminations.get(i).getStatus().equals(RequestType.CONFIRMING) && allExaminations.get(i).getSchedule().getPatient().getId().equals(id)){
+                examinations.add(allExaminations.get(i));
+            }
+        }
+
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public ExaminationResponse approvePotentialExamination(ApprovePotentialExaminationRequest request) {
+        Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+        examination.setStatus(RequestType.APPROVED);
+        examination.getSchedule().setPatient(_patientRepository.findOneById(request.getPatientId()));
+        examination.getSchedule().setReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        examination.getSchedule().setApproved(true);
+        Examination savedExamination = _examinationRepository.save(examination);
+
+        return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
+    }
+
+    public ExaminationResponse mapExaminationToExaminationResponse(Examination examination, Schedule schedule){
+        ExaminationResponse examinationResponse = new ExaminationResponse();
+        examinationResponse.setId(examination.getId());
+        examinationResponse.setDate(schedule.getDate());
+        examinationResponse.setStartAt(schedule.getStartAt());
+        examinationResponse.setEndAt(schedule.getEndAt());
+        examinationResponse.setDoctorFirstName(schedule.getDoctor().getUser().getFirstName());
+        examinationResponse.setDoctorLastName(schedule.getDoctor().getUser().getLastName());
+        if(!(schedule.getPatient() == null)){
+            examinationResponse.setPatientFirstName(schedule.getPatient().getUser().getFirstName());
+            examinationResponse.setPatientLastName(schedule.getPatient().getUser().getLastName());
+        }
+        if(!(examination.getEmergencyRoom() == null)){
+            examinationResponse.setEmergencyRoomName(examination.getEmergencyRoom().getName());
+        }
+        examinationResponse.setExaminationTypeName(schedule.getDoctor().getExaminationType().getName());
+        examinationResponse.setClinicName(schedule.getDoctor().getClinic().getName());
+
+        return examinationResponse;
+    }
+}
