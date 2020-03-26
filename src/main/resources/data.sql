@@ -43,8 +43,8 @@ insert into clinic_center_admin(id, clinic_center_admin_type) values
 ('ff453f1b-a5fe-49ee-a22a-be037a55a78a' ,'REGULAR');
 
 insert into emergency_room(id, name, number, deleted, clinic_id) values
-('3210eb49-a55a-422b-9b9f-0ca04caf65db', 'SalaA', '1001', 'false', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b'),
 ('2ccc671f-aa07-4d1c-be28-9d83e11bdddb', 'SalaB', '2001', 'false', '7833aba3-bf46-4d25-a856-651d7d7ba279'),
+('3210eb49-a55a-422b-9b9f-0ca04caf65db', 'SalaA', '1001', 'false', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b'),
 ('5baa8f38-0198-4d85-b725-2a1dc6b266ce', 'SalaC', '3001', 'false', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a'),
 ('4e129247-36f4-48bc-8970-ffbbb5de95ec', 'SalaD', '3002', 'false', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a'),
 ('05a4c407-834c-47ed-be62-1ab76c70a629', 'SalaE', '4001', 'true', '229c6688-afd8-4137-8d15-92655b1f05ee');

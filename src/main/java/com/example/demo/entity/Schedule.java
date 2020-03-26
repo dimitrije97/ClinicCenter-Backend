@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.example.demo.util.enums.ReasonOfUnavailability;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class Schedule extends BaseEntity {
 
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private Date date;
 
     private LocalTime startAt;

@@ -16,7 +16,7 @@ public interface IExaminationService {
 
     void denyExaminationRequest(ApproveExaminationRequest request);
 
-    ExaminationResponse createPotentialExamination(CreatePotentialExaminationRequest request);
+    ExaminationResponse createPotentialExamination(CreatePotentialExaminationRequest request) throws Exception;
 
     Set<ExaminationResponse> getAllExaminations();
 

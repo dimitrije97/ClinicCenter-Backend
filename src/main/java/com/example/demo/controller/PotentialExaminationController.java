@@ -19,7 +19,7 @@ public class PotentialExaminationController {
     }
 
     @PostMapping("/create-potential-examination")
-    public ExaminationResponse createPotentialExamination(@RequestBody CreatePotentialExaminationRequest request) {
+    public ExaminationResponse createPotentialExamination(@RequestBody CreatePotentialExaminationRequest request) throws Exception {
         return _examinationService.createPotentialExamination(request);
     }
 

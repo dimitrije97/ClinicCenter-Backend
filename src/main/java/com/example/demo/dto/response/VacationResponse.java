@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,9 +15,5 @@ public class VacationResponse {
 
     private String doctorLastName;
 
-    private String clinicName;
-
-    private String from;
-
-    private String until;
+    private Date date;
 }

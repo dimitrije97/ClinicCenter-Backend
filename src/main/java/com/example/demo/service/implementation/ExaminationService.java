@@ -96,9 +96,41 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Override
-    public ExaminationResponse createPotentialExamination(CreatePotentialExaminationRequest request) {
+    public ExaminationResponse createPotentialExamination(CreatePotentialExaminationRequest request) throws Exception {
         Examination examination = new Examination();
         Schedule schedule = new Schedule();
+        List<Schedule> schedules = _scheduleRepository.findAllByApproved(true);
+        boolean flag = false;
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getDoctor().getId().equals(request.getDoctorId())){
+                if(schedules.get(i).getDate().getYear() == request.getDate().getYear()
+                        && schedules.get(i).getDate().getMonth() == request.getDate().getMonth()
+                        && schedules.get(i).getDate().getDay() == request.getDate().getDay()) {
+                    if (!(request.getStartAt().isBefore(schedules.get(i).getStartAt()) && request.getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if(flag){
+            throw new Exception("Ne mozete rezervisati pregled u ovom terminu, pogledajte radni kalendar.");
+        }
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getExamination().getEmergencyRoom().getId().equals(request.getEmergencyRoomId())){
+                if(schedules.get(i).getDate().getYear() == request.getDate().getYear()
+                        && schedules.get(i).getDate().getMonth() == request.getDate().getMonth()
+                        && schedules.get(i).getDate().getDay() == request.getDate().getDay()) {
+                    if (!(request.getStartAt().isBefore(schedules.get(i).getStartAt()) && request.getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if(flag){
+            throw new Exception("Ne mozete rezervisati pregled u ovom terminu u ovoj sali.");
+        }
         schedule.setApproved(false);
         schedule.setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_EXAMINATION);
         schedule.setDoctor(_doctorRepository.findOneById(request.getDoctorId()));
