@@ -1,5 +1,6 @@
 package com.example.demo.dto.response;
 
+import com.example.demo.util.enums.ClinicCenterAdminType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,6 @@ public class ClinicCenterAdminResponse {
     private String phone;
 
     private String ssn;
+
+    private ClinicCenterAdminType clinicCenterAdminType;
 }

@@ -6,11 +6,15 @@ import com.example.demo.dto.request.UpdateClinicRequest;
 import com.example.demo.dto.response.ClinicResponse;
 import com.example.demo.entity.Admin;
 import com.example.demo.entity.Clinic;
+import com.example.demo.entity.Schedule;
 import com.example.demo.repository.IAdminRepository;
 import com.example.demo.repository.IClinicRepository;
+import com.example.demo.repository.IScheduleRepository;
 import com.example.demo.service.IClinicService;
+import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,9 +26,12 @@ public class ClinicService implements IClinicService {
 
     private final IAdminRepository _adminRepository;
 
-    public ClinicService(IClinicRepository clinicRepository, IAdminRepository adminRepository) {
+    private final IScheduleRepository _scheduleRepository;
+
+    public ClinicService(IClinicRepository clinicRepository, IAdminRepository adminRepository, IScheduleRepository scheduleRepository) {
         _clinicRepository = clinicRepository;
         _adminRepository = adminRepository;
+        _scheduleRepository = scheduleRepository;
     }
 
     @Override
@@ -54,8 +61,18 @@ public class ClinicService implements IClinicService {
     @Override
     public void deleteClinic(UUID id) {
         Clinic clinic = _clinicRepository.findOneById(id);
-        clinic.setDeleted(true);
-        _clinicRepository.save(clinic);
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        boolean flag = false;
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getDoctor().getClinic().getId().equals(id)){
+                flag = true;
+                break;
+            }
+        }
+        if(!flag){
+            clinic.setDeleted(true);
+            _clinicRepository.save(clinic);
+        }
     }
 
     @Override

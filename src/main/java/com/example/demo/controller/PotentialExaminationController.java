@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.request.ApprovePotentialExaminationRequest;
-import com.example.demo.dto.request.CreateExaminationRequestByDoctor;
+import com.example.demo.dto.request.CreatePotentialExaminationRequest;
 import com.example.demo.dto.response.ExaminationResponse;
-import com.example.demo.repository.IExaminationRepository;
 import com.example.demo.service.IExaminationService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +19,8 @@ public class PotentialExaminationController {
     }
 
     @PostMapping("/create-potential-examination")
-    public ExaminationResponse createPotentialExaminationByDoctor(@RequestBody CreateExaminationRequestByDoctor request) {
-        return _examinationService.createPotentialExaminationByDoctor(request);
+    public ExaminationResponse createPotentialExamination(@RequestBody CreatePotentialExaminationRequest request) {
+        return _examinationService.createPotentialExamination(request);
     }
 
     @GetMapping()

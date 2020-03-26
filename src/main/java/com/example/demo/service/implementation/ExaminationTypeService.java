@@ -3,13 +3,15 @@ package com.example.demo.service.implementation;
 import com.example.demo.dto.request.CreateExaminationTypeRequest;
 import com.example.demo.dto.request.UpdateExaminationRequest;
 import com.example.demo.dto.response.ExaminationTypeResponse;
-import com.example.demo.entity.Clinic;
 import com.example.demo.entity.Doctor;
 import com.example.demo.entity.ExaminationType;
+import com.example.demo.entity.Schedule;
 import com.example.demo.repository.IClinicRepository;
 import com.example.demo.repository.IDoctorRepository;
 import com.example.demo.repository.IExaminationTypeRepository;
+import com.example.demo.repository.IScheduleRepository;
 import com.example.demo.service.IExaminationTypeService;
+import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,10 +26,13 @@ public class ExaminationTypeService implements IExaminationTypeService {
 
     private final IClinicRepository _clinicRepository;
 
-    public ExaminationTypeService(IExaminationTypeRepository examinationTypeRepository, IDoctorRepository doctorRepository, IClinicRepository clinicRepository) {
+    private final IScheduleRepository _scheduleRepository;
+
+    public ExaminationTypeService(IExaminationTypeRepository examinationTypeRepository, IDoctorRepository doctorRepository, IClinicRepository clinicRepository, IScheduleRepository scheduleRepository) {
         _examinationTypeRepository = examinationTypeRepository;
         _doctorRepository = doctorRepository;
         _clinicRepository = clinicRepository;
+        _scheduleRepository = scheduleRepository;
     }
 
     @Override
@@ -75,8 +80,18 @@ public class ExaminationTypeService implements IExaminationTypeService {
     @Override
     public void deleteExaminationType(UUID id) {
         ExaminationType examinationType = _examinationTypeRepository.findOneById(id);
-        examinationType.setDeleted(true);
-        _examinationTypeRepository.save(examinationType);
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        boolean flag = false;
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getDoctor().getExaminationType().getId().equals(id)){
+                flag = true;
+                break;
+            }
+        }
+        if(!flag){
+            examinationType.setDeleted(true);
+            _examinationTypeRepository.save(examinationType);
+        }
     }
 
     public ExaminationTypeResponse mapExaminationTypeToExaminationTypeResponse(ExaminationType examinationType){

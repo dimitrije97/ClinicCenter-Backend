@@ -6,15 +6,19 @@ import com.example.demo.dto.request.UpdatePatientRequest;
 import com.example.demo.dto.response.PatientResponse;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.entity.Patient;
+import com.example.demo.entity.Schedule;
 import com.example.demo.entity.User;
 import com.example.demo.repository.IPatientRepository;
+import com.example.demo.repository.IScheduleRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.IPatientService;
 import com.example.demo.service.IUserService;
+import com.example.demo.util.enums.ReasonOfUnavailability;
 import com.example.demo.util.enums.RequestType;
 import com.example.demo.util.enums.UserType;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,10 +32,13 @@ public class PatientService implements IPatientService {
 
     private final IUserRepository _userRepository;
 
-    public PatientService(IPatientRepository patientRepository, IUserService userService, IUserRepository userRepository) {
+    private final IScheduleRepository _scheduleRepository;
+
+    public PatientService(IPatientRepository patientRepository, IUserService userService, IUserRepository userRepository, IScheduleRepository scheduleRepository) {
         _patientRepository = patientRepository;
         _userService = userService;
         _userRepository = userRepository;
+        _scheduleRepository = scheduleRepository;
     }
 
     @Override
@@ -84,8 +91,18 @@ public class PatientService implements IPatientService {
     public void deletePatient(UUID id) {
         Patient patient = _patientRepository.findOneById(id);
         User user = patient.getUser();
-        user.setDeleted(true);
-        _userRepository.save(user);
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        boolean flag = false;
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getPatient().getId().equals(id)){
+                flag = true;
+                break;
+            }
+        }
+        if(!flag){
+            user.setDeleted(true);
+            _userRepository.save(user);
+        }
     }
 
     @Override

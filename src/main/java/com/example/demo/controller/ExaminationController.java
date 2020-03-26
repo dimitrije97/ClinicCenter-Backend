@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.ApproveExaminationRequest;
 import com.example.demo.dto.request.CreateExaminationRequestByAdmin;
-import com.example.demo.dto.request.CreateExaminationRequestByDoctor;
 import com.example.demo.dto.request.CreateExaminationRequestByPatient;
 import com.example.demo.dto.response.ExaminationResponse;
 import com.example.demo.service.IExaminationService;
