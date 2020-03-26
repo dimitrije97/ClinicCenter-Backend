@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 public class CreateExaminationRequestByDoctor {
@@ -14,5 +15,5 @@ public class CreateExaminationRequestByDoctor {
 
     private LocalTime currentTime;
 
-    private String patientUserName;
+    private UUID patientId;
 }

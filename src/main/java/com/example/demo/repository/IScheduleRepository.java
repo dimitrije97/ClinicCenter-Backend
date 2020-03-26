@@ -13,10 +13,6 @@ public interface IScheduleRepository extends JpaRepository<Schedule, UUID> {
 
     Schedule findOneById(UUID id);
 
-    List<Schedule> findAllByDoctor_IdAndApproved(UUID id, boolean approved);
-
-    List<Schedule> findAllByPatient_IdAndApproved(UUID id, boolean approved);
-
     List<Schedule> findAllByApproved(boolean approved);
 
     List<Schedule> findAllByReasonOfUnavailability(ReasonOfUnavailability reasonOfUnavailability);

@@ -222,7 +222,7 @@ public class ExaminationService implements IExaminationService {
 
     @Override
     public ExaminationResponse createExaminationRequestByDoctor(CreateExaminationRequestByDoctor request, UUID id) throws Exception {
-        Patient patient = _patientRepository.findOneByUser_Email(request.getPatientUserName());
+        Patient patient = _patientRepository.findOneById(request.getPatientId());
 
         Doctor doctor = _doctorRepository.findOneById(id);
         Date now = new Date();
@@ -236,7 +236,7 @@ public class ExaminationService implements IExaminationService {
                         && schedule.getPatient().getId().equals(patient.getId()));
 
         if(!flag) {
-            throw new Exception("Pogresan pacijent.");
+            throw new Exception("Trenutno ne vrsite pregled ovog pacijenta.");
         }
 
         Examination examination = new Examination();

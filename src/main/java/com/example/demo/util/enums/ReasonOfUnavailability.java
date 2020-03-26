@@ -4,5 +4,6 @@ public enum ReasonOfUnavailability {
 
     VACATION,
     EXAMINATION,
-    POTENTIAL_EXAMINATION
+    POTENTIAL_EXAMINATION,
+    POTENTIAL_VACATION
 }
