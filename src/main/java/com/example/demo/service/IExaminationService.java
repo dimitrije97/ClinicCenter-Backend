@@ -33,4 +33,6 @@ public interface IExaminationService {
     Set<ExaminationResponse> getAllConfirmingExaminationsByPatient(UUID id);
 
     ExaminationResponse approvePotentialExamination(ApprovePotentialExaminationRequest request);
+
+    ExaminationResponse createExaminationRequestByDoctor(CreateExaminationRequestByDoctor request, UUID id) throws Exception;
 }

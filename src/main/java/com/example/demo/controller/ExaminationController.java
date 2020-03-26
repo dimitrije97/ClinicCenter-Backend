@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.ApproveExaminationRequest;
 import com.example.demo.dto.request.CreateExaminationRequestByAdmin;
+import com.example.demo.dto.request.CreateExaminationRequestByDoctor;
 import com.example.demo.dto.request.CreateExaminationRequestByPatient;
 import com.example.demo.dto.response.ExaminationResponse;
 import com.example.demo.service.IExaminationService;
@@ -68,5 +69,10 @@ public class ExaminationController {
     @GetMapping("/confirming/{id}/patient")
     public Set<ExaminationResponse> getAllConfirmingExaminationsByPatient(@PathVariable UUID id) {
         return _examinationService.getAllConfirmingExaminationsByPatient(id);
+    }
+
+    @PostMapping("/create-examination-request/{id}/doctor")
+    public ExaminationResponse createExaminationRequestByDoctor(@RequestBody CreateExaminationRequestByDoctor request, @PathVariable UUID id) throws Exception {
+        return _examinationService.createExaminationRequestByDoctor(request, id);
     }
 }

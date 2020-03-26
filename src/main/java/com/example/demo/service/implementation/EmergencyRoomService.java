@@ -73,7 +73,7 @@ public class EmergencyRoomService implements IEmergencyRoomService {
     }
 
     @Override
-    public void deleteEmergencyRoom(UUID id) {
+    public void deleteEmergencyRoom(UUID id) throws Exception {
         EmergencyRoom emergencyRoom = _emergencyRoomRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         boolean flag = false;
@@ -83,10 +83,11 @@ public class EmergencyRoomService implements IEmergencyRoomService {
                 break;
             }
         }
-        if(!flag){
-            emergencyRoom.setDeleted(true);
-            _emergencyRoomRepository.save(emergencyRoom);
+        if(flag){
+            throw new Exception("Postoji zakazan pregled u sali.");
         }
+        emergencyRoom.setDeleted(true);
+        _emergencyRoomRepository.save(emergencyRoom);
     }
 
     public EmergencyRoomResponse mapEmergencyRoomToEmergencyRoomResponse(EmergencyRoom emergencyRoom){

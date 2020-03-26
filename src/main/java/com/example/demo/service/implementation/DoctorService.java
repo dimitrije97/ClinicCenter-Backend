@@ -98,7 +98,7 @@ public class DoctorService implements IDoctorService {
     }
 
     @Override
-    public void deleteDoctor(UUID id) {
+    public void deleteDoctor(UUID id) throws Exception {
 
         Doctor doctor = _doctorRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
@@ -109,10 +109,11 @@ public class DoctorService implements IDoctorService {
                 break;
             }
         }
-        if(!flag){
-            doctor.getUser().setDeleted(true);
-            _doctorRepository.save(doctor);
+        if(flag){
+            throw new Exception("Doktor poseduje zakazan pregled.");
         }
+        doctor.getUser().setDeleted(true);
+        _doctorRepository.save(doctor);
     }
 
     @Override

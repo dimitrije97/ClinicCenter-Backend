@@ -78,7 +78,7 @@ public class ExaminationTypeService implements IExaminationTypeService {
     }
 
     @Override
-    public void deleteExaminationType(UUID id) {
+    public void deleteExaminationType(UUID id) throws Exception {
         ExaminationType examinationType = _examinationTypeRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         boolean flag = false;
@@ -88,10 +88,11 @@ public class ExaminationTypeService implements IExaminationTypeService {
                 break;
             }
         }
-        if(!flag){
-            examinationType.setDeleted(true);
-            _examinationTypeRepository.save(examinationType);
+        if(flag){
+            throw new Exception("Postoji zakazan pregled datog tipa.");
         }
+        examinationType.setDeleted(true);
+        _examinationTypeRepository.save(examinationType);
     }
 
     public ExaminationTypeResponse mapExaminationTypeToExaminationTypeResponse(ExaminationType examinationType){

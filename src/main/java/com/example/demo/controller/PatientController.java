@@ -34,9 +34,7 @@ public class PatientController {
     }
 
     @DeleteMapping("/{id}/patient")
-    public void deletePatient(@PathVariable UUID id) {
-        _patientService.deletePatient(id);
-    }
+    public void deletePatient(@PathVariable UUID id) throws Exception { _patientService.deletePatient(id); }
 
     @GetMapping
     public Set<PatientResponse> getAllPatients() {

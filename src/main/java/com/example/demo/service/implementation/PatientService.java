@@ -88,7 +88,7 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public void deletePatient(UUID id) {
+    public void deletePatient(UUID id) throws Exception {
         Patient patient = _patientRepository.findOneById(id);
         User user = patient.getUser();
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
@@ -99,10 +99,11 @@ public class PatientService implements IPatientService {
                 break;
             }
         }
-        if(!flag){
-            user.setDeleted(true);
-            _userRepository.save(user);
+        if(flag){
+            throw new Exception("Pacijent poseduje zakazan pregled.");
         }
+        patient.getUser().setDeleted(true);
+        _patientRepository.save(patient);
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface IDoctorService {
 
     DoctorResponse updateDoctor(UpdateDoctorRequest updateDoctorRequest, UUID id) throws Exception;
 
-    void deleteDoctor(UUID id);
+    void deleteDoctor(UUID id) throws Exception;
 
     DoctorResponse getDoctor(UUID id);
 
