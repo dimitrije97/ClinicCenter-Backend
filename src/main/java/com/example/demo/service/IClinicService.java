@@ -16,7 +16,7 @@ public interface IClinicService {
 
     Set<ClinicResponse> getAllClinics();
 
-    void deleteClinic(UUID id);
+    void deleteClinic(UUID id) throws Exception;
 
     ClinicResponse updateClinic(UpdateClinicRequest request, UUID id);
 

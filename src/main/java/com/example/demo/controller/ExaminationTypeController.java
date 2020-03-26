@@ -29,9 +29,7 @@ public class ExaminationTypeController {
     public Set<ExaminationTypeResponse> getAllExaminationTypes() { return _examinationTypeService.getAllExaminationTypes(); }
 
     @DeleteMapping("/{id}/examination-type")
-    public void deleteExaminationType(@PathVariable UUID id) {
-        _examinationTypeService.deleteExaminationType(id);
-    }
+    public void deleteExaminationType(@PathVariable UUID id) throws Exception { _examinationTypeService.deleteExaminationType(id); }
 
     @PutMapping("/{id}/examination-type")
     public ExaminationTypeResponse updateExaminationType(@RequestBody UpdateExaminationRequest request, @PathVariable UUID id) throws Exception { return _examinationTypeService.updateExaminationType(request, id); }

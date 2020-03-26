@@ -16,7 +16,7 @@ public interface IPatientService {
 
     PatientResponse updatePatient(UpdatePatientRequest request, UUID id);
 
-    void deletePatient(UUID id);
+    void deletePatient(UUID id) throws Exception;
 
     Set<PatientResponse> getAllPatients();
 

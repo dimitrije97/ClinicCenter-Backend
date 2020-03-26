@@ -35,9 +35,7 @@ public class ClinicController {
     }
 
     @DeleteMapping("/{id}/clinic")
-    public void deleteClinic(@PathVariable UUID id) {
-        _clinicService.deleteClinic(id);
-    }
+    public void deleteClinic(@PathVariable UUID id) throws Exception { _clinicService.deleteClinic(id); }
 
     @PutMapping("/{id}/clinic")
     public ClinicResponse updateClinic(@RequestBody UpdateClinicRequest request, @PathVariable UUID id) { return _clinicService.updateClinic(request, id); }

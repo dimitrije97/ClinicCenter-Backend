@@ -59,7 +59,7 @@ public class ClinicService implements IClinicService {
     }
 
     @Override
-    public void deleteClinic(UUID id) {
+    public void deleteClinic(UUID id) throws Exception{
         Clinic clinic = _clinicRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         boolean flag = false;
@@ -69,10 +69,11 @@ public class ClinicService implements IClinicService {
                 break;
             }
         }
-        if(!flag){
-            clinic.setDeleted(true);
-            _clinicRepository.save(clinic);
+        if(flag){
+            throw new Exception("Postoji zakazan pregled u klinici.");
         }
+        clinic.setDeleted(true);
+        _clinicRepository.save(clinic);
     }
 
     @Override

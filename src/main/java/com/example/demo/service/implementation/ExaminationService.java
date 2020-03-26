@@ -9,10 +9,8 @@ import com.example.demo.util.enums.ReasonOfUnavailability;
 import com.example.demo.util.enums.RequestType;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,12 +56,12 @@ public class ExaminationService implements IExaminationService {
         schedule.setExamination(examination);
         schedule.setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_EXAMINATION);
         schedule.setApproved(false);
-        Schedule savedScherdule = _scheduleRepository.save(schedule);
-        examination.setSchedule(savedScherdule);
+        Schedule savedSchedule = _scheduleRepository.save(schedule);
+        examination.setSchedule(savedSchedule);
 
         Examination savedExamination = _examinationRepository.save(examination);
 
-        return mapExaminationToExaminationResponse(savedExamination, savedScherdule);
+        return mapExaminationToExaminationResponse(savedExamination, savedSchedule);
     }
 
     @Override
@@ -84,6 +82,7 @@ public class ExaminationService implements IExaminationService {
         examination.getSchedule().setApproved(true);
         examination.getSchedule().getPatient().getDoctors().add(examination.getSchedule().getDoctor());
         examination.getSchedule().getDoctor().getPatients().add(examination.getSchedule().getPatient());
+        examination.getSchedule().getDoctor().getSchedules().add(examination.getSchedule());
         Examination savedExamination = _examinationRepository.save(examination);
 
         return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
@@ -215,9 +214,48 @@ public class ExaminationService implements IExaminationService {
         examination.getSchedule().setApproved(true);
         examination.getSchedule().getPatient().getDoctors().add(examination.getSchedule().getDoctor());
         examination.getSchedule().getDoctor().getPatients().add(examination.getSchedule().getPatient());
+        examination.getSchedule().getDoctor().getSchedules().add(examination.getSchedule());
         Examination savedExamination = _examinationRepository.save(examination);
 
         return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
+    }
+
+    @Override
+    public ExaminationResponse createExaminationRequestByDoctor(CreateExaminationRequestByDoctor request, UUID id) throws Exception {
+        Patient patient = _patientRepository.findOneByUser_Email(request.getPatientUserName());
+
+        Doctor doctor = _doctorRepository.findOneById(id);
+        Date now = new Date();
+        LocalTime currentTime = request.getCurrentTime();
+        boolean flag =  doctor.getSchedules().stream()
+                .anyMatch(schedule -> schedule.getDate().getYear() == now.getYear()
+                        && schedule.getDate().getMonth() == now.getMonth()
+                        && schedule.getDate().getDay() == now.getDay()
+                        && schedule.getStartAt().isBefore(currentTime)
+                        && schedule.getEndAt().isAfter(currentTime)
+                        && schedule.getPatient().getId().equals(patient.getId()));
+
+        if(!flag) {
+            throw new Exception("Pogresan pacijent.");
+        }
+
+        Examination examination = new Examination();
+        Schedule schedule = new Schedule();
+        schedule.setDate(request.getDate());
+        schedule.setStartAt(request.getStartAt());
+        schedule.setEndAt(request.getStartAt().plusHours(1L));
+        schedule.setDoctor(doctor);
+        schedule.setPatient(patient);
+        examination.setStatus(RequestType.PENDING);
+        schedule.setExamination(examination);
+        schedule.setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_EXAMINATION);
+        schedule.setApproved(false);
+        Schedule savedSchedule = _scheduleRepository.save(schedule);
+        examination.setSchedule(savedSchedule);
+
+        Examination savedExamination = _examinationRepository.save(examination);
+
+        return mapExaminationToExaminationResponse(savedExamination, savedSchedule);
     }
 
     public ExaminationResponse mapExaminationToExaminationResponse(Examination examination, Schedule schedule){

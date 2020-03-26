@@ -36,9 +36,7 @@ public class DoctorContoller {
     public Set<DoctorResponse> getAllDoctorsOfClinic(@PathVariable UUID id) { return _doctorService.getAllDoctorsOfClinic(id); }
 
     @DeleteMapping("/{id}/doctor")
-    public void deleteDoctor(@PathVariable UUID id) {
-        _doctorService.deleteDoctor(id);
-    }
+    public void deleteDoctor(@PathVariable UUID id) throws Exception { _doctorService.deleteDoctor(id); }
 
     @PutMapping("/{id}/doctor")
     public DoctorResponse updateDoctor(@RequestBody UpdateDoctorRequest request, @PathVariable UUID id) throws Exception { return _doctorService.updateDoctor(request, id); }
