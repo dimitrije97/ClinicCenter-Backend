@@ -38,9 +38,9 @@ insert into nurse(id, clinic_id, start_at, end_at) values
 ('eb8381fb-fd8d-4e8f-bd31-ed82626230bd', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a', '09:00:00', '18:00:00'),
 ('88a23210-81ff-4088-9b1b-1d235016162f', '229c6688-afd8-4137-8d15-92655b1f05ee', '16:00:00', '22:00:00');
 
-insert into clinic_center_admin(id) values
-('d2f71233-b6de-42ba-98ba-5d4befc02efe'),
-('ff453f1b-a5fe-49ee-a22a-be037a55a78a');
+insert into clinic_center_admin(id, clinic_center_admin_type) values
+('d2f71233-b6de-42ba-98ba-5d4befc02efe', 'PREDEF'),
+('ff453f1b-a5fe-49ee-a22a-be037a55a78a' ,'REGULAR');
 
 insert into emergency_room(id, name, number, deleted, clinic_id) values
 ('3210eb49-a55a-422b-9b9f-0ca04caf65db', 'SalaA', '1001', 'false', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b'),

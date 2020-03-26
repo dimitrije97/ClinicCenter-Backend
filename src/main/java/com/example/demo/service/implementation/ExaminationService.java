@@ -51,7 +51,7 @@ public class ExaminationService implements IExaminationService {
         Doctor doctor = _doctorRepository.findOneById(request.getDoctorId());
         schedule.setDate(request.getDate());
         schedule.setStartAt(request.getStartAt());
-        schedule.setEndAt(request.getEndAt());
+        schedule.setEndAt(request.getStartAt().plusHours(1L));
         schedule.setDoctor(doctor);
         schedule.setPatient(patient);
         examination.setStatus(RequestType.PENDING);
@@ -97,7 +97,7 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Override
-    public ExaminationResponse createPotentialExaminationByDoctor(CreateExaminationRequestByDoctor request) {
+    public ExaminationResponse createPotentialExamination(CreatePotentialExaminationRequest request) {
         Examination examination = new Examination();
         Schedule schedule = new Schedule();
         schedule.setApproved(false);
@@ -105,7 +105,7 @@ public class ExaminationService implements IExaminationService {
         schedule.setDoctor(_doctorRepository.findOneById(request.getDoctorId()));
         schedule.setDate(request.getDate());
         schedule.setStartAt(request.getStartAt());
-        schedule.setEndAt(request.getEndAt());
+        schedule.setEndAt(request.getStartAt().plusHours(1L));
         schedule.setExamination(examination);
         Schedule savedSchedule = _scheduleRepository.save(schedule);
         examination.setStatus(RequestType.CONFIRMING);

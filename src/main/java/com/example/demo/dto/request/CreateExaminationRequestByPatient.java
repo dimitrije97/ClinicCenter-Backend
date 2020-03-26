@@ -13,8 +13,6 @@ public class CreateExaminationRequestByPatient {
 
     private LocalTime startAt;
 
-    private LocalTime endAt;
-
     private UUID doctorId;
 
     private UUID patientId;

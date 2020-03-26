@@ -11,6 +11,7 @@ import com.example.demo.repository.IClinicCenterAdminRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.IClinicCenterAdminService;
 import com.example.demo.service.IUserService;
+import com.example.demo.util.enums.ClinicCenterAdminType;
 import com.example.demo.util.enums.UserType;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,7 @@ public class ClinicCenterAdminService implements IClinicCenterAdminService {
 
         ClinicCenterAdmin clinicCenterAdmin = new ClinicCenterAdmin();
         clinicCenterAdmin.setUser(user);
+        clinicCenterAdmin.setClinicCenterAdminType(ClinicCenterAdminType.REGULAR);
 
 
         ClinicCenterAdmin savedClinicCenterAdmin = _clinicCenterAdminRepository.save(clinicCenterAdmin);
@@ -102,6 +104,7 @@ public class ClinicCenterAdminService implements IClinicCenterAdminService {
         clinicCenterAdminResponse.setLastName(user.getLastName());
         clinicCenterAdminResponse.setPhone(user.getPhone());
         clinicCenterAdminResponse.setSsn(user.getSsn());
+        clinicCenterAdminResponse.setClinicCenterAdminType(clinicCenterAdmin.getClinicCenterAdminType());
         return clinicCenterAdminResponse;
     }
 }

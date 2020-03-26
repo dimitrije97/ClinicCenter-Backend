@@ -7,17 +7,16 @@ import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.entity.Clinic;
 import com.example.demo.entity.Doctor;
-import com.example.demo.entity.ExaminationType;
+import com.example.demo.entity.Schedule;
 import com.example.demo.entity.User;
-import com.example.demo.repository.IClinicRepository;
-import com.example.demo.repository.IDoctorRepository;
-import com.example.demo.repository.IExaminationTypeRepository;
-import com.example.demo.repository.IUserRepository;
+import com.example.demo.repository.*;
 import com.example.demo.service.IDoctorService;
 import com.example.demo.service.IUserService;
+import com.example.demo.util.enums.ReasonOfUnavailability;
 import com.example.demo.util.enums.UserType;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -35,12 +34,15 @@ public class DoctorService implements IDoctorService {
 
     private final IExaminationTypeRepository _examinationTypeRepository;
 
-    public DoctorService(IUserService userService, IUserRepository userRepository, IDoctorRepository doctorRepository, IClinicRepository clinicRepository, IExaminationTypeRepository examinationTypeRepository) {
+    private final IScheduleRepository _scheduleRepository;
+
+    public DoctorService(IUserService userService, IUserRepository userRepository, IDoctorRepository doctorRepository, IClinicRepository clinicRepository, IExaminationTypeRepository examinationTypeRepository, IScheduleRepository scheduleRepository) {
         _userService = userService;
         _userRepository = userRepository;
         _doctorRepository = doctorRepository;
         _clinicRepository = clinicRepository;
         _examinationTypeRepository = examinationTypeRepository;
+        _scheduleRepository = scheduleRepository;
     }
 
     @Override
@@ -99,8 +101,18 @@ public class DoctorService implements IDoctorService {
     public void deleteDoctor(UUID id) {
 
         Doctor doctor = _doctorRepository.findOneById(id);
-        doctor.getUser().setDeleted(true);
-        _doctorRepository.save(doctor);
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        boolean flag = false;
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getDoctor().getId().equals(id)){
+                flag = true;
+                break;
+            }
+        }
+        if(!flag){
+            doctor.getUser().setDeleted(true);
+            _doctorRepository.save(doctor);
+        }
     }
 
     @Override

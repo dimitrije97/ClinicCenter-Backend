@@ -5,11 +5,15 @@ import com.example.demo.dto.request.UpdateEmergencyRoomRequest;
 import com.example.demo.dto.response.EmergencyRoomResponse;
 import com.example.demo.entity.Clinic;
 import com.example.demo.entity.EmergencyRoom;
+import com.example.demo.entity.Schedule;
 import com.example.demo.repository.IClinicRepository;
 import com.example.demo.repository.IEmergencyRoomRepository;
+import com.example.demo.repository.IScheduleRepository;
 import com.example.demo.service.IEmergencyRoomService;
+import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,9 +25,12 @@ public class EmergencyRoomService implements IEmergencyRoomService {
 
     private final IClinicRepository _clinicRepository;
 
-    public EmergencyRoomService(IEmergencyRoomRepository emergencyRoomRepository, IClinicRepository clinicRepository) {
+    private final IScheduleRepository _scheduleRepository;
+
+    public EmergencyRoomService(IEmergencyRoomRepository emergencyRoomRepository, IClinicRepository clinicRepository, IScheduleRepository scheduleRepository) {
         _emergencyRoomRepository = emergencyRoomRepository;
         _clinicRepository = clinicRepository;
+        _scheduleRepository = scheduleRepository;
     }
 
     @Override
@@ -68,8 +75,18 @@ public class EmergencyRoomService implements IEmergencyRoomService {
     @Override
     public void deleteEmergencyRoom(UUID id) {
         EmergencyRoom emergencyRoom = _emergencyRoomRepository.findOneById(id);
-        emergencyRoom.setDeleted(true);
-        _emergencyRoomRepository.save(emergencyRoom);
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        boolean flag = false;
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getExamination().getId().equals(id)){
+                flag = true;
+                break;
+            }
+        }
+        if(!flag){
+            emergencyRoom.setDeleted(true);
+            _emergencyRoomRepository.save(emergencyRoom);
+        }
     }
 
     public EmergencyRoomResponse mapEmergencyRoomToEmergencyRoomResponse(EmergencyRoom emergencyRoom){
