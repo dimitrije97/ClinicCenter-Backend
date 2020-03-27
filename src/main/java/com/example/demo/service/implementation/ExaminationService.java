@@ -114,7 +114,7 @@ public class ExaminationService implements IExaminationService {
             }
         }
         if(flag){
-            throw new Exception("Ne mozete rezervisati pregled u ovom terminu, pogledajte radni kalendar.");
+            throw new Exception("Ne mozete rezervisati pregled u ovom terminu, doktor je tada zauzet.");
         }
         for(int i = 0;i < schedules.size();i++){
             if(schedules.get(i).getExamination().getEmergencyRoom().getId().equals(request.getEmergencyRoomId())){

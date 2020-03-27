@@ -1,9 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.ApproveExaminationRequest;
-import com.example.demo.dto.request.CreateExaminationRequestByAdmin;
-import com.example.demo.dto.request.CreateExaminationRequestByDoctor;
-import com.example.demo.dto.request.CreateExaminationRequestByPatient;
+import com.example.demo.dto.request.*;
 import com.example.demo.dto.response.ExaminationResponse;
 import com.example.demo.service.IExaminationService;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +31,11 @@ public class ExaminationController {
     @PostMapping("/approve-examination")
     public ExaminationResponse approveExamination(@RequestBody ApproveExaminationRequest request) {
         return _examinationService.approveExamination(request);
+    }
+
+    @PostMapping("/approve-potential-examination")
+    public ExaminationResponse approvePotentialExamination(@RequestBody ApprovePotentialExaminationRequest request) {
+        return _examinationService.approvePotentialExamination(request);
     }
 
     @DeleteMapping("/deny-examination")
