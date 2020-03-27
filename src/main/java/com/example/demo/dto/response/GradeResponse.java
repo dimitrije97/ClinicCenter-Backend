@@ -4,16 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class VacationResponse {
+@NoArgsConstructor
+public class GradeResponse {
+
+    private UUID id;
+
+    private String grade;
 
     private String doctorFirstName;
 
     private String doctorLastName;
 
-    private Date date;
+    private String clinicName;
+
+    private String patientFirstName;
+
+    private String patientLastName;
 }
