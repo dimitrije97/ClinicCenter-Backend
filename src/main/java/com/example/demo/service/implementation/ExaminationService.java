@@ -75,8 +75,46 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Override
-    public ExaminationResponse approveExamination(ApproveExaminationRequest request) {
+    public ExaminationResponse approveExamination(ApproveExaminationRequest request) throws Exception{
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+
+        List<Schedule> schedules = _scheduleRepository.findAllByApproved(true);
+        boolean flag = false;
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getDoctor().getId().equals(examination.getSchedule().getDoctor().getId())){
+                if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
+                        && schedules.get(i).getDate().getMonth() == examination.getSchedule().getDate().getMonth()
+                        && schedules.get(i).getDate().getDay() == examination.getSchedule().getDate().getDay()) {
+                    if (!(examination.getSchedule().getStartAt().isBefore(schedules.get(i).getStartAt()) && examination.getSchedule().getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if(flag){
+            examination.setStatus(RequestType.DENIED);
+            _examinationRepository.save(examination);
+            throw new Exception("Doktor je u medjuvremenu zauzet.");
+        }
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getExamination().getEmergencyRoom().getId().equals(examination.getEmergencyRoom().getId())){
+                if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
+                        && schedules.get(i).getDate().getMonth() == examination.getSchedule().getDate().getMonth()
+                        && schedules.get(i).getDate().getDay() == examination.getSchedule().getDate().getDay()) {
+                    if (!(examination.getSchedule().getStartAt().isBefore(schedules.get(i).getStartAt()) && examination.getSchedule().getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if(flag){
+            examination.setStatus(RequestType.DENIED);
+            _examinationRepository.save(examination);
+            throw new Exception("Sala je u medjuvremenu zauzeta.");
+        }
+
         examination.setStatus(RequestType.APPROVED);
         examination.getSchedule().setReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         examination.getSchedule().setApproved(true);
@@ -238,8 +276,46 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Override
-    public ExaminationResponse approvePotentialExamination(ApprovePotentialExaminationRequest request) {
+    public ExaminationResponse approvePotentialExamination(ApprovePotentialExaminationRequest request) throws Exception{
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+
+        List<Schedule> schedules = _scheduleRepository.findAllByApproved(true);
+        boolean flag = false;
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getDoctor().getId().equals(examination.getSchedule().getDoctor().getId())){
+                if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
+                        && schedules.get(i).getDate().getMonth() == examination.getSchedule().getDate().getMonth()
+                        && schedules.get(i).getDate().getDay() == examination.getSchedule().getDate().getDay()) {
+                    if (!(examination.getSchedule().getStartAt().isBefore(schedules.get(i).getStartAt()) && examination.getSchedule().getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if(flag){
+            examination.setStatus(RequestType.DENIED);
+            _examinationRepository.save(examination);
+            throw new Exception("Doktor je u medjuvremenu zauzet.");
+        }
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getExamination().getEmergencyRoom().getId().equals(examination.getEmergencyRoom().getId())){
+                if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
+                        && schedules.get(i).getDate().getMonth() == examination.getSchedule().getDate().getMonth()
+                        && schedules.get(i).getDate().getDay() == examination.getSchedule().getDate().getDay()) {
+                    if (!(examination.getSchedule().getStartAt().isBefore(schedules.get(i).getStartAt()) && examination.getSchedule().getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if(flag){
+            examination.setStatus(RequestType.DENIED);
+            _examinationRepository.save(examination);
+            throw new Exception("Sala je u medjuvremenu zauzeta.");
+        }
+
         examination.setStatus(RequestType.APPROVED);
         examination.getSchedule().setPatient(_patientRepository.findOneById(request.getPatientId()));
         examination.getSchedule().setReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);

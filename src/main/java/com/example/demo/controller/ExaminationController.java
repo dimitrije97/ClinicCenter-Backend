@@ -29,13 +29,8 @@ public class ExaminationController {
     }
 
     @PostMapping("/approve-examination")
-    public ExaminationResponse approveExamination(@RequestBody ApproveExaminationRequest request) {
+    public ExaminationResponse approveExamination(@RequestBody ApproveExaminationRequest request) throws Exception {
         return _examinationService.approveExamination(request);
-    }
-
-    @PostMapping("/approve-potential-examination")
-    public ExaminationResponse approvePotentialExamination(@RequestBody ApprovePotentialExaminationRequest request) {
-        return _examinationService.approvePotentialExamination(request);
     }
 
     @DeleteMapping("/deny-examination")

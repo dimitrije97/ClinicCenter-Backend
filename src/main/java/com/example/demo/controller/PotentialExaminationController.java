@@ -29,7 +29,7 @@ public class PotentialExaminationController {
     }
 
     @PostMapping("/approve-potential-examination")
-    public ExaminationResponse approvePotentialExamination(@RequestBody ApprovePotentialExaminationRequest request) {
+    public ExaminationResponse approvePotentialExamination(@RequestBody ApprovePotentialExaminationRequest request) throws Exception {
         return _examinationService.approvePotentialExamination(request);
     }
 }

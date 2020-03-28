@@ -12,7 +12,7 @@ public interface IExaminationService {
 
     ExaminationResponse confirmExaminationRequestByAdmin(CreateExaminationRequestByAdmin request);
 
-    ExaminationResponse approveExamination(ApproveExaminationRequest request);
+    ExaminationResponse approveExamination(ApproveExaminationRequest request) throws Exception;
 
     void denyExaminationRequest(ApproveExaminationRequest request);
 
@@ -32,7 +32,7 @@ public interface IExaminationService {
 
     Set<ExaminationResponse> getAllConfirmingExaminationsByPatient(UUID id);
 
-    ExaminationResponse approvePotentialExamination(ApprovePotentialExaminationRequest request);
+    ExaminationResponse approvePotentialExamination(ApprovePotentialExaminationRequest request) throws Exception;
 
     ExaminationResponse createExaminationRequestByDoctor(CreateExaminationRequestByDoctor request, UUID id) throws Exception;
 }
