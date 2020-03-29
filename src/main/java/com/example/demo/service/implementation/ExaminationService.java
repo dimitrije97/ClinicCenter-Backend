@@ -77,7 +77,7 @@ public class ExaminationService implements IExaminationService {
     @Override
     public ExaminationResponse approveExamination(ApproveExaminationRequest request) throws Exception{
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
-        List<Schedule> schedules = _scheduleRepository.findAllByApproved(true);
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndNurse(true, null);
 
         boolean flag = false;
         for(int i = 0;i < schedules.size();i++){
@@ -103,6 +103,8 @@ public class ExaminationService implements IExaminationService {
             _examinationRepository.save(examination);
             throw new Exception("Doktor je u medjuvremenu zauzet.");
         }
+
+        schedules = _scheduleRepository.findAllByApprovedAndReasonOfUnavailability(true, ReasonOfUnavailability.EXAMINATION);
         for(int i = 0;i < schedules.size();i++){
             if(schedules.get(i).getExamination().getEmergencyRoom().getId().equals(examination.getEmergencyRoom().getId())){
                 if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
@@ -144,13 +146,18 @@ public class ExaminationService implements IExaminationService {
     public ExaminationResponse createPotentialExamination(CreatePotentialExaminationRequest request) throws Exception {
         Examination examination = new Examination();
         Schedule schedule = new Schedule();
-        List<Schedule> schedules = _scheduleRepository.findAllByApproved(true);
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndNurse(true, null);
         boolean flag = false;
         for(int i = 0;i < schedules.size();i++){
             if(schedules.get(i).getDoctor().getId().equals(request.getDoctorId())){
                 if(schedules.get(i).getDate().getYear() == request.getDate().getYear()
                         && schedules.get(i).getDate().getMonth() == request.getDate().getMonth()
                         && schedules.get(i).getDate().getDay() == request.getDate().getDay()) {
+                    if(schedules.get(i).getReasonOfUnavailability().equals(ReasonOfUnavailability.VACATION)){
+                        examination.setStatus(RequestType.DENIED);
+                        _examinationRepository.save(examination);
+                        throw new Exception("Doktor je u na godisnjem odmoru.");
+                    }
                     if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
                             || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
                         flag = true;
@@ -288,13 +295,18 @@ public class ExaminationService implements IExaminationService {
     public ExaminationResponse approvePotentialExamination(ApprovePotentialExaminationRequest request) throws Exception{
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
 
-        List<Schedule> schedules = _scheduleRepository.findAllByApproved(true);
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndNurse(true, null);
         boolean flag = false;
         for(int i = 0;i < schedules.size();i++){
             if(schedules.get(i).getDoctor().getId().equals(examination.getSchedule().getDoctor().getId())){
                 if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
                         && schedules.get(i).getDate().getMonth() == examination.getSchedule().getDate().getMonth()
                         && schedules.get(i).getDate().getDay() == examination.getSchedule().getDate().getDay()) {
+                    if(schedules.get(i).getReasonOfUnavailability().equals(ReasonOfUnavailability.VACATION)){
+                        examination.setStatus(RequestType.DENIED);
+                        _examinationRepository.save(examination);
+                        throw new Exception("Doktor je u na godisnjem odmoru.");
+                    }
                     if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
                             || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
                         flag = true;
@@ -308,6 +320,7 @@ public class ExaminationService implements IExaminationService {
             _examinationRepository.save(examination);
             throw new Exception("Doktor je u medjuvremenu zauzet.");
         }
+        schedules = _scheduleRepository.findAllByApprovedAndReasonOfUnavailability(true, ReasonOfUnavailability.EXAMINATION);
         for(int i = 0;i < schedules.size();i++){
             if(schedules.get(i).getExamination().getEmergencyRoom().getId().equals(examination.getEmergencyRoom().getId())){
                 if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()

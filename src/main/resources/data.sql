@@ -49,14 +49,20 @@ insert into emergency_room(id, name, number, deleted, clinic_id) values
 ('4e129247-36f4-48bc-8970-ffbbb5de95ec', 'SalaD', '3002', 'false', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a'),
 ('05a4c407-834c-47ed-be62-1ab76c70a629', 'SalaE', '4001', 'true', '229c6688-afd8-4137-8d15-92655b1f05ee');
 
-insert into schedule(id, approved, date, start_at, end_at, doctor_id, patient_id, reason_of_unavailability) values
-('bb17dce6-632c-4eca-ab3e-977d7ffc0780', 'true', '2020/07/01', '08:30:00', '09:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION'),
-('ca33f7c5-3555-499b-923a-d8bb12fcd358', 'true', '2020/07/02', '16:30:00', '17:30:00', '8dbea129-360a-4d77-afca-5c5bb94174c1', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION'),
-('8e7819c1-df81-4b28-96d7-ca3206e45f8f', 'true', '2020/07/01', '10:30:00', '11:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION'),
-('ca00ff6a-bc8c-46ab-83a5-9d64cb62aa6b', 'true', '2020/07/03', '12:30:00', '13:30:00', 'b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION'),
-('6999e7cd-f174-4e74-8048-f192f2052092', 'false', '2020/07/04', '06:20:00', '07:20:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'POTENTIAL_EXAMINATION'),
-('922b6438-600b-4e03-b82f-25850e56dbf8', 'true', '2020/07/04', '05:00:00', '06:00:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION'),
-('75d40c59-ba01-4831-930c-13ce06f7e4fe', 'false', '2020/07/04', '04:30:00', '05:30:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', null, 'POTENTIAL_EXAMINATION');
+insert into schedule(id, approved, date, start_at, end_at, doctor_id, patient_id, reason_of_unavailability, nurse_id) values
+('bb17dce6-632c-4eca-ab3e-977d7ffc0780', 'true', '2020/07/01', '08:30:00', '09:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION', null),
+('ca33f7c5-3555-499b-923a-d8bb12fcd358', 'true', '2020/07/02', '16:30:00', '17:30:00', '8dbea129-360a-4d77-afca-5c5bb94174c1', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION', null),
+('8e7819c1-df81-4b28-96d7-ca3206e45f8f', 'true', '2020/07/01', '10:30:00', '11:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION', null),
+('ca00ff6a-bc8c-46ab-83a5-9d64cb62aa6b', 'true', '2020/07/03', '12:30:00', '13:30:00', 'b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION', null),
+('6999e7cd-f174-4e74-8048-f192f2052092', 'false', '2020/07/04', '06:20:00', '07:20:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'POTENTIAL_EXAMINATION', null),
+('922b6438-600b-4e03-b82f-25850e56dbf8', 'true', '2020/07/04', '05:00:00', '06:00:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION', null),
+('75d40c59-ba01-4831-930c-13ce06f7e4fe', 'false', '2020/07/04', '04:30:00', '05:30:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', null, 'POTENTIAL_EXAMINATION', null),
+('31cd744d-d915-4b3b-a531-500535903706', 'true', '2020/07/05', null, null, '8dbea129-360a-4d77-afca-5c5bb94174c1', null, 'VACATION', null),
+('c9dfb134-6d4d-4a98-b8b3-04b1e38bba88', 'true', '2020/07/06', null, null, '8dbea129-360a-4d77-afca-5c5bb94174c1', null, 'VACATION', null),
+('f8a80f04-9d86-4f3d-9572-e8bcf3707cfa', 'false', '2020/07/07', null, null, 'b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', null, 'POTENTIAL_VACATION', null),
+('f17a2996-602a-4433-bdd2-7e8af0f2e969', 'false', '2020/07/08', null, null, 'b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', null, 'POTENTIAL_VACATION', null),
+('5c19aa40-c52f-45e7-9e67-9c1af0c970d3', 'true', '2020/07/09', null, null, null, null, 'VACATION', '358359e1-9a6d-4196-95a3-af8fdc294fd4'),
+('b5480154-79c9-4cef-8991-19b9ce38d1d1', 'false', '2020/07/10', null, null, null, null, 'POTENTIAL_VACATION', '358359e1-9a6d-4196-95a3-af8fdc294fd4');
 
 insert into examination(id, status, schedule_id, emergency_room_id) values
 ('4683148e-9e76-4c78-890a-a15de40287bb', 'APPROVED', 'bb17dce6-632c-4eca-ab3e-977d7ffc0780', '3210eb49-a55a-422b-9b9f-0ca04caf65db'),
