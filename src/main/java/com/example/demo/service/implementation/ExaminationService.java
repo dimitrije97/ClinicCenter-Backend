@@ -85,7 +85,8 @@ public class ExaminationService implements IExaminationService {
                 if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
                         && schedules.get(i).getDate().getMonth() == examination.getSchedule().getDate().getMonth()
                         && schedules.get(i).getDate().getDay() == examination.getSchedule().getDate().getDay()) {
-                    if (!(examination.getSchedule().getStartAt().isBefore(schedules.get(i).getStartAt()) && examination.getSchedule().getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                    if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
+                            || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
                         flag = true;
                         break;
                     }
@@ -102,7 +103,8 @@ public class ExaminationService implements IExaminationService {
                 if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
                         && schedules.get(i).getDate().getMonth() == examination.getSchedule().getDate().getMonth()
                         && schedules.get(i).getDate().getDay() == examination.getSchedule().getDate().getDay()) {
-                    if (!(examination.getSchedule().getStartAt().isBefore(schedules.get(i).getStartAt()) && examination.getSchedule().getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                    if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
+                            || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
                         flag = true;
                         break;
                     }
@@ -144,7 +146,8 @@ public class ExaminationService implements IExaminationService {
                 if(schedules.get(i).getDate().getYear() == request.getDate().getYear()
                         && schedules.get(i).getDate().getMonth() == request.getDate().getMonth()
                         && schedules.get(i).getDate().getDay() == request.getDate().getDay()) {
-                    if (!(request.getStartAt().isBefore(schedules.get(i).getStartAt()) && request.getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                    if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
+                            || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
                         flag = true;
                         break;
                     }
@@ -159,7 +162,8 @@ public class ExaminationService implements IExaminationService {
                 if(schedules.get(i).getDate().getYear() == request.getDate().getYear()
                         && schedules.get(i).getDate().getMonth() == request.getDate().getMonth()
                         && schedules.get(i).getDate().getDay() == request.getDate().getDay()) {
-                    if (!(request.getStartAt().isBefore(schedules.get(i).getStartAt()) && request.getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                    if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
+                            || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
                         flag = true;
                         break;
                     }
@@ -286,7 +290,8 @@ public class ExaminationService implements IExaminationService {
                 if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
                         && schedules.get(i).getDate().getMonth() == examination.getSchedule().getDate().getMonth()
                         && schedules.get(i).getDate().getDay() == examination.getSchedule().getDate().getDay()) {
-                    if (!(examination.getSchedule().getStartAt().isBefore(schedules.get(i).getStartAt()) && examination.getSchedule().getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                    if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
+                            || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
                         flag = true;
                         break;
                     }
@@ -303,7 +308,8 @@ public class ExaminationService implements IExaminationService {
                 if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
                         && schedules.get(i).getDate().getMonth() == examination.getSchedule().getDate().getMonth()
                         && schedules.get(i).getDate().getDay() == examination.getSchedule().getDate().getDay()) {
-                    if (!(examination.getSchedule().getStartAt().isBefore(schedules.get(i).getStartAt()) && examination.getSchedule().getStartAt().plusHours(1L).isAfter(schedules.get(i).getEndAt()))) {
+                    if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
+                            || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
                         flag = true;
                         break;
                     }

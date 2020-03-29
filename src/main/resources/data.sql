@@ -48,3 +48,28 @@ insert into emergency_room(id, name, number, deleted, clinic_id) values
 ('5baa8f38-0198-4d85-b725-2a1dc6b266ce', 'SalaC', '3001', 'false', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a'),
 ('4e129247-36f4-48bc-8970-ffbbb5de95ec', 'SalaD', '3002', 'false', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a'),
 ('05a4c407-834c-47ed-be62-1ab76c70a629', 'SalaE', '4001', 'true', '229c6688-afd8-4137-8d15-92655b1f05ee');
+
+insert into schedule(id, approved, date, start_at, end_at, doctor_id, patient_id, reason_of_unavailability) values
+('bb17dce6-632c-4eca-ab3e-977d7ffc0780', 'true', '2020/07/01', '08:30:00', '09:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION'),
+('ca33f7c5-3555-499b-923a-d8bb12fcd358', 'true', '2020/07/02', '16:30:00', '17:30:00', '8dbea129-360a-4d77-afca-5c5bb94174c1', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION'),
+('8e7819c1-df81-4b28-96d7-ca3206e45f8f', 'true', '2020/07/01', '10:30:00', '11:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION'),
+('ca00ff6a-bc8c-46ab-83a5-9d64cb62aa6b', 'true', '2020/07/03', '12:30:00', '13:30:00', 'b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION'),
+('6999e7cd-f174-4e74-8048-f192f2052092', 'false', '2020/07/04', '06:20:00', '07:20:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'POTENTIAL_EXAMINATION'),
+('922b6438-600b-4e03-b82f-25850e56dbf8', 'true', '2020/07/04', '05:00:00', '06:00:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION'),
+('75d40c59-ba01-4831-930c-13ce06f7e4fe', 'false', '2020/07/04', '04:30:00', '05:30:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', null, 'POTENTIAL_EXAMINATION');
+
+insert into examination(id, status, schedule_id, emergency_room_id) values
+('4683148e-9e76-4c78-890a-a15de40287bb', 'APPROVED', 'bb17dce6-632c-4eca-ab3e-977d7ffc0780', '3210eb49-a55a-422b-9b9f-0ca04caf65db'),
+('a3102c53-f2b6-4476-aa2a-ee63fc553e4f', 'APPROVED', 'ca33f7c5-3555-499b-923a-d8bb12fcd358', '3210eb49-a55a-422b-9b9f-0ca04caf65db'),
+('18a36d59-3fc6-4689-b6c7-f348b04c8e7a', 'APPROVED', '8e7819c1-df81-4b28-96d7-ca3206e45f8f', '3210eb49-a55a-422b-9b9f-0ca04caf65db'),
+('6cdea8b6-ea07-44aa-9742-5cf2b7e4badf', 'APPROVED', 'ca00ff6a-bc8c-46ab-83a5-9d64cb62aa6b', '2ccc671f-aa07-4d1c-be28-9d83e11bdddb'),
+('7cf8fadb-cd00-445d-9707-7ad907814dc3', 'PENDING', '6999e7cd-f174-4e74-8048-f192f2052092', null),
+('93ad6de1-0fe8-4b5d-bb89-488e769a63b1', 'APPROVED', '922b6438-600b-4e03-b82f-25850e56dbf8', '5baa8f38-0198-4d85-b725-2a1dc6b266ce'),
+('c1274b05-dd53-4dff-87d9-22f5d62ac5ec', 'CONFIRMING', '75d40c59-ba01-4831-930c-13ce06f7e4fe', '4e129247-36f4-48bc-8970-ffbbb5de95ec');
+
+insert into doctor_patient(doctor_id, patient_id) values
+('adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf'),
+('8dbea129-360a-4d77-afca-5c5bb94174c1', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf'),
+('adfa0bd5-c1b5-41d7-adc4-b6951beb9055', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97'),
+('b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97'),
+('9608b8fe-4cff-49ee-8997-2ef2494e21cb', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97');
