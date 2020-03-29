@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,4 +28,7 @@ public class Nurse extends BaseEntity {
     private LocalTime startAt;
 
     private LocalTime endAt;
+
+    @OneToMany(mappedBy = "nurse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Schedule> schedules = new ArrayList<>();
 }

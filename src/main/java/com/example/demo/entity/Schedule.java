@@ -40,4 +40,8 @@ public class Schedule extends BaseEntity {
     private ReasonOfUnavailability reasonOfUnavailability;
 
     private boolean approved;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nurse_id")
+    private Nurse nurse;
 }
