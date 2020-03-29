@@ -138,6 +138,11 @@ public class VacationService implements IVacationService {
                 }
             }
         }
+
+        if(adminSchedules.isEmpty()){
+            throw new Exception("Nemate novih zahteva za godisnji odmor.");
+        }
+
         return adminSchedules.stream().map(schedule -> mapScheduleToVacationResponse(schedule))
                 .collect(Collectors.toSet());
     }
