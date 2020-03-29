@@ -15,4 +15,6 @@ public interface IVacationService {
     void approveVacation(UUID id) throws Exception;
 
     void denyVacation(UUID id);
+
+    Set<VacationResponse> getAllVacationRequestsByAdmin(UUID adminId) throws Exception;
 }
