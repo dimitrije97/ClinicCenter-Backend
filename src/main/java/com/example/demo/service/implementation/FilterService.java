@@ -126,7 +126,7 @@ public class FilterService implements IFilterService {
         Clinic clinic = _clinicRepository.findOneById(request.getClinicId());
         List<EmergencyRoom> allEmergencyRooms = clinic.getEmergencyRooms();
         Set<EmergencyRoom> emergencyRooms = new HashSet<>();
-        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndReasonOfUnavailability(true, ReasonOfUnavailability.EXAMINATION);
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         for (EmergencyRoom er: allEmergencyRooms) {
             boolean flag = false;
             for (Schedule s: schedules) {

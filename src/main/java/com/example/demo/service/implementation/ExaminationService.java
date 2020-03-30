@@ -104,7 +104,7 @@ public class ExaminationService implements IExaminationService {
             throw new Exception("Doktor je u medjuvremenu zauzet.");
         }
 
-        schedules = _scheduleRepository.findAllByApprovedAndReasonOfUnavailability(true, ReasonOfUnavailability.EXAMINATION);
+        schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         for(int i = 0;i < schedules.size();i++){
             if(schedules.get(i).getExamination().getEmergencyRoom().getId().equals(examination.getEmergencyRoom().getId())){
                 if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
@@ -320,7 +320,7 @@ public class ExaminationService implements IExaminationService {
             _examinationRepository.save(examination);
             throw new Exception("Doktor je u medjuvremenu zauzet.");
         }
-        schedules = _scheduleRepository.findAllByApprovedAndReasonOfUnavailability(true, ReasonOfUnavailability.EXAMINATION);
+        schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         for(int i = 0;i < schedules.size();i++){
             if(schedules.get(i).getExamination().getEmergencyRoom().getId().equals(examination.getEmergencyRoom().getId())){
                 if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()

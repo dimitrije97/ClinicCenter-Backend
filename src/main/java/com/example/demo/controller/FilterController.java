@@ -6,7 +6,6 @@ import com.example.demo.dto.request.AvailableEmergencyRoomsRequest;
 import com.example.demo.dto.response.ClinicResponse;
 import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.EmergencyRoomResponse;
-import com.example.demo.entity.EmergencyRoom;
 import com.example.demo.service.IFilterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
