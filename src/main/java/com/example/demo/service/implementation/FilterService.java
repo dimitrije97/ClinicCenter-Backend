@@ -123,7 +123,34 @@ public class FilterService implements IFilterService {
 
     @Override
     public Set<EmergencyRoomResponse> getEmergencyRoomsByDateAndStartAtAndClinic(AvailableEmergencyRoomsRequest request) throws Exception {
-        return null;
+        Clinic clinic = _clinicRepository.findOneById(request.getClinicId());
+        List<EmergencyRoom> allEmergencyRooms = clinic.getEmergencyRooms();
+        Set<EmergencyRoom> emergencyRooms = new HashSet<>();
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndReasonOfUnavailability(true, ReasonOfUnavailability.EXAMINATION);
+        for (EmergencyRoom er: allEmergencyRooms) {
+            boolean flag = false;
+            for (Schedule s: schedules) {
+                if(request.getDate().getYear() == s.getDate().getYear()
+                        && request.getDate().getMonth() == s.getDate().getMonth()
+                        && request.getDate().getDay() == s.getDate().getDay()
+                        && request.getStartAt().isAfter(s.getStartAt().minusHours(1L))
+                        && request.getStartAt().isBefore(s.getEndAt())
+                        && s.getExamination().getEmergencyRoom() == er){
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag){
+                emergencyRooms.add(er);
+            }
+        }
+
+        if(emergencyRooms.isEmpty()){
+            throw new Exception("Nijedna sala nije slobodna u tom terminu.");
+        }
+
+        return emergencyRooms.stream().map(emergencyRoom -> mapEmergencyRoomToEmergencyRoomResponse(emergencyRoom))
+                .collect(Collectors.toSet());
     }
 
     public ClinicResponse mapClinicToClinicResponse(Clinic clinic){
