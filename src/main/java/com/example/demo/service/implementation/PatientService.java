@@ -1,5 +1,6 @@
 package com.example.demo.service.implementation;
 
+import com.example.demo.dto.request.AdminsMessageAboutDenyingRegistrationRequest;
 import com.example.demo.dto.request.CreatePatientRequest;
 import com.example.demo.dto.request.CreateUserRequest;
 import com.example.demo.dto.request.UpdatePatientRequest;
@@ -11,6 +12,7 @@ import com.example.demo.entity.User;
 import com.example.demo.repository.IPatientRepository;
 import com.example.demo.repository.IScheduleRepository;
 import com.example.demo.repository.IUserRepository;
+import com.example.demo.service.IEmailService;
 import com.example.demo.service.IPatientService;
 import com.example.demo.service.IUserService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
@@ -34,11 +36,14 @@ public class PatientService implements IPatientService {
 
     private final IScheduleRepository _scheduleRepository;
 
-    public PatientService(IPatientRepository patientRepository, IUserService userService, IUserRepository userRepository, IScheduleRepository scheduleRepository) {
+    private final IEmailService _emailService;
+
+    public PatientService(IPatientRepository patientRepository, IUserService userService, IUserRepository userRepository, IScheduleRepository scheduleRepository, IEmailService emailService) {
         _patientRepository = patientRepository;
         _userService = userService;
         _userRepository = userRepository;
         _scheduleRepository = scheduleRepository;
+        _emailService = emailService;
     }
 
     @Override
@@ -120,6 +125,39 @@ public class PatientService implements IPatientService {
 
         return patients.stream().map(patient -> mapPatientToPatientResponse(patient))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public PatientResponse confirmRegistrationRequest(UUID patientId) {
+        Patient patient = _patientRepository.findOneById(patientId);
+        patient.setRequestType(RequestType.CONFIRMING);
+        Patient savedPatient = _patientRepository.save(patient);
+
+        _emailService.approveRegistrationMail(savedPatient);
+
+        return mapPatientToPatientResponse(savedPatient);
+    }
+
+    @Override
+    public void denyRegistrationRequest(UUID patientId, AdminsMessageAboutDenyingRegistrationRequest request) {
+        Patient patient = _patientRepository.findOneById(patientId);
+        patient.setRequestType(RequestType.DENIED);
+        Patient savedPatient = _patientRepository.save(patient);
+
+        _emailService.denyRegistrationMail(savedPatient, request.getMessage());
+    }
+
+    @Override
+    public PatientResponse approveRegistration(UUID patientId) throws Exception {
+        Patient patient = _patientRepository.findOneById(patientId);
+        if(patient.getRequestType().equals(RequestType.APPROVED)){
+            throw new Exception("Vec ste potvrdili Vasu registraciju.");
+        }else if(patient.getRequestType().equals(RequestType.CONFIRMING)){
+            patient.setRequestType(RequestType.APPROVED);
+            Patient savedPatient = _patientRepository.save(patient);
+            return mapPatientToPatientResponse(savedPatient);
+        }
+        throw new Exception("Vas nalog je obrisan.");
     }
 
     private PatientResponse mapPatientToPatientResponse(Patient patient) {

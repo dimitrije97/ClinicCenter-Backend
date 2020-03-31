@@ -65,6 +65,8 @@ public class AuthService implements IAuthService {
                 throw new Exception("Vas nalog i dalje nije prihvacen od strane administratora klinickog centra.");
             }else if(patient.getRequestType().equals(RequestType.DENIED)){
                 throw new Exception("Vas nalog je odbijen od strane administratora klinickog centra.");
+            }else if(patient.getRequestType().equals(RequestType.CONFIRMING)){
+                throw new Exception("Prihvatite aktivaciju vaseg naloga klikom na link koji ste dobili u emailu.");
             }
 
             if(user.getFirstTimeLoggedIn() == null){
