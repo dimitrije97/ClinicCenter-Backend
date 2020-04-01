@@ -152,8 +152,10 @@ public class ExaminationService implements IExaminationService {
         examination.setStatus(RequestType.DENIED);
         _examinationRepository.save(examination);
 
-        _emailService.denyExaminationToPatientMail(examination.getSchedule().getPatient(), request.getReason());
-        _emailService.denyExaminationToDoctorMail(examination.getSchedule().getDoctor(), request.getReason());
+        if(!request.getReason().equals("")){
+            _emailService.denyExaminationToPatientMail(examination.getSchedule().getPatient(), request.getReason());
+            _emailService.denyExaminationToDoctorMail(examination.getSchedule().getDoctor(), request.getReason());
+        }
     }
 
     @Override

@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class DenyVacationRequest {
 
-    private final String reason;
+    private String reason;
 }
