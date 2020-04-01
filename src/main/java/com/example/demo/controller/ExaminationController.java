@@ -34,7 +34,7 @@ public class ExaminationController {
     }
 
     @DeleteMapping("/deny-examination")
-    public void denyExamination(@RequestBody ApproveExaminationRequest request) {
+    public void denyExamination(@RequestBody DenyExaminationRequest request) {
         _examinationService.denyExaminationRequest(request);
     }
 
