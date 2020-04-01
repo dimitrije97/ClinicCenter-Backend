@@ -4,6 +4,7 @@ import com.example.demo.dto.request.*;
 import com.example.demo.dto.response.ExaminationResponse;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
+import com.example.demo.service.IEmailService;
 import com.example.demo.service.IExaminationService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
 import com.example.demo.util.enums.RequestType;
@@ -30,7 +31,9 @@ public class ExaminationService implements IExaminationService {
 
     private final IClinicRepository _clinicRepository;
 
-    public ExaminationService(IExaminationRepository examinationRepository, IExaminationTypeRepository examinationTypeRepository, IEmergencyRoomRepository emergencyRoomRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository, IScheduleRepository scheduleRepository, IClinicRepository clinicRepository) {
+    private final IEmailService _emailService;
+
+    public ExaminationService(IExaminationRepository examinationRepository, IExaminationTypeRepository examinationTypeRepository, IEmergencyRoomRepository emergencyRoomRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository, IScheduleRepository scheduleRepository, IClinicRepository clinicRepository, IEmailService emailService) {
         _examinationRepository = examinationRepository;
         _examinationTypeRepository = examinationTypeRepository;
         _emergencyRoomRepository = emergencyRoomRepository;
@@ -38,6 +41,7 @@ public class ExaminationService implements IExaminationService {
         _patientRepository = patientRepository;
         _scheduleRepository = scheduleRepository;
         _clinicRepository = clinicRepository;
+        _emailService = emailService;
     }
 
     @Override
@@ -60,6 +64,10 @@ public class ExaminationService implements IExaminationService {
         examination.setSchedule(savedSchedule);
 
         Examination savedExamination = _examinationRepository.save(examination);
+
+        for (Admin admin: doctor.getClinic().getAdmins()) {
+            _emailService.announceAdminsAboutExaminationRequest(admin);
+        }
 
         return mapExaminationToExaminationResponse(savedExamination, savedSchedule);
     }
