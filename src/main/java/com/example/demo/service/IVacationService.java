@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.request.CreateVacationRequest;
+import com.example.demo.dto.request.DenyVacationRequest;
 import com.example.demo.dto.response.VacationResponse;
 
 import java.util.Set;
@@ -14,7 +15,7 @@ public interface IVacationService {
 
     void approveVacation(UUID id) throws Exception;
 
-    void denyVacation(UUID id);
+    void denyVacation(UUID id, DenyVacationRequest request);
 
     Set<VacationResponse> getAllVacationRequestsByAdmin(UUID adminId) throws Exception;
 }

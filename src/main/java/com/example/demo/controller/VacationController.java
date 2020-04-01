@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.request.CreateVacationRequest;
+import com.example.demo.dto.request.DenyVacationRequest;
 import com.example.demo.dto.response.VacationResponse;
 import com.example.demo.service.IVacationService;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class VacationController {
     }
 
     @DeleteMapping("/deny/{id}/vacation-request")
-    public void denyVacation(@PathVariable UUID id){
-        _vacationService.denyVacation(id);
+    public void denyVacation(@PathVariable UUID id, @RequestBody DenyVacationRequest request){
+        _vacationService.denyVacation(id, request);
     }
 }

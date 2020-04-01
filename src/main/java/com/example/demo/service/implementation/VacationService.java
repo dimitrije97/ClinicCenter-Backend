@@ -1,6 +1,7 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.CreateVacationRequest;
+import com.example.demo.dto.request.DenyVacationRequest;
 import com.example.demo.dto.response.VacationResponse;
 import com.example.demo.entity.Admin;
 import com.example.demo.entity.Doctor;
@@ -10,6 +11,7 @@ import com.example.demo.repository.IAdminRepository;
 import com.example.demo.repository.IDoctorRepository;
 import com.example.demo.repository.INurseRepository;
 import com.example.demo.repository.IScheduleRepository;
+import com.example.demo.service.IEmailService;
 import com.example.demo.service.IVacationService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
@@ -28,11 +30,14 @@ public class VacationService implements IVacationService {
 
     private final IAdminRepository _adminRepository;
 
-    public VacationService(IScheduleRepository scheduleRepository, IDoctorRepository doctorRepository, INurseRepository nurseRepository, IAdminRepository adminRepository) {
+    private final IEmailService _emailService;
+
+    public VacationService(IScheduleRepository scheduleRepository, IDoctorRepository doctorRepository, INurseRepository nurseRepository, IAdminRepository adminRepository, IEmailService emailService) {
         _scheduleRepository = scheduleRepository;
         _doctorRepository = doctorRepository;
         _nurseRepository = nurseRepository;
         _adminRepository = adminRepository;
+        _emailService = emailService;
     }
 
     @Override
@@ -101,24 +106,32 @@ public class VacationService implements IVacationService {
             if(flag){
                 schedule.setReasonOfUnavailability(ReasonOfUnavailability.DENIED_VACATION);
                 _scheduleRepository.save(schedule);
+                _emailService.denyVacationToDoctorMail(schedule.getDoctor(), "Doktor ima zakazan pregled i ne moze da uzme godisnji odmor za ovaj dan.");
                 throw new Exception("Doktor ima zakazan pregled i ne moze da uzme godisnji odmor za ovaj dan.");
             }
             schedule.setReasonOfUnavailability(ReasonOfUnavailability.VACATION);
             schedule.setApproved(true);
             _scheduleRepository.save(schedule);
+            _emailService.approveVacationToDoctorMail(schedule.getDoctor());
         }else if(schedule.getDoctor() == null){
             schedule.setReasonOfUnavailability(ReasonOfUnavailability.VACATION);
             schedule.setApproved(true);
             _scheduleRepository.save(schedule);
+            _emailService.approveVacationToNurseMail(schedule.getNurse());
         }
 
     }
 
     @Override
-    public void denyVacation(UUID id) {
+    public void denyVacation(UUID id, DenyVacationRequest request) {
         Schedule schedule = _scheduleRepository.findOneById(id);
         schedule.setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_VACATION);
         _scheduleRepository.save(schedule);
+        if(schedule.getNurse() == null){
+            _emailService.denyVacationToDoctorMail(schedule.getDoctor(), request.getReason());
+        }else if(schedule.getDoctor() == null){
+            _emailService.denyVacationToNurseMail(schedule.getNurse(), request.getReason());
+        }
     }
 
     @Override
