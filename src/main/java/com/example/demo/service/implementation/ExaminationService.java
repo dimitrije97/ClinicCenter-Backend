@@ -66,7 +66,7 @@ public class ExaminationService implements IExaminationService {
         Examination savedExamination = _examinationRepository.save(examination);
 
         for (Admin admin: doctor.getClinic().getAdmins()) {
-            _emailService.announceAdminsAboutExaminationRequest(admin);
+            _emailService.announceAdminsAboutExaminationRequestMail(admin);
         }
 
         return mapExaminationToExaminationResponse(savedExamination, savedSchedule);
@@ -78,6 +78,9 @@ public class ExaminationService implements IExaminationService {
         examination.setEmergencyRoom(_emergencyRoomRepository.findOneById(request.getEmergencyRoomId()));
         examination.setStatus(RequestType.CONFIRMING);
         Examination savedExamination = _examinationRepository.save(examination);
+
+        _emailService.approveExaminationToPatientMail(examination.getSchedule().getPatient());
+        _emailService.approveExaminationToDoctorMail(examination.getSchedule().getDoctor());
 
         return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
     }
@@ -144,10 +147,13 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Override
-    public void denyExaminationRequest(ApproveExaminationRequest request) {
+    public void denyExaminationRequest(DenyExaminationRequest request) {
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
         examination.setStatus(RequestType.DENIED);
         _examinationRepository.save(examination);
+
+        _emailService.denyExaminationToPatientMail(examination.getSchedule().getPatient(), request.getReason());
+        _emailService.denyExaminationToDoctorMail(examination.getSchedule().getDoctor(), request.getReason());
     }
 
     @Override
@@ -394,6 +400,10 @@ public class ExaminationService implements IExaminationService {
         examination.setSchedule(savedSchedule);
 
         Examination savedExamination = _examinationRepository.save(examination);
+
+        for (Admin admin: doctor.getClinic().getAdmins()) {
+            _emailService.announceAdminsAboutExaminationRequestMail(admin);
+        }
 
         return mapExaminationToExaminationResponse(savedExamination, savedSchedule);
     }
