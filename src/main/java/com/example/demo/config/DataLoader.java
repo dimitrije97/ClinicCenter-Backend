@@ -76,7 +76,7 @@ public class DataLoader implements ApplicationRunner {
                 Patient patient = null;
                 patient = patientRepository.findOneById(ids.get(i));
                 request.setUserType(UserType.PATIENT);
-                request.setEmail(String.format("pacijent%s@gmail.com", i + 1));
+                request.setEmail(String.format("patient%s@gmail.com", i + 1));
                 request.setSsn(String.format("111111111111%s", i + 1));
                 request.setAddress(String.format("Adresa%s", i + 1));
                 request.setCity(String.format("Grad%s", i + 1));
