@@ -73,8 +73,7 @@ public class DataLoader implements ApplicationRunner {
         for (int i = 0; i < 22; i++) {
             CreateUserRequest request = new CreateUserRequest();
             if (i < 5) {
-                Patient patient = null;
-                patient = patientRepository.findOneById(ids.get(i));
+                Patient patient = patientRepository.findOneById(ids.get(i));
                 request.setUserType(UserType.PATIENT);
                 request.setEmail(String.format("patient%s@gmail.com", i + 1));
                 request.setSsn(String.format("111111111111%s", i + 1));
@@ -93,8 +92,7 @@ public class DataLoader implements ApplicationRunner {
                 patient.setUser(user);
                 patientRepository.save(patient);
             }else if(i >= 5 && i < 10){
-                Admin admin = null;
-                admin = adminRepository.findOneById(ids.get(i));
+                Admin admin = adminRepository.findOneById(ids.get(i));
                 request.setUserType(UserType.ADMIN);
                 request.setEmail(String.format("admin%s@gmail.com", i + 1));
                 if(i != 9) {
@@ -117,8 +115,7 @@ public class DataLoader implements ApplicationRunner {
                 admin.setUser(user);
                 adminRepository.save(admin);
             }else if(i >= 10 && i < 15){
-                Doctor doctor = null;
-                doctor = doctorRepository.findOneById(ids.get(i));
+                Doctor doctor = doctorRepository.findOneById(ids.get(i));
                 request.setUserType(UserType.DOCTOR);
                 request.setEmail(String.format("doctor%s@gmail.com", i + 1));
                 request.setSsn(String.format("33333333333%s", i + 1));
@@ -137,8 +134,7 @@ public class DataLoader implements ApplicationRunner {
                 doctor.setUser(user);
                 doctorRepository.save(doctor);
             }else if(i >= 15 && i < 20){
-                Nurse nurse = null;
-                nurse = nurseRepository.findOneById(ids.get(i));
+                Nurse nurse = nurseRepository.findOneById(ids.get(i));
                 request.setUserType(UserType.NURSE);
                 request.setEmail(String.format("nurse%s@gmail.com", i + 1));
                 request.setSsn(String.format("44444444444%s", i + 1));
@@ -157,8 +153,7 @@ public class DataLoader implements ApplicationRunner {
                 nurse.setUser(user);
                 nurseRepository.save(nurse);
             }else if(i >= 20){
-                ClinicCenterAdmin clinicCenterAdmin = null;
-                clinicCenterAdmin = clinicCenterAdminRepository.findOneById(ids.get(i));
+                ClinicCenterAdmin clinicCenterAdmin = clinicCenterAdminRepository.findOneById(ids.get(i));
                 request.setUserType(UserType.CLINIC_CENTER_ADMIN);
                 request.setEmail(String.format("ccadmin%s@gmail.com", i + 1));
                 request.setSsn(String.format("55555555555%s", i + 1));

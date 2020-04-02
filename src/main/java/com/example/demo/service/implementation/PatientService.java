@@ -6,9 +6,11 @@ import com.example.demo.dto.request.CreateUserRequest;
 import com.example.demo.dto.request.UpdatePatientRequest;
 import com.example.demo.dto.response.PatientResponse;
 import com.example.demo.dto.response.UserResponse;
+import com.example.demo.entity.Doctor;
 import com.example.demo.entity.Patient;
 import com.example.demo.entity.Schedule;
 import com.example.demo.entity.User;
+import com.example.demo.repository.IClinicRepository;
 import com.example.demo.repository.IPatientRepository;
 import com.example.demo.repository.IScheduleRepository;
 import com.example.demo.repository.IUserRepository;
@@ -20,6 +22,7 @@ import com.example.demo.util.enums.RequestType;
 import com.example.demo.util.enums.UserType;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -36,13 +39,16 @@ public class PatientService implements IPatientService {
 
     private final IScheduleRepository _scheduleRepository;
 
+    private final IClinicRepository _clinicRepository;
+
     private final IEmailService _emailService;
 
-    public PatientService(IPatientRepository patientRepository, IUserService userService, IUserRepository userRepository, IScheduleRepository scheduleRepository, IEmailService emailService) {
+    public PatientService(IPatientRepository patientRepository, IUserService userService, IUserRepository userRepository, IScheduleRepository scheduleRepository, IClinicRepository clinicRepository, IEmailService emailService) {
         _patientRepository = patientRepository;
         _userService = userService;
         _userRepository = userRepository;
         _scheduleRepository = scheduleRepository;
+        _clinicRepository = clinicRepository;
         _emailService = emailService;
     }
 
@@ -158,6 +164,23 @@ public class PatientService implements IPatientService {
             return mapPatientToPatientResponse(savedPatient);
         }
         throw new Exception("Vas nalog je obrisan.");
+    }
+
+    @Override
+    public Set<PatientResponse> getAllPatientsByClinic(UUID clinicId) {
+        Set<Patient> allPatients = _patientRepository.findAllByRequestTypeAndUser_Deleted(RequestType.APPROVED, false);
+        Set<Patient> patients = new HashSet<>();
+        for (Patient patient: allPatients) {
+            for (Doctor doctor: patient.getDoctors()) {
+                if(doctor.getClinic() == _clinicRepository.findOneById(clinicId)){
+                    patients.add(patient);
+                    break;
+                }
+            }
+        }
+
+        return patients.stream().map(patient -> mapPatientToPatientResponse(patient))
+                .collect(Collectors.toSet());
     }
 
     private PatientResponse mapPatientToPatientResponse(Patient patient) {

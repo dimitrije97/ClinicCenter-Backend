@@ -61,4 +61,9 @@ public class PatientController {
     public PatientResponse approveRegistration(@PathVariable UUID id) throws Exception {
         return _patientService.approveRegistration(id);
     }
+
+    @GetMapping("/{id}/clinic")
+    public Set<PatientResponse> getAllPatientsByClinic(@PathVariable UUID id) {
+        return _patientService.getAllPatientsByClinic(id);
+    }
 }

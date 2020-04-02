@@ -33,4 +33,8 @@ public class UserResponse {
     private UserType userType;
 
     private boolean setNewPassword;
+
+    private boolean deleted;
+
+    private ClinicResponse myClinic;
 }

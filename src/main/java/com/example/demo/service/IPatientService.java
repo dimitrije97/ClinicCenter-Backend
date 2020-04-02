@@ -28,4 +28,6 @@ public interface IPatientService {
     void denyRegistrationRequest(UUID patientId, AdminsMessageAboutDenyingRegistrationRequest request);
 
     PatientResponse approveRegistration(UUID patientId) throws Exception;
+
+    Set<PatientResponse> getAllPatientsByClinic(UUID clinicId);
 }

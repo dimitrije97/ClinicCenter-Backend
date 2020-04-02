@@ -2,11 +2,13 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.LoginRequest;
 import com.example.demo.dto.request.NewPasswordRequest;
+import com.example.demo.dto.response.ClinicResponse;
 import com.example.demo.dto.response.LoginResponse;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.IAuthService;
+import com.example.demo.service.IClinicService;
 import com.example.demo.util.enums.RequestType;
 import com.example.demo.util.enums.UserType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,8 +34,10 @@ public class AuthService implements IAuthService {
 
     private final IClinicCenterAdminRepository _clinicCenterAdminRepository;
 
+    private final IClinicService _clinicService;
+
     public AuthService(PasswordEncoder passwordEncoder, IUserRepository userRepository,
-                       IPatientRepository patientRepository, IAdminRepository adminRepository, IDoctorRepository doctorRepository, INurseRepository nurseRepository, IClinicCenterAdminRepository clinicCenterAdminRepository) {
+                       IPatientRepository patientRepository, IAdminRepository adminRepository, IDoctorRepository doctorRepository, INurseRepository nurseRepository, IClinicCenterAdminRepository clinicCenterAdminRepository, IClinicService clinicService) {
         _passwordEncoder = passwordEncoder;
         _userRepository = userRepository;
         _patientRepository = patientRepository;
@@ -41,6 +45,7 @@ public class AuthService implements IAuthService {
         _doctorRepository = doctorRepository;
         _nurseRepository = nurseRepository;
         _clinicCenterAdminRepository = clinicCenterAdminRepository;
+        _clinicService = clinicService;
     }
 
     @Override
@@ -134,16 +139,20 @@ public class AuthService implements IAuthService {
         UserResponse userResponse = new UserResponse();
         userResponse.setEmail(user.getEmail());
         UUID id = null;
+        UUID clinicId = null;
         if (user.getUserType().equals(UserType.PATIENT)) {
             id = user.getPatient().getId();
         }else if(user.getUserType().equals(UserType.ADMIN)){
             id = user.getAdmin().getId();
+            clinicId = user.getAdmin().getClinic().getId();
         }else if(user.getUserType().equals(UserType.CLINIC_CENTER_ADMIN)){
             id = user.getClinicCenterAdmin().getId();
         }else if(user.getUserType().equals(UserType.DOCTOR)){
             id = user.getDoctor().getId();
+            clinicId = user.getDoctor().getClinic().getId();
         }else if(user.getUserType().equals(UserType.NURSE)){
             id = user.getNurse().getId();
+            clinicId = user.getNurse().getClinic().getId();
         }
         userResponse.setId(id);
         userResponse.setAddress(user.getAddress());
@@ -157,6 +166,11 @@ public class AuthService implements IAuthService {
 
         // only on login
         userResponse.setSetNewPassword(user.getFirstTimeLoggedIn() == null);
+
+        if(user.getUserType().equals(UserType.ADMIN) || user.getUserType().equals(UserType.DOCTOR) || user.getUserType().equals(UserType.NURSE)) {
+            ClinicResponse clinicResponse = _clinicService.getClinic(clinicId);
+            userResponse.setMyClinic(clinicResponse);
+        }
 
         return userResponse;
     }
