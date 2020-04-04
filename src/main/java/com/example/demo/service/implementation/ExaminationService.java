@@ -181,8 +181,8 @@ public class ExaminationService implements IExaminationService {
                         _examinationRepository.save(examination);
                         throw new Exception("Doktor je u na godisnjem odmoru.");
                     }
-                    if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
-                            || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
+                    if ((request.getStartAt().plusHours(1L).isBefore(schedules.get(i).getEndAt()) && request.getStartAt().plusHours(1L).isAfter(schedules.get(i).getStartAt()))
+                            || (request.getStartAt().isBefore(schedules.get(i).getEndAt()) && request.getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
                         flag = true;
                         break;
                     }
