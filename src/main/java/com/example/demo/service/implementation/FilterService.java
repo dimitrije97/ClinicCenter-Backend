@@ -46,18 +46,13 @@ public class FilterService implements IFilterService {
 
         for (Clinic c: allClinics) {
             for (Doctor d: c.getDoctors()) {
-                if(d.getExaminationType() == examinationType && request.getStartAt().isAfter(d.getStartAt()) && request.getStartAt().plusHours(1L).isBefore(d.getEndAt())){
+                if(d.getExaminationType() == examinationType){
                     boolean flag = false;
                     for (Schedule s: d.getSchedules()) {
                         if(request.getDate().getYear() == s.getDate().getYear()
                             && request.getDate().getMonth() == s.getDate().getMonth()
                             && request.getDate().getDay() == s.getDate().getDay()){
                             if(s.getReasonOfUnavailability().equals(ReasonOfUnavailability.VACATION)){
-                                flag = true;
-                            }
-                            if(s.getReasonOfUnavailability().equals(ReasonOfUnavailability.EXAMINATION)
-                                && request.getStartAt().isAfter(s.getStartAt().minusHours(1L))
-                                && request.getStartAt().isBefore(s.getEndAt())){
                                 flag = true;
                             }
                         }

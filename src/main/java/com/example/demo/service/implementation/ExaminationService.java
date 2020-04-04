@@ -410,6 +410,20 @@ public class ExaminationService implements IExaminationService {
         return mapExaminationToExaminationResponse(savedExamination, savedSchedule);
     }
 
+    @Override
+    public Set<ExaminationResponse> getAllPotentialExaminationsByClinic(UUID clinicId) {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Set<Examination> examinations = new HashSet<>();
+        Clinic clinic = _clinicRepository.findOneById(clinicId);
+        for(int i = 0;i < allExaminations.size();i++) {
+            if (allExaminations.get(i).getSchedule().getPatient() == null && clinic == allExaminations.get(i).getSchedule().getDoctor().getClinic()) {
+                examinations.add(allExaminations.get(i));
+            }
+        }
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
     public ExaminationResponse mapExaminationToExaminationResponse(Examination examination, Schedule schedule){
         ExaminationResponse examinationResponse = new ExaminationResponse();
         examinationResponse.setId(examination.getId());

@@ -48,6 +48,12 @@ public class ExaminationTypeService implements IExaminationTypeService {
     @Override
     public ExaminationTypeResponse updateExaminationType(UpdateExaminationRequest request, UUID id) throws Exception {
         ExaminationType examinationType = _examinationTypeRepository.findOneById(id);
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getDoctor().getExaminationType().getId().equals(id)){
+                throw new Exception("Postoji zakazan pregled datog tipa.");
+            }
+        }
         examinationType.setPrice(request.getPrice());
         examinationType.setName(request.getName());
         ExaminationType savedExaminationType = _examinationTypeRepository.save(examinationType);
@@ -67,10 +73,9 @@ public class ExaminationTypeService implements IExaminationTypeService {
     @Override
     public Set<ExaminationTypeResponse> getAllExaminationTypesOfClinic(UUID clinicId) {
         Set<Doctor> doctors = _doctorRepository.findAllByClinic_IdAndUser_Deleted(clinicId, false);
-        List<Doctor> doctorList = new ArrayList<Doctor>(doctors);
         Set<ExaminationType> examinationTypes = new HashSet<>();
-        for(int i = 0; i < doctors.size();i++){
-            ExaminationType et = doctorList.get(i).getExaminationType();
+        for (Doctor doctor: doctors) {
+            ExaminationType et = doctor.getExaminationType();
             examinationTypes.add(et);
         }
         return examinationTypes.stream().map(examinationType -> mapExaminationTypeToExaminationTypeResponse(examinationType))
@@ -81,18 +86,18 @@ public class ExaminationTypeService implements IExaminationTypeService {
     public void deleteExaminationType(UUID id) throws Exception {
         ExaminationType examinationType = _examinationTypeRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
-        boolean flag = false;
         for(int i = 0;i < schedules.size();i++){
             if(schedules.get(i).getDoctor().getExaminationType().getId().equals(id)){
-                flag = true;
-                break;
+                throw new Exception("Postoji zakazan pregled datog tipa.");
             }
-        }
-        if(flag){
-            throw new Exception("Postoji zakazan pregled datog tipa.");
         }
         examinationType.setDeleted(true);
         _examinationTypeRepository.save(examinationType);
+        Set<Doctor> doctors = _doctorRepository.findAllByUser_DeletedAndExaminationType(false, examinationType);
+        for (Doctor doctor: doctors) {
+            doctor.getUser().setDeleted(true);
+            _doctorRepository.save(doctor);
+        }
     }
 
     public ExaminationTypeResponse mapExaminationTypeToExaminationTypeResponse(ExaminationType examinationType){

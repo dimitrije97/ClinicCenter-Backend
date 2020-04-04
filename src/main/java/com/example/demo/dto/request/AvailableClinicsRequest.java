@@ -10,8 +10,6 @@ import java.util.UUID;
 @Data
 public class AvailableClinicsRequest {
 
-    private LocalTime startAt;
-
     private UUID examinationTypeId;
 
     @JsonFormat(pattern = "yyyy/MM/dd")

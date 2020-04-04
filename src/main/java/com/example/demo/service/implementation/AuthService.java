@@ -99,6 +99,8 @@ public class AuthService implements IAuthService {
         Nurse nurse = _nurseRepository.findOneById(id);
         ClinicCenterAdmin clinicCenterAdmin = _clinicCenterAdminRepository.findOneById(id);
 
+        Patient patient = _patientRepository.findOneById(id);
+
         User user = null;
 
         if(admin != null){
@@ -109,6 +111,8 @@ public class AuthService implements IAuthService {
             user = nurse.getUser();
         }else if(clinicCenterAdmin != null){
             user = clinicCenterAdmin.getUser();
+        }else if(patient != null){
+            user = patient.getUser();
         }
 
         user.setPassword(_passwordEncoder.encode(request.getPassword()));
@@ -125,6 +129,8 @@ public class AuthService implements IAuthService {
             _nurseRepository.save(nurse);
         }else if(clinicCenterAdmin != null){
             _clinicCenterAdminRepository.save(clinicCenterAdmin);
+        }else if(patient != null){
+            _patientRepository.save(patient);
         }
 
         UserResponse userResponse = mapUserToUserResponse(user);
