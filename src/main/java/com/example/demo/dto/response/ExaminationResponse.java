@@ -1,5 +1,6 @@
 package com.example.demo.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,13 @@ import java.util.UUID;
 public class ExaminationResponse {
 
     private UUID id;
-
+    
     private Date date;
 
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime startAt;
 
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime endAt;
 
     private String doctorFirstName;

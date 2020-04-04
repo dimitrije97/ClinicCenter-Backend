@@ -1,5 +1,6 @@
 package com.example.demo.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,9 @@ public class NurseResponse {
 
     private String ssn;
 
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime startAt;
 
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime endAt;
 }

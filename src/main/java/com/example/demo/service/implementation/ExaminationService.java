@@ -171,6 +171,10 @@ public class ExaminationService implements IExaminationService {
         Schedule schedule = new Schedule();
         List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndNurse(true, null);
         boolean flag = false;
+        if(request.getStartAt().isBefore(_doctorRepository.findOneById(request.getDoctorId()).getStartAt())
+            || request.getStartAt().plusHours(1L).isAfter(_doctorRepository.findOneById(request.getDoctorId()).getEndAt())){
+            throw new Exception("Doktor ne radi u tom terminu.");
+        }
         for(int i = 0;i < schedules.size();i++){
             if(schedules.get(i).getDoctor().getId().equals(request.getDoctorId())){
                 if(schedules.get(i).getDate().getYear() == request.getDate().getYear()
