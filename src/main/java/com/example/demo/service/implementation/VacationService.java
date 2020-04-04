@@ -14,6 +14,7 @@ import com.example.demo.repository.IScheduleRepository;
 import com.example.demo.service.IEmailService;
 import com.example.demo.service.IVacationService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
+import com.example.demo.util.enums.RequestType;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -93,6 +94,11 @@ public class VacationService implements IVacationService {
     public void approveVacation(UUID id) throws Exception {
         Schedule schedule = _scheduleRepository.findOneById(id);
         if(schedule.getNurse() == null){
+            if(schedule.getDoctor().getUser().isDeleted()){
+                schedule.setReasonOfUnavailability(ReasonOfUnavailability.DENIED_VACATION);
+                _scheduleRepository.save(schedule);
+                throw new Exception("Doktor je u medjuvremenu obrisan.");
+            }
             List<Schedule> examinations = schedule.getDoctor().getSchedules();
             boolean flag = false;
             for (Schedule s: examinations) {
@@ -114,6 +120,11 @@ public class VacationService implements IVacationService {
             _scheduleRepository.save(schedule);
             _emailService.approveVacationToDoctorMail(schedule.getDoctor());
         }else if(schedule.getDoctor() == null){
+            if(schedule.getNurse().getUser().isDeleted()){
+                schedule.setReasonOfUnavailability(ReasonOfUnavailability.DENIED_VACATION);
+                _scheduleRepository.save(schedule);
+                throw new Exception("Medicinska sestra je u medjuvremenu obrisana.");
+            }
             schedule.setReasonOfUnavailability(ReasonOfUnavailability.VACATION);
             schedule.setApproved(true);
             _scheduleRepository.save(schedule);

@@ -88,6 +88,13 @@ public class ExaminationService implements IExaminationService {
     @Override
     public ExaminationResponse approveExamination(ApproveExaminationRequest request) throws Exception{
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+
+        if(examination.getSchedule().getDoctor().getUser().isDeleted()){
+            examination.setStatus(RequestType.DENIED);
+            _examinationRepository.save(examination);
+            throw new Exception("Doktor je u medjuvremenu obrisan.");
+        }
+
         List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndNurse(true, null);
 
         boolean flag = false;
@@ -310,6 +317,12 @@ public class ExaminationService implements IExaminationService {
     @Override
     public ExaminationResponse approvePotentialExamination(ApprovePotentialExaminationRequest request) throws Exception{
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+
+        if(examination.getSchedule().getDoctor().getUser().isDeleted()){
+            examination.setStatus(RequestType.DENIED);
+            _examinationRepository.save(examination);
+            throw new Exception("Doktor je u medjuvremenu obrisan.");
+        }
 
         List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndNurse(true, null);
         boolean flag = false;
