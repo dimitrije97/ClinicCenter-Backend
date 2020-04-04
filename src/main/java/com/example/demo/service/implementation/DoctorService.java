@@ -49,8 +49,8 @@ public class DoctorService implements IDoctorService {
     public DoctorResponse createDoctor(CreateDoctorRequest doctorRequest, UUID clinicId) throws Exception {
 
         CreateUserRequest userRequest = new CreateUserRequest();
-        userRequest.setPassword(doctorRequest.getPassword());
-        userRequest.setRePassword(doctorRequest.getRePassword());
+        userRequest.setPassword("doctor");
+        userRequest.setRePassword("doctor");
         userRequest.setAddress(doctorRequest.getAddress());
         userRequest.setCity(doctorRequest.getCity());
         userRequest.setEmail(doctorRequest.getEmail());

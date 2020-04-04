@@ -23,10 +23,6 @@ public class CreateNurseRequest {
 
     private String ssn;
 
-    private String password;
-
-    private String rePassword;
-
     private LocalTime startAt;
 
     private LocalTime endAt;

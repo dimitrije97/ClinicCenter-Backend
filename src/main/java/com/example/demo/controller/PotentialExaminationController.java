@@ -38,4 +38,9 @@ public class PotentialExaminationController {
     public Set<ExaminationResponse> getAllPotentialExaminationsByClinic(@PathVariable UUID id) {
         return _examinationService.getAllPotentialExaminationsByClinic(id);
     }
+
+    @DeleteMapping("/{id}/potential-examination")
+    public void deletePotentialExamination(@PathVariable UUID id) {
+        _examinationService.deletePotentialExamination(id);
+    }
 }

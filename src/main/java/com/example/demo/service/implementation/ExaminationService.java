@@ -192,6 +192,7 @@ public class ExaminationService implements IExaminationService {
         if(flag){
             throw new Exception("Ne mozete rezervisati pregled u ovom terminu, doktor je tada zauzet.");
         }
+        schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         for(int i = 0;i < schedules.size();i++){
             if(schedules.get(i).getExamination().getEmergencyRoom().getId().equals(request.getEmergencyRoomId())){
                 if(schedules.get(i).getDate().getYear() == request.getDate().getYear()
@@ -429,12 +430,19 @@ public class ExaminationService implements IExaminationService {
         Set<Examination> examinations = new HashSet<>();
         Clinic clinic = _clinicRepository.findOneById(clinicId);
         for(int i = 0;i < allExaminations.size();i++) {
-            if (allExaminations.get(i).getSchedule().getPatient() == null && clinic == allExaminations.get(i).getSchedule().getDoctor().getClinic()) {
+            if (allExaminations.get(i).getSchedule().getPatient() == null && clinic == allExaminations.get(i).getSchedule().getDoctor().getClinic() && allExaminations.get(i).getStatus().equals(RequestType.CONFIRMING) && allExaminations.get(i).getSchedule().getReasonOfUnavailability().equals(ReasonOfUnavailability.POTENTIAL_EXAMINATION)) {
                 examinations.add(allExaminations.get(i));
             }
         }
         return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public void deletePotentialExamination(UUID id) {
+        Examination examination = _examinationRepository.findOneById(id);
+        examination.setStatus(RequestType.DENIED);
+        _examinationRepository.save(examination);
     }
 
     public ExaminationResponse mapExaminationToExaminationResponse(Examination examination, Schedule schedule){

@@ -37,8 +37,8 @@ public class ClinicCenterAdminService implements IClinicCenterAdminService {
     @Override
     public ClinicCenterAdminResponse createClinicCenterAdmin(CreateClinicCenterAdminRequest request) throws Exception {
         CreateUserRequest userRequest = new CreateUserRequest();
-        userRequest.setPassword(request.getPassword());
-        userRequest.setRePassword(request.getRePassword());
+        userRequest.setPassword("ccadmin");
+        userRequest.setRePassword("ccadmin");
         userRequest.setAddress(request.getAddress());
         userRequest.setCity(request.getCity());
         userRequest.setEmail(request.getEmail());

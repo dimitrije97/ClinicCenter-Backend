@@ -23,9 +23,5 @@ public class CreateAdminRequest {
 
     private String ssn;
 
-    private String password;
-
-    private String rePassword;
-
     private UUID clinicId;
 }

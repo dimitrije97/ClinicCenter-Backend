@@ -42,8 +42,8 @@ public class AdminService implements IAdminService {
     public AdminResponse createAdmin(CreateAdminRequest request) throws Exception {
 
         CreateUserRequest userRequest = new CreateUserRequest();
-        userRequest.setPassword(request.getPassword());
-        userRequest.setRePassword(request.getRePassword());
+        userRequest.setPassword("admin");
+        userRequest.setRePassword("admin");
         userRequest.setAddress(request.getAddress());
         userRequest.setCity(request.getCity());
         userRequest.setEmail(request.getEmail());

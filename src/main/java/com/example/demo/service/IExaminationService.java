@@ -37,4 +37,6 @@ public interface IExaminationService {
     ExaminationResponse createExaminationRequestByDoctor(CreateExaminationRequestByDoctor request, UUID id) throws Exception;
 
     Set<ExaminationResponse> getAllPotentialExaminationsByClinic(UUID clinicId);
+
+    void deletePotentialExamination(UUID id);
 }

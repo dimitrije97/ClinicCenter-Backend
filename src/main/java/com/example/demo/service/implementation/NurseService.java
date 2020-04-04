@@ -41,8 +41,8 @@ public class NurseService implements INurseService {
     @Override
     public NurseResponse createNurse(CreateNurseRequest request, UUID clinicId) throws Exception {
         CreateUserRequest userRequest = new CreateUserRequest();
-        userRequest.setPassword(request.getPassword());
-        userRequest.setRePassword(request.getRePassword());
+        userRequest.setPassword("nurse");
+        userRequest.setRePassword("nurse");
         userRequest.setAddress(request.getAddress());
         userRequest.setCity(request.getCity());
         userRequest.setEmail(request.getEmail());

@@ -24,10 +24,6 @@ public class CreateDoctorRequest {
 
     private String ssn;
 
-    private String password;
-
-    private String rePassword;
-
     private UUID examinationTypeId;
 
     private LocalTime startAt;

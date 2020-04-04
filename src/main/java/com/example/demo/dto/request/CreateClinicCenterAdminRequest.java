@@ -20,8 +20,4 @@ public class CreateClinicCenterAdminRequest {
     private String phone;
 
     private String ssn;
-
-    private String password;
-
-    private String rePassword;
 }
