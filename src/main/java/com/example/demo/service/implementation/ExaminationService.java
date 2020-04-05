@@ -449,6 +449,21 @@ public class ExaminationService implements IExaminationService {
         _examinationRepository.save(examination);
     }
 
+    @Override
+    public Set<ExaminationResponse> getAllPendingExaminationsByClinic(UUID clinicId) {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Clinic clinic = _clinicRepository.findOneById(clinicId);
+        Set<Examination> examinations = new HashSet<>();
+        for(int i = 0;i < allExaminations.size();i++){
+            if(allExaminations.get(i).getStatus().equals(RequestType.PENDING) && allExaminations.get(i).getSchedule().getDoctor().getClinic() == clinic){
+                examinations.add(allExaminations.get(i));
+            }
+        }
+
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
     public ExaminationResponse mapExaminationToExaminationResponse(Examination examination, Schedule schedule){
         ExaminationResponse examinationResponse = new ExaminationResponse();
         examinationResponse.setId(examination.getId());

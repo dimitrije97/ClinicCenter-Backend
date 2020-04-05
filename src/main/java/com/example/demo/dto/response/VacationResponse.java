@@ -21,4 +21,6 @@ public class VacationResponse {
     private String lastName;
 
     private String clinicName;
+
+    private UUID id;
 }

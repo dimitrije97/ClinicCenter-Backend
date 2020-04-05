@@ -39,4 +39,6 @@ public interface IExaminationService {
     Set<ExaminationResponse> getAllPotentialExaminationsByClinic(UUID clinicId);
 
     void deletePotentialExamination(UUID id);
+
+    Set<ExaminationResponse> getAllPendingExaminationsByClinic(UUID clinicId);
 }

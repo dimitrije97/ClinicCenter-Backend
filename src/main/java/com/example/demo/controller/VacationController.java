@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("vacations")
+@RequestMapping("/vacations")
 public class VacationController {
 
     private final IVacationService _vacationService;
@@ -39,7 +39,7 @@ public class VacationController {
         _vacationService.approveVacation(id);
     }
 
-    @DeleteMapping("/deny/{id}/vacation-request")
+    @PostMapping("/deny/{id}/vacation-request")
     public void denyVacation(@PathVariable UUID id, @RequestBody DenyVacationRequest request){
         _vacationService.denyVacation(id, request);
     }

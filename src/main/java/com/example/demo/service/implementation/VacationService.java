@@ -136,7 +136,7 @@ public class VacationService implements IVacationService {
     @Override
     public void denyVacation(UUID id, DenyVacationRequest request) {
         Schedule schedule = _scheduleRepository.findOneById(id);
-        schedule.setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_VACATION);
+        schedule.setReasonOfUnavailability(ReasonOfUnavailability.DENIED_VACATION);
         _scheduleRepository.save(schedule);
         if(schedule.getNurse() == null){
             _emailService.denyVacationToDoctorMail(schedule.getDoctor(), request.getReason());
@@ -175,6 +175,7 @@ public class VacationService implements IVacationService {
         VacationResponse response = new VacationResponse();
         response.setScheduleId(schedule.getId());
         response.setDate(schedule.getDate());
+        response.setId(schedule.getId());
         if(schedule.getNurse() == null){
             response.setClinicName(schedule.getDoctor().getClinic().getName());
             response.setFirstName(schedule.getDoctor().getUser().getFirstName());

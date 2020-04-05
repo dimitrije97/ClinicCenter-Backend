@@ -33,7 +33,7 @@ public class ExaminationController {
         return _examinationService.approveExamination(request);
     }
 
-    @DeleteMapping("/deny-examination")
+    @PostMapping("/deny-examination")
     public void denyExamination(@RequestBody DenyExaminationRequest request) {
         _examinationService.denyExaminationRequest(request);
     }
@@ -61,6 +61,11 @@ public class ExaminationController {
     @GetMapping("/pending")
     public Set<ExaminationResponse> getAllPendingExaminations() {
         return _examinationService.getAllPendingExaminations();
+    }
+
+    @GetMapping("/pending/{id}/clinic")
+    public Set<ExaminationResponse> getAllPendingExaminationsByClinic(@PathVariable UUID id) {
+        return _examinationService.getAllPendingExaminationsByClinic(id);
     }
 
     @GetMapping("/confirming/{id}/patient")
