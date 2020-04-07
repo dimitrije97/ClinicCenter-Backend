@@ -310,8 +310,10 @@ public class ExaminationService implements IExaminationService {
         List<Examination> allExaminations = _examinationRepository.findAll();
         Set<Examination> examinations = new HashSet<>();
         for(int i = 0;i < allExaminations.size();i++){
-            if(allExaminations.get(i).getStatus().equals(RequestType.CONFIRMING) && allExaminations.get(i).getSchedule().getPatient().getId().equals(id)){
-                examinations.add(allExaminations.get(i));
+            if(allExaminations.get(i).getSchedule().getPatient() != null) {
+                if (allExaminations.get(i).getStatus().equals(RequestType.CONFIRMING) && allExaminations.get(i).getSchedule().getPatient().getId().equals(id)) {
+                    examinations.add(allExaminations.get(i));
+                }
             }
         }
 
