@@ -22,9 +22,9 @@ public interface IGradeService {
 
     Set<GradeResponse> getAllGradedClinicsPatient(UUID patientId) throws Exception;
 
-    String getAvgGradeByDoctor(UUID doctorId) throws Exception;
+    GradeResponse getAvgGradeByDoctor(UUID doctorId) throws Exception;
 
-    String getAvgGradeByClinic(UUID clinicId) throws Exception;
+    GradeResponse getAvgGradeByClinic(UUID clinicId) throws Exception;
 
     Set<DoctorResponse> getAllDoctorsWhoCanBeGradedByPatient(UUID patientId) throws Exception;
 

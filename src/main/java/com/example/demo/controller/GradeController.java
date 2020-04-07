@@ -51,12 +51,12 @@ public class GradeController {
     }
 
     @GetMapping("/avg/{id}/doctor")
-    public String getAvgGradeByDoctor(@PathVariable UUID id) throws Exception{
+    public GradeResponse getAvgGradeByDoctor(@PathVariable UUID id) throws Exception{
         return _gradeService.getAvgGradeByDoctor(id);
     }
 
     @GetMapping("/avg/{id}/clinic")
-    public String getAvgGradeByClinic(@PathVariable UUID id) throws Exception{
+    public GradeResponse getAvgGradeByClinic(@PathVariable UUID id) throws Exception{
         return _gradeService.getAvgGradeByClinic(id);
     }
 

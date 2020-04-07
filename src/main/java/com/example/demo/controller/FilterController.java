@@ -25,7 +25,7 @@ public class FilterController {
     }
 
     @GetMapping("/clinics")
-    public Set<ClinicResponse> getAllClinicsByDateAndStartAtAndExaminationType(@RequestBody AvailableClinicsRequest request) throws Exception {
+    public Set<ClinicResponse> getAllClinicsByDateAndAndExaminationType(@RequestBody AvailableClinicsRequest request) throws Exception {
         return _filterService.getClinicsByDateAndStartAtAndExamnationType(request);
     }
 

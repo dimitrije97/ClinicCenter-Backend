@@ -125,31 +125,35 @@ public class GradeService implements IGradeService {
     }
 
     @Override
-    public String getAvgGradeByDoctor(UUID doctorId) throws Exception {
+    public GradeResponse getAvgGradeByDoctor(UUID doctorId) throws Exception {
         Doctor doctor = _doctorRepository.findOneById(doctorId);
+        if(doctor.getGrades().isEmpty()){
+            throw new Exception("Ne postoji nijedna ocena.");
+        }
         float sum = 0;
         for (Grade grade: doctor.getGrades()) {
             sum += Float.valueOf(grade.getGrade());
         }
         sum = sum / doctor.getGrades().size();
-        if(sum == 0){
-            throw new Exception("Ne postoji nijedna ocena.");
-        }
-        return String.valueOf(sum);
+        GradeResponse response = new GradeResponse();
+        response.setGrade(String.valueOf(sum));
+        return response;
     }
 
     @Override
-    public String getAvgGradeByClinic(UUID clinicId) throws Exception {
+    public GradeResponse getAvgGradeByClinic(UUID clinicId) throws Exception {
         Clinic clinic = _clinicRepository.findOneById(clinicId);
+        if(clinic.getGrades().isEmpty()){
+            throw new Exception("Ne postoji nijedna ocena.");
+        }
         float sum = 0;
         for (Grade grade: clinic.getGrades()) {
             sum += Float.valueOf(grade.getGrade());
         }
         sum = sum / clinic.getGrades().size();
-        if(sum == 0){
-            throw new Exception("Ne postoji nijedna ocena.");
-        }
-        return String.valueOf(sum);
+        GradeResponse response = new GradeResponse();
+        response.setGrade(String.valueOf(sum));
+        return response;
     }
 
     @Override
