@@ -57,6 +57,7 @@ insert into schedule(id, approved, date, start_at, end_at, doctor_id, patient_id
 ('6999e7cd-f174-4e74-8048-f192f2052092', 'false', '2020/07/04', '06:20:00', '07:20:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'POTENTIAL_EXAMINATION', null),
 ('922b6438-600b-4e03-b82f-25850e56dbf8', 'true', '2020/07/04', '05:00:00', '06:00:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION', null),
 ('75d40c59-ba01-4831-930c-13ce06f7e4fe', 'false', '2020/07/04', '04:30:00', '05:30:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', null, 'POTENTIAL_EXAMINATION', null),
+('092d2cc8-0479-413f-a760-469bccd63057', 'false', '2020/07/04', '07:30:00', '08:30:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'POTENTIAL_EXAMINATION', null),
 ('31cd744d-d915-4b3b-a531-500535903706', 'true', '2020/07/05', null, null, '8dbea129-360a-4d77-afca-5c5bb94174c1', null, 'VACATION', null),
 ('c9dfb134-6d4d-4a98-b8b3-04b1e38bba88', 'true', '2020/07/06', null, null, '8dbea129-360a-4d77-afca-5c5bb94174c1', null, 'VACATION', null),
 ('f8a80f04-9d86-4f3d-9572-e8bcf3707cfa', 'false', '2020/07/07', null, null, 'b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', null, 'POTENTIAL_VACATION', null),
@@ -71,6 +72,7 @@ insert into examination(id, status, schedule_id, emergency_room_id) values
 ('6cdea8b6-ea07-44aa-9742-5cf2b7e4badf', 'APPROVED', 'ca00ff6a-bc8c-46ab-83a5-9d64cb62aa6b', '2ccc671f-aa07-4d1c-be28-9d83e11bdddb'),
 ('7cf8fadb-cd00-445d-9707-7ad907814dc3', 'PENDING', '6999e7cd-f174-4e74-8048-f192f2052092', null),
 ('93ad6de1-0fe8-4b5d-bb89-488e769a63b1', 'APPROVED', '922b6438-600b-4e03-b82f-25850e56dbf8', '5baa8f38-0198-4d85-b725-2a1dc6b266ce'),
+('5e832464-08c7-4f60-8c37-15d3581223b1', 'CONFIRMING', '092d2cc8-0479-413f-a760-469bccd63057', '3210eb49-a55a-422b-9b9f-0ca04caf65db'),
 ('c1274b05-dd53-4dff-87d9-22f5d62ac5ec', 'CONFIRMING', '75d40c59-ba01-4831-930c-13ce06f7e4fe', '4e129247-36f4-48bc-8970-ffbbb5de95ec');
 
 insert into doctor_patient(doctor_id, patient_id) values
