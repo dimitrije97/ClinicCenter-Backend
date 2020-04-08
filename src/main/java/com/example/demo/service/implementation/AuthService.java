@@ -53,11 +53,11 @@ public class AuthService implements IAuthService {
         User user = _userRepository.findOneByEmail(request.getUsername());
 
         if (user == null) {
-            throw new Exception(String.format("Ne postoji korisnik sa datim emailom."));
+            throw new Exception(String.format("Ne postoji korisnik sa datom e-mail adresom."));
         }
 
         if (!_passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new Exception("Pogresna lozinka.");
+            throw new Exception("Pogrešna lozinka.");
         }
 
         if(user.isDeleted()){
@@ -67,11 +67,11 @@ public class AuthService implements IAuthService {
         if(user.getUserType().equals(UserType.PATIENT)){
             Patient patient = _patientRepository.findOneByUser_Id(user.getId());
             if(patient.getRequestType().equals(RequestType.PENDING)){
-                throw new Exception("Vas nalog i dalje nije prihvacen od strane administratora klinickog centra.");
+                throw new Exception("Vaš nalog i dalje nije prihvaćen od strane administratora kliničkog centra.");
             }else if(patient.getRequestType().equals(RequestType.DENIED)){
-                throw new Exception("Vas nalog je odbijen od strane administratora klinickog centra.");
+                throw new Exception("Vaš nalog je odbijen od strane administratora kliničkog centra.");
             }else if(patient.getRequestType().equals(RequestType.CONFIRMING)){
-                throw new Exception("Prihvatite aktivaciju vaseg naloga klikom na link koji ste dobili u emailu.");
+                throw new Exception("Prihvatite aktivaciju Vašeg naloga klikom na link koji ste dobili.");
             }
 
             if(user.getFirstTimeLoggedIn() == null){

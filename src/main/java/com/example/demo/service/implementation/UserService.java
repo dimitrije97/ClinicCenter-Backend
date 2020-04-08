@@ -8,6 +8,8 @@ import com.example.demo.service.IUserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements IUserService {
 
@@ -36,7 +38,16 @@ public class UserService implements IUserService {
         user.setPhone(request.getPhone());
         user.setSsn(request.getSsn());
         user.setUserType(request.getUserType());
+        List<User> users = _userRepository.findAllByDeleted(false);
         user.setDeleted(false);
+
+        for (User u: users) {
+            if(u.getEmail().equals(request.getEmail())){
+                throw new Exception("Uneli ste već postojeću e-mail adresu.");
+            }else if(u.getSsn().equals(request.getSsn())){
+                throw new Exception("Uneli ste već postojeći jmbg.");
+            }
+        }
 
         user.setPassword(_passwordEncoder.encode(request.getPassword()));
 

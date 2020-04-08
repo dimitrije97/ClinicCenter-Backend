@@ -112,8 +112,8 @@ public class VacationService implements IVacationService {
             if(flag){
                 schedule.setReasonOfUnavailability(ReasonOfUnavailability.DENIED_VACATION);
                 _scheduleRepository.save(schedule);
-                _emailService.denyVacationToDoctorMail(schedule.getDoctor(), "Doktor ima zakazan pregled i ne moze da uzme godisnji odmor za ovaj dan.");
-                throw new Exception("Doktor ima zakazan pregled i ne moze da uzme godisnji odmor za ovaj dan.");
+                _emailService.denyVacationToDoctorMail(schedule.getDoctor(), "Doktor ima zakazan pregled i ne može da uzme godišnji odmor za ovaj dan.");
+                throw new Exception("Doktor ima zakazan pregled i ne može da uzme godišnji odmor za ovaj dan.");
             }
             schedule.setReasonOfUnavailability(ReasonOfUnavailability.VACATION);
             schedule.setApproved(true);
@@ -164,7 +164,7 @@ public class VacationService implements IVacationService {
         }
 
         if(adminSchedules.isEmpty()){
-            throw new Exception("Nemate novih zahteva za godisnji odmor.");
+            throw new Exception("Nemate novih zahteva za godišnji odmor.");
         }
 
         return adminSchedules.stream().map(schedule -> mapScheduleToVacationResponse(schedule))

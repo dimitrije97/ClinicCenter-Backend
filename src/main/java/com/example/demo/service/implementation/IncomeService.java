@@ -58,7 +58,7 @@ public class IncomeService implements IIncomeService {
             income += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
         }
         if(income == 0){
-            throw new Exception("Klinicki centar nije imao prihode.");
+            throw new Exception("Klinički centar nije imao prihode.");
         }
         return String.valueOf(income);
     }
@@ -90,7 +90,7 @@ public class IncomeService implements IIncomeService {
             }
         }
         if(income == 0){
-            throw new Exception("Za ovaj tip pregleda klinicki centar nije imao prihode.");
+            throw new Exception("Za ovaj tip pregleda klinički centar nije imao prihode.");
         }
         return String.valueOf(income);
     }

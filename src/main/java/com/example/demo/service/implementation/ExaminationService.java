@@ -341,7 +341,7 @@ public class ExaminationService implements IExaminationService {
                     if(schedules.get(i).getReasonOfUnavailability().equals(ReasonOfUnavailability.VACATION)){
                         examination.setStatus(RequestType.DENIED);
                         _examinationRepository.save(examination);
-                        throw new Exception("Doktor je u na godisnjem odmoru.");
+                        throw new Exception("Doktor je u na godišnjem odmoru.");
                     }
                     if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
                             || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
@@ -404,7 +404,7 @@ public class ExaminationService implements IExaminationService {
                         && schedule.getPatient().getId().equals(patient.getId()));
 
         if(!flag) {
-            throw new Exception("Trenutno ne vrsite pregled ovog pacijenta.");
+            throw new Exception("Trenutno ne vršite pregled ovog pacijenta.");
         }
 
         Examination examination = new Examination();

@@ -83,7 +83,7 @@ public class EmergencyRoomService implements IEmergencyRoomService {
         EmergencyRoom emergencyRoom = _emergencyRoomRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         for(int i = 0;i < schedules.size();i++){
-            if(schedules.get(i).getExamination().getId().equals(id)){
+            if(schedules.get(i).getExamination().getEmergencyRoom().getId().equals(id)){
                 throw new Exception("Postoji zakazan pregled u sali.");
             }
         }

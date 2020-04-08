@@ -21,7 +21,7 @@ public class EmailService implements IEmailService {
     @Override
     public void approveRegistrationMail(Patient patient) {
         String to = patient.getUser().getEmail();
-        String subject = "Vasa registracija je odobrena!";
+        String subject = "Vaša registracija je odobrena!";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", patient.getUser().getFirstName(), patient.getUser().getLastName()));
         context.setVariable("link", String.format("%s", patient.getId()));
@@ -31,7 +31,7 @@ public class EmailService implements IEmailService {
     @Override
     public void denyRegistrationMail(Patient patient, String reason) {
         String to = patient.getUser().getEmail();
-        String subject = "Vasa registracija je odbijena!";
+        String subject = "Vaša registracija je odbijena!";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", patient.getUser().getFirstName(), patient.getUser().getLastName()));
         context.setVariable("reason", String.format("%s", reason));
@@ -50,7 +50,7 @@ public class EmailService implements IEmailService {
     @Override
     public void approveExaminationToPatientMail(Patient patient) {
         String to = patient.getUser().getEmail();
-        String subject = "Vas zahtev za pregled je odobren!";
+        String subject = "Vaš zahtev za pregled je odobren!";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", patient.getUser().getFirstName(), patient.getUser().getLastName()));
         _emailContext.send(to, subject, "approvedExaminationToPatient", context);
@@ -59,7 +59,7 @@ public class EmailService implements IEmailService {
     @Override
     public void denyExaminationToPatientMail(Patient patient, String reason) {
         String to = patient.getUser().getEmail();
-        String subject = "Vas zahtev za pregled je odbijen!";
+        String subject = "Vaš zahtev za pregled je odbijen!";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", patient.getUser().getFirstName(), patient.getUser().getLastName()));
         context.setVariable("reason", String.format("%s", reason));
@@ -88,7 +88,7 @@ public class EmailService implements IEmailService {
     @Override
     public void approveVacationToDoctorMail(Doctor doctor) {
         String to = doctor.getUser().getEmail();
-        String subject = "Vas zahtev za godisnji odmor je odobren!";
+        String subject = "Vaš zahtev za godišnji odmor je odobren!";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", doctor.getUser().getFirstName(), doctor.getUser().getLastName()));
         _emailContext.send(to, subject, "approvedVacation", context);
@@ -97,7 +97,7 @@ public class EmailService implements IEmailService {
     @Override
     public void denyVacationToDoctorMail(Doctor doctor, String reason) {
         String to = doctor.getUser().getEmail();
-        String subject = "Vas zahtev za godisnji odmor je odbijen!";
+        String subject = "Vaš zahtev za godišnji odmor je odbijen!";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", doctor.getUser().getFirstName(), doctor.getUser().getLastName()));
         context.setVariable("reason", String.format("%s", reason));
@@ -107,7 +107,7 @@ public class EmailService implements IEmailService {
     @Override
     public void approveVacationToNurseMail(Nurse nurse) {
         String to = nurse.getUser().getEmail();
-        String subject = "Vas zahtev za godisnji odmor je odobren!";
+        String subject = "Vaš zahtev za godišnji odmor je odobren!";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", nurse.getUser().getFirstName(), nurse.getUser().getLastName()));
         _emailContext.send(to, subject, "approvedVacation", context);
@@ -116,7 +116,7 @@ public class EmailService implements IEmailService {
     @Override
     public void denyVacationToNurseMail(Nurse nurse, String reason) {
         String to = nurse.getUser().getEmail();
-        String subject = "Vas zahtev za godisnji odmor je odbijen!";
+        String subject = "Vaš zahtev za godišnji odmor je odbijen!";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", nurse.getUser().getFirstName(), nurse.getUser().getLastName()));
         context.setVariable("reason", String.format("%s", reason));

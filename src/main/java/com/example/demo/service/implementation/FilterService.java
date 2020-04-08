@@ -69,7 +69,7 @@ public class FilterService implements IFilterService {
         }
 
         if(clinics.isEmpty()){
-            throw new Exception("Ne mozete zakazati takav pregled ni u jednoj klinici klinickog centra.");
+            throw new Exception("Ne mozete zakazati takav pregled ni u jednoj klinici kliničkog centra.");
         }
 
         return clinics.stream().map(clinic -> mapClinicToClinicResponse(clinic))
@@ -109,7 +109,7 @@ public class FilterService implements IFilterService {
         }
 
         if(doctors.isEmpty()){
-            throw new Exception("Ne mozete zakazati takav pregled.");
+            throw new Exception("Ne možete zakazati takav pregled.");
         }
 
         return doctors.stream().map(doctor -> mapDoctorToDoctorResponse(doctor))

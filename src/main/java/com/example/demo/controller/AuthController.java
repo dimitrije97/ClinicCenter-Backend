@@ -52,12 +52,8 @@ public class AuthController {
     }
 
     @PostMapping("/patients")
-    public PatientResponse createPatient(@RequestBody CreatePatientRequest request) {
-        try {
-            return _patientService.createPatient(request);
-        } catch (Exception ex) {
-            return null;
-        }
+    public PatientResponse createPatient(@RequestBody CreatePatientRequest request) throws Exception {
+        return _patientService.createPatient(request);
     }
 
     @PostMapping("/admins")
