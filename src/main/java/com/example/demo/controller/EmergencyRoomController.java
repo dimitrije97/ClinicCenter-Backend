@@ -25,10 +25,10 @@ public class EmergencyRoomController {
     public EmergencyRoomResponse getEmergencyRoom(@PathVariable UUID id) { return _emergencyRoomService.getEmergencyRoom(id); }
 
     @GetMapping
-    public Set<EmergencyRoomResponse> getAllEmergencyRooms() { return _emergencyRoomService.getAllEmergencyRooms(); }
+    public Set<EmergencyRoomResponse> getAllEmergencyRooms() throws Exception { return _emergencyRoomService.getAllEmergencyRooms(); }
 
     @GetMapping("/{id}/clinic")
-    public Set<EmergencyRoomResponse> getAllEmergencyRoomsOfClinic(@PathVariable UUID id) { return _emergencyRoomService.getAllEmergencyRoomsOfClinic(id); }
+    public Set<EmergencyRoomResponse> getAllEmergencyRoomsOfClinic(@PathVariable UUID id) throws Exception { return _emergencyRoomService.getAllEmergencyRoomsOfClinic(id); }
 
     @DeleteMapping("/{id}/emergency-room")
     public void deleteEmergencyRoom(@PathVariable UUID id) throws Exception { _emergencyRoomService.deleteEmergencyRoom(id); }

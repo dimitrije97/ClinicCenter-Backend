@@ -89,16 +89,24 @@ public class NurseService implements INurseService {
     public NurseResponse getNurse(UUID id) { return mapNurseToNurseResponse(_nurseRepository.findOneById(id)); }
 
     @Override
-    public Set<NurseResponse> getAllNurses() {
+    public Set<NurseResponse> getAllNurses() throws Exception {
         Set<Nurse> nurses = _nurseRepository.findAllByUser_Deleted(false);
+
+        if(nurses.isEmpty()){
+            throw new Exception("Ne postoji nijeda medicinska sestra.");
+        }
 
         return nurses.stream().map(nurse -> mapNurseToNurseResponse(nurse))
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public Set<NurseResponse> getAllNursesOfClinic(UUID clinicId) {
+    public Set<NurseResponse> getAllNursesOfClinic(UUID clinicId) throws Exception {
         Set<Nurse> nurses = _nurseRepository.findAllByUser_DeletedAndClinic_Id(false, clinicId);
+
+        if(nurses.isEmpty()){
+            throw new Exception("Ne postoji nijeda medicinska sestra u klinici.");
+        }
 
         return nurses.stream().map(nurse -> mapNurseToNurseResponse(nurse))
                 .collect(Collectors.toSet());

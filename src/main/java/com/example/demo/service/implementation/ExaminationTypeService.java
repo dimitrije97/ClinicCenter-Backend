@@ -64,19 +64,25 @@ public class ExaminationTypeService implements IExaminationTypeService {
     public ExaminationTypeResponse getExaminationType(UUID id) { return mapExaminationTypeToExaminationTypeResponse(_examinationTypeRepository.findOneById(id)); }
 
     @Override
-    public Set<ExaminationTypeResponse> getAllExaminationTypes() {
+    public Set<ExaminationTypeResponse> getAllExaminationTypes() throws Exception {
         Set<ExaminationType> examinationTypes = _examinationTypeRepository.findAllByDeleted(false);
+        if(examinationTypes.isEmpty()){
+            throw new Exception("Ne postoji nijedan tip pregleda.");
+        }
         return examinationTypes.stream().map(examinationType -> mapExaminationTypeToExaminationTypeResponse(examinationType))
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public Set<ExaminationTypeResponse> getAllExaminationTypesOfClinic(UUID clinicId) {
+    public Set<ExaminationTypeResponse> getAllExaminationTypesOfClinic(UUID clinicId) throws Exception {
         Set<Doctor> doctors = _doctorRepository.findAllByClinic_IdAndUser_Deleted(clinicId, false);
         Set<ExaminationType> examinationTypes = new HashSet<>();
         for (Doctor doctor: doctors) {
             ExaminationType et = doctor.getExaminationType();
             examinationTypes.add(et);
+        }
+        if(examinationTypes.isEmpty()){
+            throw new Exception("Ne postoji nijedan tip pregleda u klinici.");
         }
         return examinationTypes.stream().map(examinationType -> mapExaminationTypeToExaminationTypeResponse(examinationType))
                 .collect(Collectors.toSet());

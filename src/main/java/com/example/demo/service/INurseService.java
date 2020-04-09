@@ -15,9 +15,9 @@ public interface INurseService {
 
     NurseResponse getNurse(UUID id);
 
-    Set<NurseResponse> getAllNurses();
+    Set<NurseResponse> getAllNurses() throws Exception;
 
-    Set<NurseResponse> getAllNursesOfClinic(UUID clinicId);
+    Set<NurseResponse> getAllNursesOfClinic(UUID clinicId) throws Exception;
 
     void deleteNurse(UUID id);
 }

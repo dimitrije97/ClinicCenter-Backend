@@ -15,7 +15,8 @@ import java.util.UUID;
 public class ExaminationResponse {
 
     private UUID id;
-    
+
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private Date date;
 
     @JsonFormat(pattern = "HH:mm:ss")

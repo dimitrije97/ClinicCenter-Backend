@@ -15,9 +15,9 @@ public interface IExaminationTypeService {
 
     ExaminationTypeResponse getExaminationType(UUID id);
 
-    Set<ExaminationTypeResponse> getAllExaminationTypes();
+    Set<ExaminationTypeResponse> getAllExaminationTypes() throws Exception;
 
-    Set<ExaminationTypeResponse> getAllExaminationTypesOfClinic(UUID clinicId);
+    Set<ExaminationTypeResponse> getAllExaminationTypesOfClinic(UUID clinicId) throws Exception;
 
     void deleteExaminationType(UUID id) throws Exception;
 }

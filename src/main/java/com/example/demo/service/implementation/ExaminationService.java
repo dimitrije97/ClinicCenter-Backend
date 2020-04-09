@@ -10,6 +10,7 @@ import com.example.demo.util.enums.ReasonOfUnavailability;
 import com.example.demo.util.enums.RequestType;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Executable;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,7 +46,12 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Override
-    public ExaminationResponse createExaminationRequestByPatient(CreateExaminationRequestByPatient request) {
+    public ExaminationResponse createExaminationRequestByPatient(CreateExaminationRequestByPatient request) throws Exception {
+
+        Date now = new Date();
+        if(request.getDate().before(now)){
+            throw new Exception("Ovaj datum je prošao.");
+        }
 
         Examination examination = new Examination();
         Schedule schedule = new Schedule();
@@ -167,6 +173,11 @@ public class ExaminationService implements IExaminationService {
 
     @Override
     public ExaminationResponse createPotentialExamination(CreatePotentialExaminationRequest request) throws Exception {
+        Date now = new Date();
+        if(request.getDate().before(now)){
+            throw new Exception("Datum je prošao.");
+        }
+
         Examination examination = new Examination();
         Schedule schedule = new Schedule();
         List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndNurse(true, null);
@@ -278,7 +289,7 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Override
-    public Set<ExaminationResponse> getAllPotentialExaminations() {
+    public Set<ExaminationResponse> getAllPotentialExaminations() throws Exception {
         List<Examination> allExaminations = _examinationRepository.findAll();
         Set<Examination> examinations = new HashSet<>();
         for(int i = 0;i < allExaminations.size();i++){
@@ -286,19 +297,8 @@ public class ExaminationService implements IExaminationService {
                 examinations.add(allExaminations.get(i));
             }
         }
-
-        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
-                .collect(Collectors.toSet());
-    }
-
-    @Override
-    public Set<ExaminationResponse> getAllPendingExaminations() {
-        List<Examination> allExaminations = _examinationRepository.findAll();
-        Set<Examination> examinations = new HashSet<>();
-        for(int i = 0;i < allExaminations.size();i++){
-            if(allExaminations.get(i).getStatus().equals(RequestType.PENDING)){
-                examinations.add(allExaminations.get(i));
-            }
+        if(examinations.isEmpty()){
+            throw new Exception("Ne postoji nijedan potencijalni pregled.");
         }
 
         return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
@@ -306,7 +306,24 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Override
-    public Set<ExaminationResponse> getAllConfirmingExaminationsByPatient(UUID id) {
+    public Set<ExaminationResponse> getAllPendingExaminations() throws Exception {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Set<Examination> examinations = new HashSet<>();
+        for(int i = 0;i < allExaminations.size();i++){
+            if(allExaminations.get(i).getStatus().equals(RequestType.PENDING)){
+                examinations.add(allExaminations.get(i));
+            }
+        }
+        if(examinations.isEmpty()){
+            throw new Exception("Nemate nijedan zahtev.");
+        }
+
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<ExaminationResponse> getAllConfirmingExaminationsByPatient(UUID id) throws Exception {
         List<Examination> allExaminations = _examinationRepository.findAll();
         Set<Examination> examinations = new HashSet<>();
         for(int i = 0;i < allExaminations.size();i++){
@@ -315,6 +332,9 @@ public class ExaminationService implements IExaminationService {
                     examinations.add(allExaminations.get(i));
                 }
             }
+        }
+        if(examinations.isEmpty()){
+            throw new Exception("Nemate nijedan potencijalni pregled.");
         }
 
         return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
@@ -392,8 +412,12 @@ public class ExaminationService implements IExaminationService {
     public ExaminationResponse createExaminationRequestByDoctor(CreateExaminationRequestByDoctor request, UUID id) throws Exception {
         Patient patient = _patientRepository.findOneById(request.getPatientId());
 
-        Doctor doctor = _doctorRepository.findOneById(id);
         Date now = new Date();
+        if(request.getDate().before(now)){
+            throw new Exception("Ovaj datum je prošao.");
+        }
+
+        Doctor doctor = _doctorRepository.findOneById(id);
         LocalTime currentTime = request.getCurrentTime();
         boolean flag =  doctor.getSchedules().stream()
                 .anyMatch(schedule -> schedule.getDate().getYear() == now.getYear()
@@ -431,7 +455,7 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Override
-    public Set<ExaminationResponse> getAllPotentialExaminationsByClinic(UUID clinicId) {
+    public Set<ExaminationResponse> getAllPotentialExaminationsByClinic(UUID clinicId) throws Exception {
         List<Examination> allExaminations = _examinationRepository.findAll();
         Set<Examination> examinations = new HashSet<>();
         Clinic clinic = _clinicRepository.findOneById(clinicId);
@@ -439,6 +463,10 @@ public class ExaminationService implements IExaminationService {
             if (allExaminations.get(i).getSchedule().getPatient() == null && clinic == allExaminations.get(i).getSchedule().getDoctor().getClinic() && allExaminations.get(i).getStatus().equals(RequestType.CONFIRMING) && allExaminations.get(i).getSchedule().getReasonOfUnavailability().equals(ReasonOfUnavailability.POTENTIAL_EXAMINATION)) {
                 examinations.add(allExaminations.get(i));
             }
+        }
+
+        if(examinations.isEmpty()){
+            throw new Exception("Ne postoji nijedan potencijalni pregled.");
         }
         return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
                 .collect(Collectors.toSet());
@@ -452,7 +480,7 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Override
-    public Set<ExaminationResponse> getAllPendingExaminationsByClinic(UUID clinicId) {
+    public Set<ExaminationResponse> getAllPendingExaminationsByClinic(UUID clinicId) throws Exception {
         List<Examination> allExaminations = _examinationRepository.findAll();
         Clinic clinic = _clinicRepository.findOneById(clinicId);
         Set<Examination> examinations = new HashSet<>();
@@ -461,8 +489,79 @@ public class ExaminationService implements IExaminationService {
                 examinations.add(allExaminations.get(i));
             }
         }
+        if(examinations.isEmpty()){
+            throw new Exception("Nemate nijedan zahtev za pregled.");
+        }
 
         return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public void cancelExamination(UUID examinationId) throws Exception {
+        Examination examination = _examinationRepository.findOneById(examinationId);
+        Date now = new Date();
+        if(examination.getSchedule().getDate().before(now)){
+            throw new Exception("Pregled možete otkazati najkasnije 24h pre samog termina.");
+        }
+        examination.setStatus(RequestType.DENIED);
+        examination.getSchedule().setApproved(false);
+        examination.getSchedule().setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_EXAMINATION);
+        _examinationRepository.save(examination);
+    }
+
+    @Override
+    public Set<ExaminationResponse> getPatientsExaminationHistory(UUID patientId) throws Exception {
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndPatientId(true, patientId);
+        Date now = new Date();
+        Set<Examination> patientsHistory = new HashSet<>();
+        for (Schedule s: schedules) {
+            if(s.getDate().before(now)){
+                patientsHistory.add(s.getExamination());
+            }
+        }
+        if(patientsHistory.isEmpty()){
+            throw new Exception("Niste imali nijedan pregled do danas.");
+        }
+        return patientsHistory.stream()
+                .map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<ExaminationResponse> getExaminationsWhichPatientCanCancel(UUID patientId) throws Exception {
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndPatientId(true, patientId);
+        Date now = new Date();
+        Set<Examination> examinations = new HashSet<>();
+        for (Schedule s: schedules) {
+            if(s.getDate().after(now)){
+                examinations.add(s.getExamination());
+            }
+        }
+        if(examinations.isEmpty()){
+            throw new Exception("Trenutno nemate nijedan zakazan pregled.");
+        }
+        return examinations.stream()
+                .map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<ExaminationResponse> getExaminationsWhichDoctorCanCancel(UUID doctorId) throws Exception {
+        Set<Examination> allExaminations = _examinationRepository.findAllByStatus(RequestType.APPROVED);
+        Date now = new Date();
+        Set<Examination> examinations = new HashSet<>();
+        for (Examination e: allExaminations) {
+            if(e.getSchedule().getDate().after(now) && e.getSchedule().getDoctor().getId().equals(doctorId)){
+                examinations.add(e);
+            }
+        }
+        if(examinations.isEmpty()){
+            throw new Exception("Trenutno nemate nijedan zakazan pregled.");
+        }
+
+        return examinations.stream()
+                .map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
                 .collect(Collectors.toSet());
     }
 

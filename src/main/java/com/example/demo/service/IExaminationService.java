@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface IExaminationService {
 
-    ExaminationResponse createExaminationRequestByPatient(CreateExaminationRequestByPatient request);
+    ExaminationResponse createExaminationRequestByPatient(CreateExaminationRequestByPatient request) throws Exception;
 
     ExaminationResponse confirmExaminationRequestByAdmin(CreateExaminationRequestByAdmin request);
 
@@ -26,19 +26,27 @@ public interface IExaminationService {
 
     Set<ExaminationResponse> getAllExaminationByDoctor(UUID id);
 
-    Set<ExaminationResponse> getAllPotentialExaminations();
+    Set<ExaminationResponse> getAllPotentialExaminations() throws Exception;
 
-    Set<ExaminationResponse> getAllPendingExaminations();
+    Set<ExaminationResponse> getAllPendingExaminations() throws Exception;
 
-    Set<ExaminationResponse> getAllConfirmingExaminationsByPatient(UUID id);
+    Set<ExaminationResponse> getAllConfirmingExaminationsByPatient(UUID id) throws Exception;
 
     ExaminationResponse approvePotentialExamination(ApprovePotentialExaminationRequest request) throws Exception;
 
     ExaminationResponse createExaminationRequestByDoctor(CreateExaminationRequestByDoctor request, UUID id) throws Exception;
 
-    Set<ExaminationResponse> getAllPotentialExaminationsByClinic(UUID clinicId);
+    Set<ExaminationResponse> getAllPotentialExaminationsByClinic(UUID clinicId) throws Exception;
 
     void deletePotentialExamination(UUID id);
 
-    Set<ExaminationResponse> getAllPendingExaminationsByClinic(UUID clinicId);
+    Set<ExaminationResponse> getAllPendingExaminationsByClinic(UUID clinicId) throws Exception;
+
+    void cancelExamination(UUID id) throws Exception;
+
+    Set<ExaminationResponse> getPatientsExaminationHistory(UUID patientId) throws Exception;
+
+    Set<ExaminationResponse> getExaminationsWhichPatientCanCancel(UUID patientId) throws Exception;
+
+    Set<ExaminationResponse> getExaminationsWhichDoctorCanCancel(UUID doctorId) throws Exception;
 }

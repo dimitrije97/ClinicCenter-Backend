@@ -40,12 +40,12 @@ public class GradeController {
         return _gradeService.getAllGradesByClinic(id);
     }
 
-    @GetMapping("/doctors/{id}/patient")
+    @GetMapping("/doctor/{id}/patient")
     public Set<GradeResponse> getAllGradedDoctorsByPatient(@PathVariable UUID id) throws Exception{
         return _gradeService.getAllGradedDoctorsPatient(id);
     }
 
-    @GetMapping("/clinics/{id}/patient")
+    @GetMapping("/clinic/{id}/patient")
     public Set<GradeResponse> getAllGradedClinicsByPatient(@PathVariable UUID id) throws Exception{
         return _gradeService.getAllGradedClinicsPatient(id);
     }
@@ -60,13 +60,13 @@ public class GradeController {
         return _gradeService.getAvgGradeByClinic(id);
     }
 
-    @GetMapping("/doctor/{id}/patient")
+    @GetMapping("/doctors/{id}/patient")
     public Set<DoctorResponse> getAllDoctorsWhoCanBeGradedByPatient(@PathVariable UUID id) throws Exception{
         return _gradeService.getAllDoctorsWhoCanBeGradedByPatient(id);
     }
 
-    @GetMapping("/clinic/{id}/patient")
-    public Set<ClinicResponse> getAllClinicsWhoCanBeGradedByPatient(@PathVariable UUID id) throws Exception{
+    @GetMapping("/clinics/{id}/patient")
+    public Set<ClinicResponse> getAllClinicsWhichCanBeGradedByPatient(@PathVariable UUID id) throws Exception{
         return _gradeService.getAllClinicsWhichCanBeGradedByPatient(id);
     }
 }

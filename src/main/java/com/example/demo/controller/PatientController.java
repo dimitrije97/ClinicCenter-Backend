@@ -38,12 +38,12 @@ public class PatientController {
     public void deletePatient(@PathVariable UUID id) throws Exception { _patientService.deletePatient(id); }
 
     @GetMapping
-    public Set<PatientResponse> getAllPatients() {
+    public Set<PatientResponse> getAllPatients() throws Exception {
         return _patientService.getAllPatients();
     }
 
     @GetMapping("/requests")
-    public Set<PatientResponse> getAllRequests() {
+    public Set<PatientResponse> getAllRequests() throws Exception {
         return _patientService.getAllPendingRequests();
     }
 

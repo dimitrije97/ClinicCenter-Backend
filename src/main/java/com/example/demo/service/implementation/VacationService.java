@@ -42,12 +42,16 @@ public class VacationService implements IVacationService {
     }
 
     @Override
-    public Set<VacationResponse> createVacationRequest(CreateVacationRequest request, UUID staffId) {
+    public Set<VacationResponse> createVacationRequest(CreateVacationRequest request, UUID staffId) throws Exception {
         Doctor doctor = _doctorRepository.findOneById(staffId);
         Nurse nurse = _nurseRepository.findOneById(staffId);
         Set<VacationResponse> responses = new HashSet<>();
+        Date now = new Date();
         if(nurse == null){
             for (Date date: request.getDates()) {
+                if(date.before(now)){
+                    throw new Exception("Datum koji ste izabrali je prošao.");
+                }
                 Schedule schedule = new Schedule();
                 schedule.setDate(date);
                 schedule.setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_VACATION);
@@ -93,6 +97,12 @@ public class VacationService implements IVacationService {
     @Override
     public void approveVacation(UUID id) throws Exception {
         Schedule schedule = _scheduleRepository.findOneById(id);
+
+        Date now = new Date();
+        if(schedule.getDate().before(now)){
+            throw new Exception("Datum je prošao.");
+        }
+
         if(schedule.getNurse() == null){
             if(schedule.getDoctor().getUser().isDeleted()){
                 schedule.setReasonOfUnavailability(ReasonOfUnavailability.DENIED_VACATION);

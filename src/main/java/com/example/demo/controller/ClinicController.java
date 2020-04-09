@@ -30,7 +30,7 @@ public class ClinicController {
     }
 
     @GetMapping()
-    public Set<ClinicResponse> getAllClinics() {
+    public Set<ClinicResponse> getAllClinics() throws Exception {
         return _clinicService.getAllClinics();
     }
 

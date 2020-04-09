@@ -17,7 +17,7 @@ public interface IDoctorService {
 
     DoctorResponse getDoctor(UUID id);
 
-    Set<DoctorResponse> getAllDoctors();
+    Set<DoctorResponse> getAllDoctors() throws Exception;
 
-    Set<DoctorResponse> getAllDoctorsOfClinic(UUID clinicId);
+    Set<DoctorResponse> getAllDoctorsOfClinic(UUID clinicId) throws Exception;
 }

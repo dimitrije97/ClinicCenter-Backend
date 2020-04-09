@@ -120,18 +120,26 @@ public class DoctorService implements IDoctorService {
     public DoctorResponse getDoctor(UUID id) { return mapDoctorToDoctorResponse(_doctorRepository.findOneById(id)); }
 
     @Override
-    public Set<DoctorResponse> getAllDoctors() {
+    public Set<DoctorResponse> getAllDoctors() throws Exception {
 
         Set<Doctor> doctors = _doctorRepository.findAllByUser_Deleted(false);
+
+        if(doctors.isEmpty()){
+            throw new Exception("Ne postoji nijedan lekar.");
+        }
 
         return doctors.stream().map(doctor -> mapDoctorToDoctorResponse(doctor))
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public Set<DoctorResponse> getAllDoctorsOfClinic(UUID clinicId) {
+    public Set<DoctorResponse> getAllDoctorsOfClinic(UUID clinicId) throws Exception {
 
         Set<Doctor> doctors = _doctorRepository.findAllByClinic_IdAndUser_Deleted(clinicId, false);
+
+        if(doctors.isEmpty()){
+            throw new Exception("Ne postoji nijedan lekar u klinici.");
+        }
 
         return doctors.stream().map(doctor -> mapDoctorToDoctorResponse(doctor))
                 .collect(Collectors.toSet());

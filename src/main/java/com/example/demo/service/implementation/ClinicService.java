@@ -51,8 +51,12 @@ public class ClinicService implements IClinicService {
     public ClinicResponse getClinic(UUID id) { return mapClinicToClinicResponse(_clinicRepository.findOneById(id)); }
 
     @Override
-    public Set<ClinicResponse> getAllClinics() {
+    public Set<ClinicResponse> getAllClinics() throws Exception {
         Set<Clinic> clinics = _clinicRepository.findAllByDeleted(false);
+
+        if(clinics.isEmpty()){
+            throw new Exception("Ne postoji nijedna klinika.");
+        }
 
         return clinics.stream().map(clinic -> mapClinicToClinicResponse(clinic))
                 .collect(Collectors.toSet());

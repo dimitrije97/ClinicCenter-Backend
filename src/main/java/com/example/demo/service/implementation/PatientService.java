@@ -118,16 +118,24 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public Set<PatientResponse> getAllPatients() {
+    public Set<PatientResponse> getAllPatients() throws Exception {
         Set<Patient> patients = _patientRepository.findAllByRequestTypeAndUser_Deleted(RequestType.APPROVED, false);
+
+        if(patients.isEmpty()){
+            throw new Exception("Ne postoji nijedan pacijent.");
+        }
 
         return patients.stream().map(patient -> mapPatientToPatientResponse(patient))
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public Set<PatientResponse> getAllPendingRequests() {
+    public Set<PatientResponse> getAllPendingRequests() throws Exception{
         Set<Patient> patients = _patientRepository.findAllByRequestType(RequestType.PENDING);
+
+        if(patients.isEmpty()){
+            throw new Exception("Nemate nijedan novi zahtev za registraciju.");
+        }
 
         return patients.stream().map(patient -> mapPatientToPatientResponse(patient))
                 .collect(Collectors.toSet());

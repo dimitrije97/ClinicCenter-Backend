@@ -20,7 +20,7 @@ public class VacationController {
     }
 
     @PostMapping("/{id}/staff")
-    public Set<VacationResponse> createVacationRequest(@RequestBody CreateVacationRequest request, @PathVariable UUID id){
+    public Set<VacationResponse> createVacationRequest(@RequestBody CreateVacationRequest request, @PathVariable UUID id) throws Exception{
         return _vacationService.createVacationRequest(request, id);
     }
 

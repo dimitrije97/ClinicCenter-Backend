@@ -25,7 +25,7 @@ public class PotentialExaminationController {
     }
 
     @GetMapping()
-    public Set<ExaminationResponse> getAllPotentialExaminations() {
+    public Set<ExaminationResponse> getAllPotentialExaminations() throws Exception {
         return _examinationService.getAllPotentialExaminations();
     }
 
@@ -35,7 +35,7 @@ public class PotentialExaminationController {
     }
 
     @GetMapping("/{id}/clinic")
-    public Set<ExaminationResponse> getAllPotentialExaminationsByClinic(@PathVariable UUID id) {
+    public Set<ExaminationResponse> getAllPotentialExaminationsByClinic(@PathVariable UUID id) throws Exception {
         return _examinationService.getAllPotentialExaminationsByClinic(id);
     }
 

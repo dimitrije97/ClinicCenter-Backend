@@ -26,7 +26,7 @@ public class ExaminationTypeController {
     public ExaminationTypeResponse getExaminationType(@PathVariable UUID id) { return _examinationTypeService.getExaminationType(id); }
 
     @GetMapping()
-    public Set<ExaminationTypeResponse> getAllExaminationTypes() { return _examinationTypeService.getAllExaminationTypes(); }
+    public Set<ExaminationTypeResponse> getAllExaminationTypes() throws Exception { return _examinationTypeService.getAllExaminationTypes(); }
 
     @DeleteMapping("/{id}/examination-type")
     public void deleteExaminationType(@PathVariable UUID id) throws Exception { _examinationTypeService.deleteExaminationType(id); }
@@ -35,6 +35,6 @@ public class ExaminationTypeController {
     public ExaminationTypeResponse updateExaminationType(@RequestBody UpdateExaminationRequest request, @PathVariable UUID id) throws Exception { return _examinationTypeService.updateExaminationType(request, id); }
 
     @GetMapping("/{id}/clinic")
-    public Set<ExaminationTypeResponse> getExaminationTypesOfClinic(@PathVariable UUID id) { return _examinationTypeService.getAllExaminationTypesOfClinic(id); }
+    public Set<ExaminationTypeResponse> getExaminationTypesOfClinic(@PathVariable UUID id) throws Exception { return _examinationTypeService.getAllExaminationTypesOfClinic(id); }
 
 }

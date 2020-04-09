@@ -65,15 +65,21 @@ public class EmergencyRoomService implements IEmergencyRoomService {
     public EmergencyRoomResponse getEmergencyRoom(UUID id) { return mapEmergencyRoomToEmergencyRoomResponse(_emergencyRoomRepository.findOneById(id)); }
 
     @Override
-    public Set<EmergencyRoomResponse> getAllEmergencyRooms() {
+    public Set<EmergencyRoomResponse> getAllEmergencyRooms() throws Exception {
         Set<EmergencyRoom> emergencyRooms = _emergencyRoomRepository.findAllByDeleted(false);
+        if(emergencyRooms.isEmpty()){
+            throw new Exception("Ne postoji nijedna sala.");
+        }
         return emergencyRooms.stream().map(emergencyRoom -> mapEmergencyRoomToEmergencyRoomResponse(emergencyRoom))
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public Set<EmergencyRoomResponse> getAllEmergencyRoomsOfClinic(UUID id) {
+    public Set<EmergencyRoomResponse> getAllEmergencyRoomsOfClinic(UUID id) throws Exception {
         Set<EmergencyRoom> emergencyRooms = _emergencyRoomRepository.findAllByDeletedAndClinic_Id(false, id);
+        if(emergencyRooms.isEmpty()){
+            throw new Exception("Ne postoji nijedna sala u klinici.");
+        }
         return emergencyRooms.stream().map(emergencyRoom -> mapEmergencyRoomToEmergencyRoomResponse(emergencyRoom))
                 .collect(Collectors.toSet());
     }

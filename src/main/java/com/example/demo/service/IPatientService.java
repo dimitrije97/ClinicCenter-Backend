@@ -19,9 +19,9 @@ public interface IPatientService {
 
     void deletePatient(UUID id) throws Exception;
 
-    Set<PatientResponse> getAllPatients();
+    Set<PatientResponse> getAllPatients() throws Exception;
 
-    Set<PatientResponse> getAllPendingRequests();
+    Set<PatientResponse> getAllPendingRequests() throws Exception;
 
     PatientResponse confirmRegistrationRequest(UUID patientId);
 

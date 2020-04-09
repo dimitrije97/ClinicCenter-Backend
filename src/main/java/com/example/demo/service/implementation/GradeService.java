@@ -9,10 +9,8 @@ import com.example.demo.repository.*;
 import com.example.demo.service.IGradeService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -159,9 +157,19 @@ public class GradeService implements IGradeService {
     @Override
     public Set<DoctorResponse> getAllDoctorsWhoCanBeGradedByPatient(UUID patientId) throws Exception {
         Patient patient = _patientRepository.findOneById(patientId);
-        Set<Doctor> doctors = patient.getDoctors();
+//        Set<Doctor> doctors = patient.getDoctors();
+
+        Set<Doctor> doctors = new HashSet<>();
+        Date now = new Date();
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndPatientId(true, patientId);
+        for (Schedule s: schedules) {
+            if(s.getDate().before(now)){
+                doctors.add(s.getDoctor());
+            }
+        }
+
         if(doctors.isEmpty()){
-            throw new Exception("Niste imali pregled do sad.");
+            throw new Exception("Niste imali pregled do danas.");
         }
         for (Grade grade: patient.getGrades()) {
             if(doctors.contains(grade.getDoctor()))
@@ -177,9 +185,19 @@ public class GradeService implements IGradeService {
     @Override
     public Set<ClinicResponse> getAllClinicsWhichCanBeGradedByPatient(UUID patientId) throws Exception {
         Patient patient = _patientRepository.findOneById(patientId);
-        Set<Doctor> doctors = patient.getDoctors();
+//        Set<Doctor> doctors = patient.getDoctors();
+
+        Set<Doctor> doctors = new HashSet<>();
+        Date now = new Date();
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndPatientId(true, patientId);
+        for (Schedule s: schedules) {
+            if(s.getDate().before(now)){
+                doctors.add(s.getDoctor());
+            }
+        }
+
         if(doctors.isEmpty()){
-            throw new Exception("Niste imali pregled do sad.");
+            throw new Exception("Niste imali pregled do danas.");
         }
         Set<Clinic> clinics = new HashSet<>();
         for (Doctor doctor: doctors) {

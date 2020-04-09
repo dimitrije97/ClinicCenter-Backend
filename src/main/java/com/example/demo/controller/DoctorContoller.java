@@ -28,12 +28,12 @@ public class DoctorContoller {
     }
 
     @GetMapping()
-    public Set<DoctorResponse> getAllDoctors() {
+    public Set<DoctorResponse> getAllDoctors() throws Exception {
         return _doctorService.getAllDoctors();
     }
 
     @GetMapping("/{id}/clinic")
-    public Set<DoctorResponse> getAllDoctorsOfClinic(@PathVariable UUID id) { return _doctorService.getAllDoctorsOfClinic(id); }
+    public Set<DoctorResponse> getAllDoctorsOfClinic(@PathVariable UUID id) throws Exception { return _doctorService.getAllDoctorsOfClinic(id); }
 
     @DeleteMapping("/{id}/doctor")
     public void deleteDoctor(@PathVariable UUID id) throws Exception { _doctorService.deleteDoctor(id); }

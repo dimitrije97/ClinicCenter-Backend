@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface IVacationService {
 
-    Set<VacationResponse> createVacationRequest(CreateVacationRequest request, UUID id);
+    Set<VacationResponse> createVacationRequest(CreateVacationRequest request, UUID id) throws Exception;
 
     Set<VacationResponse> getAllVacationRequests();
 

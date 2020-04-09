@@ -15,9 +15,9 @@ public interface IEmergencyRoomService {
 
     EmergencyRoomResponse getEmergencyRoom(UUID id);
 
-    Set<EmergencyRoomResponse> getAllEmergencyRooms();
+    Set<EmergencyRoomResponse> getAllEmergencyRooms() throws Exception;
 
-    Set<EmergencyRoomResponse> getAllEmergencyRoomsOfClinic(UUID id);
+    Set<EmergencyRoomResponse> getAllEmergencyRoomsOfClinic(UUID id) throws Exception;
 
     void deleteEmergencyRoom(UUID id) throws Exception;
 }

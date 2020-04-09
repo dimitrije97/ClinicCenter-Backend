@@ -26,12 +26,12 @@ public class NurseController {
     }
 
     @GetMapping()
-    public Set<NurseResponse> getAllNurses() {
+    public Set<NurseResponse> getAllNurses() throws Exception {
         return _nurseService.getAllNurses();
     }
 
     @GetMapping("/{id}/clinic")
-    public Set<NurseResponse> getAllNursesOfClinic(@PathVariable UUID id) { return _nurseService.getAllNursesOfClinic(id); }
+    public Set<NurseResponse> getAllNursesOfClinic(@PathVariable UUID id) throws Exception { return _nurseService.getAllNursesOfClinic(id); }
 
     @DeleteMapping("/{id}/nurse")
     public void deleteNurse(@PathVariable UUID id) {
