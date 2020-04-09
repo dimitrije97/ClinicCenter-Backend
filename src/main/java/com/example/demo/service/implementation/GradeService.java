@@ -39,8 +39,10 @@ public class GradeService implements IGradeService {
         Patient patient = _patientRepository.findOneById(request.getPatientId());
         List<Grade> grades = patient.getGrades();
         for (Grade grade: grades) {
-            if(request.getDoctorOrClinicId().equals(grade.getDoctor().getId())){
-                throw new Exception("Vec ste ocenili ovog lekara.");
+            if(grade.getDoctor() != null) {
+                if (request.getDoctorOrClinicId().equals(grade.getDoctor().getId())) {
+                    throw new Exception("Vec ste ocenili ovog lekara.");
+                }
             }
         }
         Grade grade = new Grade();
@@ -56,8 +58,10 @@ public class GradeService implements IGradeService {
         Patient patient = _patientRepository.findOneById(request.getPatientId());
         List<Grade> grades = patient.getGrades();
         for (Grade grade: grades) {
-            if(request.getDoctorOrClinicId().equals(grade.getClinic().getId())){
-                throw new Exception("Vec ste ocenili ovu klinuku.");
+            if(grade.getClinic() != null) {
+                if (request.getDoctorOrClinicId().equals(grade.getClinic().getId())) {
+                    throw new Exception("Vec ste ocenili ovu klinuku.");
+                }
             }
         }
         Grade grade = new Grade();
