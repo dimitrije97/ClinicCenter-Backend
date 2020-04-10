@@ -40,7 +40,8 @@ public class IncomeService implements IIncomeService {
     public IncomeResponse getClinicsIncome(UUID id) throws Exception {
         Clinic clinic = _clinicRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
-        float income = 0, number = 0;
+        float income = 0;
+        int number = 0;
         for (Schedule schedule: schedules) {
             if(clinic.getDoctors().contains(schedule.getDoctor())){
                 income += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
@@ -59,7 +60,8 @@ public class IncomeService implements IIncomeService {
     @Override
     public IncomeResponse getClinicCentersIncome() throws Exception {
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
-        float income = 0, number = 0;
+        float income = 0;
+        int number = 0;
         for (Schedule schedule: schedules) {
             income += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
             number++;
@@ -78,7 +80,8 @@ public class IncomeService implements IIncomeService {
     public IncomeResponse getDoctorsIncome(UUID id) throws Exception {
         Doctor doctor = _doctorRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
-        float income = 0, number = 0;
+        float income = 0;
+        int number = 0;
         for (Schedule schedule: schedules) {
             if(doctor == schedule.getDoctor()){
                 income += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
@@ -99,7 +102,8 @@ public class IncomeService implements IIncomeService {
     public IncomeResponse getExaminationTypesIncome(UUID id) throws Exception {
         ExaminationType examinationType = _examinationTypeRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
-        float income = 0, number = 0;
+        float income = 0;
+        int number = 0;
         for (Schedule schedule: schedules) {
             if(examinationType == schedule.getDoctor().getExaminationType()){
                 income += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
@@ -121,7 +125,8 @@ public class IncomeService implements IIncomeService {
         ExaminationType examinationType = _examinationTypeRepository.findOneById(request.getExamintaionTypeId());
         Clinic clinic = _clinicRepository.findOneById(clinicId);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
-        float income = 0, number = 0;
+        float income = 0;
+        int number = 0;
         for (Schedule schedule: schedules) {
             if(examinationType == schedule.getDoctor().getExaminationType() && clinic.getDoctors().contains(schedule.getDoctor())){
                 income += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
