@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 public class AvailableEmergencyRoomsRequest {
 
-    private LocalTime startAt;
+    private String startAt;
 
     private UUID clinicId;
 

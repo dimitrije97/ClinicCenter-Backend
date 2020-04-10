@@ -21,18 +21,18 @@ public class FilterController {
         _filterService = filterService;
     }
 
-    @PostMapping("/clinics")
-    public Set<ClinicResponse> getAllClinicsByDateAndAndExaminationType(@RequestBody AvailableClinicsRequest request) throws Exception {
+    @GetMapping("/clinics")
+    public Set<ClinicResponse> getAllClinicsByDateAndAndExaminationType(AvailableClinicsRequest request) throws Exception {
         return _filterService.getClinicsByDateAndExamnationType(request);
     }
 
-    @PostMapping("/doctors")
-    public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinic(@RequestBody AvailableDoctorsRequest request) throws Exception {
+    @GetMapping("/doctors")
+    public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinic(AvailableDoctorsRequest request) throws Exception {
         return _filterService.getDoctorsByDateAndStartAtAndExaminationTypeAndClinic(request);
     }
 
     @GetMapping("/emergency-rooms")
-    public Set<EmergencyRoomResponse> getEmergencyRoomsByDateAndStartAtAndClinic(@RequestBody AvailableEmergencyRoomsRequest request) throws Exception {
+    public Set<EmergencyRoomResponse> getEmergencyRoomsByDateAndStartAtAndClinic(AvailableEmergencyRoomsRequest request) throws Exception {
         return _filterService.getEmergencyRoomsByDateAndStartAtAndClinic(request);
     }
 }
