@@ -39,7 +39,7 @@ public class FilterService implements IFilterService {
     }
 
     @Override
-    public Set<ClinicResponse> getClinicsByDateAndStartAtAndExamnationType(AvailableClinicsRequest request) throws Exception {
+    public Set<ClinicResponse> getClinicsByDateAndExamnationType(AvailableClinicsRequest request) throws Exception {
         ExaminationType examinationType = _examinationTypeRepository.findOneById(request.getExaminationTypeId());
         Set<Clinic> allClinics = _clinicRepository.findAllByDeleted(false);
         Set<Clinic> clinics = new HashSet<>();

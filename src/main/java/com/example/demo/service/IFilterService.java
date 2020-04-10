@@ -11,7 +11,7 @@ import java.util.Set;
 
 public interface IFilterService {
 
-    Set<ClinicResponse> getClinicsByDateAndStartAtAndExamnationType(AvailableClinicsRequest request) throws Exception;
+    Set<ClinicResponse> getClinicsByDateAndExamnationType(AvailableClinicsRequest request) throws Exception;
 
     Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinic(AvailableDoctorsRequest request) throws Exception;
 

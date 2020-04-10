@@ -7,10 +7,7 @@ import com.example.demo.dto.response.ClinicResponse;
 import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.EmergencyRoomResponse;
 import com.example.demo.service.IFilterService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -24,12 +21,12 @@ public class FilterController {
         _filterService = filterService;
     }
 
-    @GetMapping("/clinics")
+    @PostMapping("/clinics")
     public Set<ClinicResponse> getAllClinicsByDateAndAndExaminationType(@RequestBody AvailableClinicsRequest request) throws Exception {
-        return _filterService.getClinicsByDateAndStartAtAndExamnationType(request);
+        return _filterService.getClinicsByDateAndExamnationType(request);
     }
 
-    @GetMapping("/doctors")
+    @PostMapping("/doctors")
     public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinic(@RequestBody AvailableDoctorsRequest request) throws Exception {
         return _filterService.getDoctorsByDateAndStartAtAndExaminationTypeAndClinic(request);
     }
