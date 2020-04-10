@@ -32,7 +32,7 @@ public class FilterController {
     }
 
     @GetMapping("/emergency-rooms")
-    public Set<EmergencyRoomResponse> getEmergencyRoomsByDateAndStartAtAndClinic(AvailableEmergencyRoomsRequest request) throws Exception {
-        return _filterService.getEmergencyRoomsByDateAndStartAtAndClinic(request);
+    public Set<EmergencyRoomResponse> getAvailableEmergencyRooms(AvailableEmergencyRoomsRequest request) throws Exception {
+        return _filterService.getAvailableEmergencyRooms(request);
     }
 }

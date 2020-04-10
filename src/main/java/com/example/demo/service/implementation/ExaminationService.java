@@ -81,7 +81,8 @@ public class ExaminationService implements IExaminationService {
     @Override
     public ExaminationResponse confirmExaminationRequestByAdmin(CreateExaminationRequestByAdmin request) {
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
-        examination.setEmergencyRoom(_emergencyRoomRepository.findOneById(request.getEmergencyRoomId()));
+        EmergencyRoom emergencyRoom = _emergencyRoomRepository.findOneById(request.getEmergencyRoomId());
+        examination.setEmergencyRoom(emergencyRoom);
         examination.setStatus(RequestType.CONFIRMING);
         Examination savedExamination = _examinationRepository.save(examination);
 

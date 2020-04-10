@@ -32,12 +32,15 @@ public class FilterService implements IFilterService {
 
     private final IScheduleRepository _scheduleRepository;
 
-    public FilterService(IClinicRepository clinicRepository, IExaminationTypeRepository examinationTypeRepository, IDoctorRepository doctorRepository, IEmergencyRoomRepository emergencyRoomRepository, IScheduleRepository scheduleRepository) {
+    private final IExaminationRepository _examinationRepository;
+
+    public FilterService(IClinicRepository clinicRepository, IExaminationTypeRepository examinationTypeRepository, IDoctorRepository doctorRepository, IEmergencyRoomRepository emergencyRoomRepository, IScheduleRepository scheduleRepository, IExaminationRepository examinationRepository) {
         _clinicRepository = clinicRepository;
         _examinationTypeRepository = examinationTypeRepository;
         _doctorRepository = doctorRepository;
         _emergencyRoomRepository = emergencyRoomRepository;
         _scheduleRepository = scheduleRepository;
+        _examinationRepository = examinationRepository;
     }
 
     @Override
@@ -131,23 +134,21 @@ public class FilterService implements IFilterService {
     }
 
     @Override
-    public Set<EmergencyRoomResponse> getEmergencyRoomsByDateAndStartAtAndClinic(AvailableEmergencyRoomsRequest request) throws Exception {
-        Clinic clinic = _clinicRepository.findOneById(request.getClinicId());
+    public Set<EmergencyRoomResponse> getAvailableEmergencyRooms(AvailableEmergencyRoomsRequest request) throws Exception {
+        Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+        Clinic clinic = examination.getSchedule().getDoctor().getClinic();
         List<EmergencyRoom> allEmergencyRooms = clinic.getEmergencyRooms();
         Set<EmergencyRoom> emergencyRooms = new HashSet<>();
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
 
-        String[] tokens = request.getStartAt().split(":");
-        LocalTime startAt =  LocalTime.of(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
-
         for (EmergencyRoom er: allEmergencyRooms) {
             boolean flag = false;
             for (Schedule s: schedules) {
-                if(request.getDate().getYear() == s.getDate().getYear()
-                        && request.getDate().getMonth() == s.getDate().getMonth()
-                        && request.getDate().getDay() == s.getDate().getDay()
-                        && startAt.isAfter(s.getStartAt().minusHours(1L))
-                        && startAt.isBefore(s.getEndAt())
+                if(examination.getSchedule().getDate().getYear() == s.getDate().getYear()
+                        && examination.getSchedule().getDate().getMonth() == s.getDate().getMonth()
+                        && examination.getSchedule().getDate().getDay() == s.getDate().getDay()
+                        && examination.getSchedule().getStartAt().isAfter(s.getStartAt().minusHours(1L))
+                        && examination.getSchedule().getStartAt().isBefore(s.getEndAt())
                         && s.getExamination().getEmergencyRoom() == er){
                     flag = true;
                     break;
