@@ -24,9 +24,4 @@ public class ScheduleController {
     public List<ScheduleResponse> getAllDoctorsSchedules(@PathVariable UUID id) throws Exception{
         return _scheduleService.getAllDoctorsSchedules(id);
     }
-
-    @GetMapping("/{id}/nurse")
-    public List<ScheduleResponse> getAllNursesSchedules(@PathVariable UUID id) throws Exception{
-        return _scheduleService.getAllNursesSchedules(id);
-    }
 }

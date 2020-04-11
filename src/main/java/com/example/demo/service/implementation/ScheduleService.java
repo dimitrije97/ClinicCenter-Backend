@@ -35,14 +35,6 @@ public class ScheduleService implements IScheduleService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<ScheduleResponse> getAllNursesSchedules(UUID id) throws Exception {
-        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndNurse(true, _nurseRepository.findOneById(id));
-        return schedules.stream()
-                .map(schedule -> mapScheduleToScheduleResponse(schedule))
-                .collect(Collectors.toList());
-    }
-
     private ScheduleResponse mapScheduleToScheduleResponse(Schedule schedule){
         ScheduleResponse response = new ScheduleResponse();
         response.setDate(schedule.getDate());
@@ -50,6 +42,7 @@ public class ScheduleService implements IScheduleService {
         response.setEndAt(schedule.getEndAt());
         response.setReasonOfUnavailability(schedule.getReasonOfUnavailability());
         response.setId(schedule.getId());
+
         return response;
     }
 }

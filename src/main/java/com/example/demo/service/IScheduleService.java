@@ -8,6 +8,4 @@ import java.util.UUID;
 public interface IScheduleService {
 
     List<ScheduleResponse> getAllDoctorsSchedules(UUID id) throws Exception;
-
-    List<ScheduleResponse> getAllNursesSchedules(UUID id) throws Exception;
 }
