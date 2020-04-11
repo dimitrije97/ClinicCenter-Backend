@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.Doctor;
 import com.example.demo.entity.Nurse;
 import com.example.demo.entity.Schedule;
 import com.example.demo.util.enums.ReasonOfUnavailability;
@@ -19,4 +20,6 @@ public interface IScheduleRepository extends JpaRepository<Schedule, UUID> {
     List<Schedule> findAllByApprovedAndNurse(boolean approved, Nurse nurse);
 
     List<Schedule> findAllByApprovedAndPatientId(boolean approved, UUID patientId);
+
+    List<Schedule> findAllByApprovedAndDoctor(boolean approved, Doctor doctor);
 }
