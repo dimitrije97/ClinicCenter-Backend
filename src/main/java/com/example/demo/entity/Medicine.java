@@ -17,4 +17,6 @@ public class Medicine extends BaseEntity {
 
     @Column(unique = true)
     private String name;
+
+    private boolean deleted;
 }

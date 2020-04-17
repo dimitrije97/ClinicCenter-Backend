@@ -6,6 +6,8 @@ import com.example.demo.dto.response.MedicineResponse;
 import com.example.demo.service.IMedicineService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/medicines")
 public class MedicineController {
@@ -24,5 +26,10 @@ public class MedicineController {
     @PutMapping
     public MedicineResponse updateMedicine(@RequestBody UpdateMedicineRequest request) throws Exception {
         return _medicineService.updateMedicine(request);
+    }
+
+    @DeleteMapping("/{id}/medicine")
+    public void deleteMedicine(@PathVariable UUID id){
+        _medicineService.deleteMedicine(id);
     }
 }
