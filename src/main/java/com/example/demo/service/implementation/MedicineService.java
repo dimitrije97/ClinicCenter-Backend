@@ -1,6 +1,7 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.CreateMedicineRequest;
+import com.example.demo.dto.request.UpdateMedicineRequest;
 import com.example.demo.dto.response.MedicineResponse;
 import com.example.demo.entity.Medicine;
 import com.example.demo.repository.IMedicineRepository;
@@ -19,6 +20,14 @@ public class MedicineService implements IMedicineService {
     @Override
     public MedicineResponse createMedicine(CreateMedicineRequest request) throws Exception {
         Medicine medicine = new Medicine();
+        medicine.setName(request.getName());
+        Medicine savedMedicine = _medicineRepository.save(medicine);
+        return mapMedicineToMedicineResponse(savedMedicine);
+    }
+
+    @Override
+    public MedicineResponse updateMedicine(UpdateMedicineRequest request) throws Exception {
+        Medicine medicine = _medicineRepository.findOneById(request.getId());
         medicine.setName(request.getName());
         Medicine savedMedicine = _medicineRepository.save(medicine);
         return mapMedicineToMedicineResponse(savedMedicine);
