@@ -8,6 +8,8 @@ import com.example.demo.repository.IMedicineRepository;
 import com.example.demo.service.IMedicineService;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class MedicineService implements IMedicineService {
 
@@ -21,6 +23,7 @@ public class MedicineService implements IMedicineService {
     public MedicineResponse createMedicine(CreateMedicineRequest request) throws Exception {
         Medicine medicine = new Medicine();
         medicine.setName(request.getName());
+        medicine.setDeleted(false);
         Medicine savedMedicine = _medicineRepository.save(medicine);
         return mapMedicineToMedicineResponse(savedMedicine);
     }
@@ -31,6 +34,13 @@ public class MedicineService implements IMedicineService {
         medicine.setName(request.getName());
         Medicine savedMedicine = _medicineRepository.save(medicine);
         return mapMedicineToMedicineResponse(savedMedicine);
+    }
+
+    @Override
+    public void deleteMedicine(UUID id) {
+        Medicine medicine = _medicineRepository.findOneById(id);
+        medicine.setDeleted(true);
+        _medicineRepository.save(medicine);
     }
 
 

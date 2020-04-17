@@ -15,4 +15,6 @@ import javax.persistence.Entity;
 public class Diagnosis extends BaseEntity {
     
     private String name;
+
+    private boolean deleted;
 }
