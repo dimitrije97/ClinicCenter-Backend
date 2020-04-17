@@ -6,6 +6,7 @@ import com.example.demo.dto.response.MedicineResponse;
 import com.example.demo.service.IMedicineService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -31,5 +32,10 @@ public class MedicineController {
     @DeleteMapping("/{id}/medicine")
     public void deleteMedicine(@PathVariable UUID id){
         _medicineService.deleteMedicine(id);
+    }
+
+    @GetMapping
+    public List<MedicineResponse> getAllMedicines() throws Exception{
+        return _medicineService.getAllMedicines();
     }
 }
