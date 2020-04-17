@@ -8,7 +8,9 @@ import com.example.demo.repository.IMedicineRepository;
 import com.example.demo.service.IMedicineService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MedicineService implements IMedicineService {
@@ -41,6 +43,19 @@ public class MedicineService implements IMedicineService {
         Medicine medicine = _medicineRepository.findOneById(id);
         medicine.setDeleted(true);
         _medicineRepository.save(medicine);
+    }
+
+    @Override
+    public List<MedicineResponse> getAllMedicines() throws Exception {
+        List<Medicine> medicines = _medicineRepository.findAllByDeleted(false);
+
+        if(medicines.isEmpty()){
+            throw new Exception("Ne postoji nijedan lek.");
+        }
+
+        return medicines.stream()
+                .map(medicine -> mapMedicineToMedicineResponse(medicine))
+                .collect(Collectors.toList());
     }
 
 

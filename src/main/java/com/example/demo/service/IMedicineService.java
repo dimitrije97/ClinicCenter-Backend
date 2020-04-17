@@ -4,6 +4,7 @@ import com.example.demo.dto.request.CreateMedicineRequest;
 import com.example.demo.dto.request.UpdateMedicineRequest;
 import com.example.demo.dto.response.MedicineResponse;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface IMedicineService {
@@ -13,4 +14,6 @@ public interface IMedicineService {
     MedicineResponse updateMedicine(UpdateMedicineRequest request) throws Exception;
 
     void deleteMedicine(UUID id);
+
+    List<MedicineResponse> getAllMedicines() throws Exception;
 }
