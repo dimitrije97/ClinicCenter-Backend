@@ -36,6 +36,13 @@ public class SuggestService implements ISuggestService {
         long hour = 1;
         LocalTime temp = examination.getSchedule().getStartAt();
         while(true){
+            if(hour == 23){
+                Date currentDate = examination.getSchedule().getDate();
+                Date tomorrow = new Date(currentDate.getTime() + (1000 * 60 * 60 * 24));
+                examination.getSchedule().setDate(tomorrow);
+                _examinationRepository.save(examination);
+                suggest(id);
+            }
             LocalTime currentTime = temp.plusHours(hour);
             List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndDoctorAndDate(true, examination.getSchedule().getDoctor(), examination.getSchedule().getDate());
             boolean flag = false;
@@ -57,7 +64,7 @@ public class SuggestService implements ISuggestService {
             for (EmergencyRoom er: emergencyRooms) {
                 boolean isAvailable = true;
                 for (Examination e: examinations) {
-                    if(er == e.getEmergencyRoom() && currentTime.isAfter(e.getSchedule().getStartAt().minusHours(1L)) && currentTime.isBefore(e.getSchedule().getEndAt())){
+                    if(er == e.getEmergencyRoom() && currentTime.isAfter(e.getSchedule().getStartAt().minusHours(1L)) && currentTime.isBefore(e.getSchedule().getEndAt()) && e.getSchedule().getDate().getYear() == examination.getSchedule().getDate().getYear() && e.getSchedule().getDate().getMonth() == examination.getSchedule().getDate().getMonth() && e.getSchedule().getDate().getDay() == examination.getSchedule().getDate().getDay()){
                         isAvailable = false;
                         break;
                     }
@@ -73,13 +80,6 @@ public class SuggestService implements ISuggestService {
                 }
             }
             hour++;
-            if(hour == 23){
-                Date currentDate = examination.getSchedule().getDate();
-                Date tomorrow = new Date(currentDate.getTime() + (1000 * 60 * 60 * 24));
-                examination.getSchedule().setDate(tomorrow);
-                _examinationRepository.save(examination);
-                suggest(id);
-            }
         }
     }
 
