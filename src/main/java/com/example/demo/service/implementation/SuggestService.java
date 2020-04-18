@@ -46,6 +46,11 @@ public class SuggestService implements ISuggestService {
                 }
             }
             if(flag){
+                hour++;
+                continue;
+            }
+            if(!(currentTime.isAfter(examination.getSchedule().getDoctor().getStartAt()) && currentTime.isBefore(examination.getSchedule().getDoctor().getEndAt()))){
+                hour++;
                 continue;
             }
             Set<Examination> examinations = _examinationRepository.findAllByStatus(RequestType.APPROVED);
@@ -58,12 +63,13 @@ public class SuggestService implements ISuggestService {
                     }
                 }
                 if(isAvailable){
-                    examination.getSchedule().setStartAt(currentTime);
-                    examination.getSchedule().setEndAt(currentTime.plusHours(1L));
-                    examination.setEmergencyRoom(er);
-                    examination.setStatus(RequestType.CONFIRMING);
-                    Examination savedExamination = _examinationRepository.save(examination);
-                    return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
+
+                        examination.getSchedule().setStartAt(currentTime);
+                        examination.getSchedule().setEndAt(currentTime.plusHours(1L));
+                        examination.setEmergencyRoom(er);
+                        examination.setStatus(RequestType.CONFIRMING);
+                        Examination savedExamination = _examinationRepository.save(examination);
+                        return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
                 }
             }
             hour++;
