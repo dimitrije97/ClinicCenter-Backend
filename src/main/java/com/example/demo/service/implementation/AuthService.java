@@ -53,11 +53,11 @@ public class AuthService implements IAuthService {
         User user = _userRepository.findOneByEmail(request.getUsername());
 
         if (user == null) {
-            throw new Exception(String.format("Ne postoji korisnik sa datom e-mail adresom."));
+            throw new Exception(String.format("Loše adkreditive."));
         }
 
         if (!_passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new Exception("Pogrešna lozinka.");
+            throw new Exception("Loše adkreditive.");
         }
 
         if(user.isDeleted()){

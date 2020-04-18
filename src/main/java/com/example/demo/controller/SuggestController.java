@@ -2,11 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.response.ExaminationResponse;
 import com.example.demo.service.ISuggestService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.UUID;
 
 @RestController

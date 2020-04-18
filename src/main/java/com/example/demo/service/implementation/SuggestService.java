@@ -34,9 +34,9 @@ public class SuggestService implements ISuggestService {
         Examination examination = _examinationRepository.findOneById(id);
         List<EmergencyRoom> emergencyRooms = examination.getSchedule().getDoctor().getClinic().getEmergencyRooms();
         long hour = 1;
-        LocalTime currentTime = examination.getSchedule().getStartAt();
+        LocalTime temp = examination.getSchedule().getStartAt();
         while(true){
-            currentTime = currentTime.plusHours(hour);
+            LocalTime currentTime = temp.plusHours(hour);
             List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndDoctorAndDate(true, examination.getSchedule().getDoctor(), examination.getSchedule().getDate());
             boolean flag = false;
             for (Schedule s: schedules) {
@@ -57,6 +57,7 @@ public class SuggestService implements ISuggestService {
                     }
                     if(isAvailable){
                         examination.getSchedule().setStartAt(currentTime);
+                        examination.getSchedule().setEndAt(currentTime.plusHours(1L));
                         examination.setEmergencyRoom(er);
                         examination.setStatus(RequestType.CONFIRMING);
                         Examination savedExamination = _examinationRepository.save(examination);
