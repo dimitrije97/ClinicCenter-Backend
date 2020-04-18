@@ -17,7 +17,7 @@ public class SuggestController {
         _suggestService = suggestService;
     }
 
-    @PutMapping("/{id}/examination")
+    @GetMapping("/{id}/examination")
     public ExaminationResponse suggest(@PathVariable UUID id) throws Exception {
         return _suggestService.suggest(id);
     }

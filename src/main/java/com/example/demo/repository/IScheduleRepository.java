@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.Clinic;
 import com.example.demo.entity.Doctor;
 import com.example.demo.entity.Nurse;
 import com.example.demo.entity.Schedule;
@@ -25,4 +26,6 @@ public interface IScheduleRepository extends JpaRepository<Schedule, UUID> {
     List<Schedule> findAllByApprovedAndDoctor(boolean approved, Doctor doctor);
 
     List<Schedule> findAllByApprovedAndDoctorAndDate(boolean approved, Doctor doctor, Date date);
+
+    List<Schedule> findAllByApprovedAndDate(boolean approved, Date date);
 }

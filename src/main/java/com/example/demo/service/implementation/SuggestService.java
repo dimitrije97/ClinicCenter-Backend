@@ -54,15 +54,16 @@ public class SuggestService implements ISuggestService {
                 for (Examination e: examinations) {
                     if(er == e.getEmergencyRoom() && currentTime.isAfter(e.getSchedule().getStartAt().minusHours(1L)) && currentTime.isBefore(e.getSchedule().getEndAt())){
                         isAvailable = false;
+                        break;
                     }
-                    if(isAvailable){
-                        examination.getSchedule().setStartAt(currentTime);
-                        examination.getSchedule().setEndAt(currentTime.plusHours(1L));
-                        examination.setEmergencyRoom(er);
-                        examination.setStatus(RequestType.CONFIRMING);
-                        Examination savedExamination = _examinationRepository.save(examination);
-                        return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
-                    }
+                }
+                if(isAvailable){
+                    examination.getSchedule().setStartAt(currentTime);
+                    examination.getSchedule().setEndAt(currentTime.plusHours(1L));
+                    examination.setEmergencyRoom(er);
+                    examination.setStatus(RequestType.CONFIRMING);
+                    Examination savedExamination = _examinationRepository.save(examination);
+                    return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
                 }
             }
             hour++;
