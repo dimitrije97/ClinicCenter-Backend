@@ -25,7 +25,7 @@ insert into examination_type(id, name, price, deleted) values
 ('342265d1-3282-4bb7-b689-cefb42b92818', 'Plucni', '2500', 'false');
 
 insert into doctor(id, clinic_id, examination_type_id, start_at, end_at) values
-('adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b','e823e955-6001-434a-9fd3-c80e490d0184', '18:00:00', '20:00:00'),
+('adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b','e823e955-6001-434a-9fd3-c80e490d0184', '08:00:00', '20:00:00'),
 ('8dbea129-360a-4d77-afca-5c5bb94174c1', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b', 'e823e955-6001-434a-9fd3-c80e490d0184', '15:00:00', '22:00:00'),
 ('b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '7833aba3-bf46-4d25-a856-651d7d7ba279', 'e823e955-6001-434a-9fd3-c80e490d0184', '08:00:00', '20:00:00'),
 ('9608b8fe-4cff-49ee-8997-2ef2494e21cb', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a', 'b26933ae-484a-4b3f-a15b-1e1796e0a8ad', '01:00:00', '09:00:00'),
@@ -81,3 +81,13 @@ insert into doctor_patient(doctor_id, patient_id) values
 ('adfa0bd5-c1b5-41d7-adc4-b6951beb9055', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97'),
 ('b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97'),
 ('9608b8fe-4cff-49ee-8997-2ef2494e21cb', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97');
+
+insert into medicine(id, name, deleted) values
+('d8572b0c-b38a-4021-b580-f4611789cadb', 'Lek1', 'false'),
+('7fda0019-0ec4-41ca-a8e7-676a9ad35d16', 'Lek2', 'false'),
+('a3400e51-faf2-43bf-8b90-ee1d14a314ad', 'Lek3', 'true');
+
+insert into diagnosis(id, name, deleted) values
+('09609161-8237-4c03-b0bf-6366e873cec8', 'Dijagnoza1', 'false'),
+('7a78f767-3cd9-44a2-9176-e1942a903e39', 'Dijagnoza2', 'false'),
+('bdfcc5ed-53cd-4d50-af16-65134bd1dd0c', 'Dijagnoza3', 'true');
