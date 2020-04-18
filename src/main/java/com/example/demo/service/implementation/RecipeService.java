@@ -1,5 +1,6 @@
 package com.example.demo.service.implementation;
 
+import com.example.demo.dto.request.CertfieRecipeRequest;
 import com.example.demo.dto.request.CreateRecipeRequest;
 import com.example.demo.dto.response.RecipeResponse;
 import com.example.demo.entity.Diagnosis;
@@ -11,7 +12,9 @@ import com.example.demo.repository.IRecipeRepository;
 import com.example.demo.service.IRecipeService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeService implements IRecipeService {
@@ -46,6 +49,28 @@ public class RecipeService implements IRecipeService {
         Recipe recipe = _recipeRepository.findOneById(id);
         recipe.setDeleted(true);
         _recipeRepository.save(recipe);
+    }
+
+    @Override
+    public List<RecipeResponse> getAllRecipes() throws Exception {
+        List<Recipe> recipes = _recipeRepository.findAllByDeleted(false);
+        if(recipes.isEmpty()){
+            throw new Exception("Ne postoji nijedan recept.");
+        }
+        return recipes.stream()
+                .map(recipe -> mapRecipeToRecipeResponse(recipe))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public RecipeResponse certifieRecipe(CertfieRecipeRequest request) throws Exception {
+        Recipe recipe = _recipeRepository.findOneById(request.getRecipeId());
+        if(recipe.isCertified()){
+            throw new Exception("Recept je vec overen.");
+        }
+        recipe.setCertified(true);
+        _recipeRepository.save(recipe);
+        return mapRecipeToRecipeResponse(recipe);
     }
 
     public RecipeResponse mapRecipeToRecipeResponse(Recipe recipe){
