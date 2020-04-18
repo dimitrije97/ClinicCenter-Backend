@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.request.CertfieRecipeRequest;
 import com.example.demo.dto.request.CreateRecipeRequest;
 import com.example.demo.dto.response.RecipeResponse;
 import com.example.demo.service.IRecipeService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,5 +27,15 @@ public class RecipeController {
     @DeleteMapping("/{id}/recipe")
     public void deleteRecipe(@PathVariable UUID id){
         _recipeService.deleteRecipe(id);
+    }
+
+    @GetMapping
+    public List<RecipeResponse> getAllRecipes() throws Exception {
+        return _recipeService.getAllRecipes();
+    }
+
+    @PutMapping
+    public RecipeResponse certifieRecipe(@RequestBody CertfieRecipeRequest request) throws Exception {
+        return _recipeService.certifieRecipe(request);
     }
 }
