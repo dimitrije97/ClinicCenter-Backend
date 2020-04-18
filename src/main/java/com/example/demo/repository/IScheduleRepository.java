@@ -7,6 +7,7 @@ import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,4 +23,6 @@ public interface IScheduleRepository extends JpaRepository<Schedule, UUID> {
     List<Schedule> findAllByApprovedAndPatientId(boolean approved, UUID patientId);
 
     List<Schedule> findAllByApprovedAndDoctor(boolean approved, Doctor doctor);
+
+    List<Schedule> findAllByApprovedAndDoctorAndDate(boolean approved, Doctor doctor, Date date);
 }
