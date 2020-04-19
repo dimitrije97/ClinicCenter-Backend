@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.request.AdminsMessageAboutDenyingRegistrationRequest;
+import com.example.demo.dto.request.ApprovePatientRequest;
 import com.example.demo.dto.request.CreatePatientRequest;
 import com.example.demo.dto.request.UpdatePatientRequest;
 import com.example.demo.dto.response.PatientResponse;
@@ -23,11 +24,11 @@ public interface IPatientService {
 
     Set<PatientResponse> getAllPendingRequests() throws Exception;
 
-    PatientResponse confirmRegistrationRequest(UUID patientId);
+    PatientResponse confirmRegistrationRequest(ApprovePatientRequest request);
 
     void denyRegistrationRequest(UUID patientId, AdminsMessageAboutDenyingRegistrationRequest request);
 
-    PatientResponse approveRegistration(UUID patientId) throws Exception;
+    PatientResponse approveRegistration(ApprovePatientRequest request) throws Exception;
 
     Set<PatientResponse> getAllPatientsByClinic(UUID clinicId);
 }

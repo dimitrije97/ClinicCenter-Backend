@@ -1,9 +1,6 @@
 package com.example.demo.service.implementation;
 
-import com.example.demo.dto.request.AdminsMessageAboutDenyingRegistrationRequest;
-import com.example.demo.dto.request.CreatePatientRequest;
-import com.example.demo.dto.request.CreateUserRequest;
-import com.example.demo.dto.request.UpdatePatientRequest;
+import com.example.demo.dto.request.*;
 import com.example.demo.dto.response.PatientResponse;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.entity.Doctor;
@@ -142,8 +139,8 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public PatientResponse confirmRegistrationRequest(UUID patientId) {
-        Patient patient = _patientRepository.findOneById(patientId);
+    public PatientResponse confirmRegistrationRequest(ApprovePatientRequest request) {
+        Patient patient = _patientRepository.findOneById(request.getPatientId());
         patient.setRequestType(RequestType.CONFIRMING);
         Patient savedPatient = _patientRepository.save(patient);
 
@@ -162,10 +159,10 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public PatientResponse approveRegistration(UUID patientId) throws Exception {
-        Patient patient = _patientRepository.findOneById(patientId);
+    public PatientResponse approveRegistration(ApprovePatientRequest request) throws Exception {
+        Patient patient = _patientRepository.findOneById(request.getPatientId());
         if(patient.getRequestType().equals(RequestType.APPROVED)){
-            throw new Exception("Vec ste potvrdili Vasu registraciju.");
+            throw new Exception("Već ste potvrdili Vašu registraciju.");
         }else if(patient.getRequestType().equals(RequestType.CONFIRMING)){
             patient.setRequestType(RequestType.APPROVED);
             Patient savedPatient = _patientRepository.save(patient);
