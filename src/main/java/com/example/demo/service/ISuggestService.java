@@ -1,9 +1,10 @@
 package com.example.demo.service;
 
 
-import java.util.UUID;
+import com.example.demo.dto.request.SuggestRequest;
+
 
 public interface ISuggestService {
 
-    void suggest(UUID id) throws Exception;
+    void suggest(SuggestRequest request) throws Exception;
 }

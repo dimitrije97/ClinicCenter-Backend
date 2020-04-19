@@ -1,5 +1,6 @@
 package com.example.demo.service.implementation;
 
+import com.example.demo.dto.request.SuggestRequest;
 import com.example.demo.entity.EmergencyRoom;
 import com.example.demo.entity.Examination;
 import com.example.demo.entity.Schedule;
@@ -32,8 +33,8 @@ public class SuggestService implements ISuggestService {
     }
 
     @Override
-    public void suggest(UUID id) throws Exception {
-        Examination examination = _examinationRepository.findOneById(id);
+    public void suggest(SuggestRequest request) throws Exception {
+        Examination examination = _examinationRepository.findOneById(request.getExaminationId());
         List<EmergencyRoom> emergencyRooms = examination.getSchedule().getDoctor().getClinic().getEmergencyRooms();
         long hour = 1;
         LocalTime temp = examination.getSchedule().getStartAt();
@@ -43,7 +44,7 @@ public class SuggestService implements ISuggestService {
                 Date tomorrow = new Date(currentDate.getTime() + (1000 * 60 * 60 * 24));
                 examination.getSchedule().setDate(tomorrow);
                 _examinationRepository.save(examination);
-                suggest(id);
+                suggest(request);
             }
             LocalTime currentTime = temp.plusHours(hour);
             List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndDoctorAndDate(true, examination.getSchedule().getDoctor(), examination.getSchedule().getDate());

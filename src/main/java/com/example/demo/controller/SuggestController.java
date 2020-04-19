@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.request.SuggestRequest;
 import com.example.demo.service.ISuggestService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,8 @@ public class SuggestController {
         _suggestService = suggestService;
     }
 
-    @GetMapping("/{id}/examination")
-    public void suggest(@PathVariable UUID id) throws Exception {
-         _suggestService.suggest(id);
+    @PutMapping
+    public void suggest(@RequestBody SuggestRequest request) throws Exception {
+         _suggestService.suggest(request);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.scheduler;
 
+import com.example.demo.dto.request.SuggestRequest;
 import com.example.demo.entity.Examination;
 import com.example.demo.repository.IExaminationRepository;
 import com.example.demo.service.ISuggestService;
@@ -20,12 +21,15 @@ public class CronJob {
         _suggestService = suggestService;
     }
 
+//    @Scheduled(cron="0 * * ? * *") //every minute
     @Scheduled(cron="0 0 0 * * ?")
     public void cronJobSchedule() throws Exception {
         Set<Examination> examinations = _examinationRepository.findAllByStatus(RequestType.PENDING);
         for (Examination e: examinations) {
-            _suggestService.suggest(e.getId());
-            System.out.println("CRONJOB ");
+            SuggestRequest request = new SuggestRequest();
+            request.setExaminationId(e.getId());
+            _suggestService.suggest(request);
+            System.out.println("CRONJOB");
         }
     }
 }
