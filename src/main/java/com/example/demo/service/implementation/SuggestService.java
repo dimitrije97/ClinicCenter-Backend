@@ -1,15 +1,14 @@
 package com.example.demo.service.implementation;
 
-import com.example.demo.dto.response.ExaminationResponse;
 import com.example.demo.entity.EmergencyRoom;
 import com.example.demo.entity.Examination;
 import com.example.demo.entity.Schedule;
 import com.example.demo.repository.IExaminationRepository;
 import com.example.demo.repository.IScheduleRepository;
+import com.example.demo.service.IEmailService;
 import com.example.demo.service.ISuggestService;
 import com.example.demo.util.enums.RequestType;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.DateUtils;
 
 import java.time.LocalTime;
 import java.util.Date;
@@ -24,13 +23,16 @@ public class SuggestService implements ISuggestService {
 
     private final IScheduleRepository _scheduleRepository;
 
-    public SuggestService(IExaminationRepository examinationRepository, IScheduleRepository scheduleRepository) {
+    private final IEmailService _emailService;
+
+    public SuggestService(IExaminationRepository examinationRepository, IScheduleRepository scheduleRepository, IEmailService emailService) {
         _examinationRepository = examinationRepository;
         _scheduleRepository = scheduleRepository;
+        _emailService = emailService;
     }
 
     @Override
-    public ExaminationResponse suggest(UUID id) throws Exception {
+    public void suggest(UUID id) throws Exception {
         Examination examination = _examinationRepository.findOneById(id);
         List<EmergencyRoom> emergencyRooms = examination.getSchedule().getDoctor().getClinic().getEmergencyRooms();
         long hour = 1;
@@ -70,37 +72,39 @@ public class SuggestService implements ISuggestService {
                     }
                 }
                 if(isAvailable){
-
-                        examination.getSchedule().setStartAt(currentTime);
-                        examination.getSchedule().setEndAt(currentTime.plusHours(1L));
-                        examination.setEmergencyRoom(er);
-                        examination.setStatus(RequestType.CONFIRMING);
-                        Examination savedExamination = _examinationRepository.save(examination);
-                        return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
+                    examination.getSchedule().setStartAt(currentTime);
+                    examination.getSchedule().setEndAt(currentTime.plusHours(1L));
+                    examination.setEmergencyRoom(er);
+                    examination.setStatus(RequestType.CONFIRMING);
+                    Examination savedExamination = _examinationRepository.save(examination);
+                    _emailService.approveExaminationToPatientMail(examination.getSchedule().getPatient());
+                    _emailService.approveExaminationToDoctorMail(examination.getSchedule().getDoctor());
+                    return;
+//                    return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
                 }
             }
             hour++;
         }
     }
 
-    public ExaminationResponse mapExaminationToExaminationResponse(Examination examination, Schedule schedule){
-        ExaminationResponse examinationResponse = new ExaminationResponse();
-        examinationResponse.setId(examination.getId());
-        examinationResponse.setDate(schedule.getDate());
-        examinationResponse.setStartAt(schedule.getStartAt());
-        examinationResponse.setEndAt(schedule.getEndAt());
-        examinationResponse.setDoctorFirstName(schedule.getDoctor().getUser().getFirstName());
-        examinationResponse.setDoctorLastName(schedule.getDoctor().getUser().getLastName());
-        if(!(schedule.getPatient() == null)){
-            examinationResponse.setPatientFirstName(schedule.getPatient().getUser().getFirstName());
-            examinationResponse.setPatientLastName(schedule.getPatient().getUser().getLastName());
-        }
-        if(!(examination.getEmergencyRoom() == null)){
-            examinationResponse.setEmergencyRoomName(examination.getEmergencyRoom().getName());
-        }
-        examinationResponse.setExaminationTypeName(schedule.getDoctor().getExaminationType().getName());
-        examinationResponse.setClinicName(schedule.getDoctor().getClinic().getName());
-
-        return examinationResponse;
-    }
+//    public ExaminationResponse mapExaminationToExaminationResponse(Examination examination, Schedule schedule){
+//        ExaminationResponse examinationResponse = new ExaminationResponse();
+//        examinationResponse.setId(examination.getId());
+//        examinationResponse.setDate(schedule.getDate());
+//        examinationResponse.setStartAt(schedule.getStartAt());
+//        examinationResponse.setEndAt(schedule.getEndAt());
+//        examinationResponse.setDoctorFirstName(schedule.getDoctor().getUser().getFirstName());
+//        examinationResponse.setDoctorLastName(schedule.getDoctor().getUser().getLastName());
+//        if(!(schedule.getPatient() == null)){
+//            examinationResponse.setPatientFirstName(schedule.getPatient().getUser().getFirstName());
+//            examinationResponse.setPatientLastName(schedule.getPatient().getUser().getLastName());
+//        }
+//        if(!(examination.getEmergencyRoom() == null)){
+//            examinationResponse.setEmergencyRoomName(examination.getEmergencyRoom().getName());
+//        }
+//        examinationResponse.setExaminationTypeName(schedule.getDoctor().getExaminationType().getName());
+//        examinationResponse.setClinicName(schedule.getDoctor().getClinic().getName());
+//
+//        return examinationResponse;
+//    }
 }

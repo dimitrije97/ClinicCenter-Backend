@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.response.ExaminationResponse;
 import com.example.demo.service.ISuggestService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalTime;
 import java.util.UUID;
 
 @RestController
@@ -18,7 +16,7 @@ public class SuggestController {
     }
 
     @GetMapping("/{id}/examination")
-    public ExaminationResponse suggest(@PathVariable UUID id) throws Exception {
-        return _suggestService.suggest(id);
+    public void suggest(@PathVariable UUID id) throws Exception {
+         _suggestService.suggest(id);
     }
 }
