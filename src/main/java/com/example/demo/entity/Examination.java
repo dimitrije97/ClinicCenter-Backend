@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,4 +26,7 @@ public class Examination extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private RequestType status;
+
+    @OneToMany(mappedBy = "examination", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Report> reports;
 }

@@ -59,7 +59,7 @@ public class SuggestService implements ISuggestService {
                 hour++;
                 continue;
             }
-            if(!(currentTime.isAfter(examination.getSchedule().getDoctor().getStartAt()) && currentTime.isBefore(examination.getSchedule().getDoctor().getEndAt()))){
+            if(!(currentTime.isAfter(examination.getSchedule().getDoctor().getStartAt()) && currentTime.isBefore(examination.getSchedule().getDoctor().getEndAt().minusHours(1L)))){
                 hour++;
                 continue;
             }

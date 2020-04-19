@@ -22,4 +22,12 @@ public class Report extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "examination_id")
+    private Examination examination;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medical_record_id")
+    private MedicalRecord medicalRecord;
 }
