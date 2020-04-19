@@ -94,6 +94,7 @@ public class EmergencyRoomService implements IEmergencyRoomService {
             }
         }
         emergencyRoom.setDeleted(true);
+        emergencyRoom.getClinic().getEmergencyRooms().remove(emergencyRoom);
         _emergencyRoomRepository.save(emergencyRoom);
     }
 

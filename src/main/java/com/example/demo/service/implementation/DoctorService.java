@@ -113,6 +113,7 @@ public class DoctorService implements IDoctorService {
             throw new Exception("Doktor poseduje zakazan pregled.");
         }
         doctor.getUser().setDeleted(true);
+        doctor.getClinic().getDoctors().remove(doctor);
         _doctorRepository.save(doctor);
     }
 
