@@ -67,4 +67,14 @@ public class PatientController {
     public Set<PatientResponse> getAllPatientsByClinic(@PathVariable UUID id) {
         return _patientService.getAllPatientsByClinic(id);
     }
+
+    @GetMapping("with-medical-record")
+    public Set<PatientResponse> getAllPatientsWithMedicalRecord() throws Exception {
+        return _patientService.getAllPatientsWithMedicalRecord();
+    }
+
+    @GetMapping("without-medical-record")
+    public Set<PatientResponse> getAllPatientsWithoutMedicalRecord() throws Exception {
+        return _patientService.getAllPatientsWithoutMedicalRecord();
+    }
 }

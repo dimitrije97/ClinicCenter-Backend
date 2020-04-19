@@ -3,14 +3,8 @@ package com.example.demo.service.implementation;
 import com.example.demo.dto.request.*;
 import com.example.demo.dto.response.PatientResponse;
 import com.example.demo.dto.response.UserResponse;
-import com.example.demo.entity.Doctor;
-import com.example.demo.entity.Patient;
-import com.example.demo.entity.Schedule;
-import com.example.demo.entity.User;
-import com.example.demo.repository.IClinicRepository;
-import com.example.demo.repository.IPatientRepository;
-import com.example.demo.repository.IScheduleRepository;
-import com.example.demo.repository.IUserRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.IEmailService;
 import com.example.demo.service.IPatientService;
 import com.example.demo.service.IUserService;
@@ -39,14 +33,17 @@ public class PatientService implements IPatientService {
     private final IClinicRepository _clinicRepository;
 
     private final IEmailService _emailService;
+    
+    private final IMedicalRecordReposiroty _medicalRecordReposiroty;
 
-    public PatientService(IPatientRepository patientRepository, IUserService userService, IUserRepository userRepository, IScheduleRepository scheduleRepository, IClinicRepository clinicRepository, IEmailService emailService) {
+    public PatientService(IPatientRepository patientRepository, IUserService userService, IUserRepository userRepository, IScheduleRepository scheduleRepository, IClinicRepository clinicRepository, IEmailService emailService, IMedicalRecordReposiroty medicalRecordReposiroty) {
         _patientRepository = patientRepository;
         _userService = userService;
         _userRepository = userRepository;
         _scheduleRepository = scheduleRepository;
         _clinicRepository = clinicRepository;
         _emailService = emailService;
+        _medicalRecordReposiroty = medicalRecordReposiroty;
     }
 
     @Override
@@ -168,7 +165,7 @@ public class PatientService implements IPatientService {
             Patient savedPatient = _patientRepository.save(patient);
             return mapPatientToPatientResponse(savedPatient);
         }
-        throw new Exception("Vas nalog je obrisan.");
+        throw new Exception("Vaš nalog je obrisan.");
     }
 
     @Override
@@ -185,6 +182,56 @@ public class PatientService implements IPatientService {
         }
 
         return patients.stream().map(patient -> mapPatientToPatientResponse(patient))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<PatientResponse> getAllPatientsWithoutMedicalRecord() throws Exception {
+        Set<Patient> patients = _patientRepository.findAllByRequestTypeAndUser_Deleted(RequestType.APPROVED, false);
+        Set<Patient> patientsWithoutMedicalRecord = new HashSet<>();
+        List<MedicalRecord> records = _medicalRecordReposiroty.findAll();
+        for (Patient p: patients) {
+            boolean flag = true;
+            for(MedicalRecord mr: records){
+                if(p.getId().equals(mr.getPatient().getId())){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                patientsWithoutMedicalRecord.add(p);
+            }
+        }
+        if(patientsWithoutMedicalRecord.isEmpty()){
+            throw new Exception("Ne postoji nijedan pacijent bez zdravstvenog kartona.");
+        }
+        return patientsWithoutMedicalRecord.stream()
+                .map(patient -> mapPatientToPatientResponse(patient))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<PatientResponse> getAllPatientsWithMedicalRecord() throws Exception {
+        Set<Patient> patients = _patientRepository.findAllByRequestTypeAndUser_Deleted(RequestType.APPROVED, false);
+        Set<Patient> patientsWithtMedicalRecord = new HashSet<>();
+        List<MedicalRecord> records = _medicalRecordReposiroty.findAll();
+        for (Patient p: patients) {
+            boolean flag = false;
+            for(MedicalRecord mr: records){
+                if(p.getId().equals(mr.getPatient().getId())){
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag){
+                patientsWithtMedicalRecord.add(p);
+            }
+        }
+        if(patientsWithtMedicalRecord.isEmpty()){
+            throw new Exception("Ne postoji nijedan pacijent sa zdravstvenim kartonom.");
+        }
+        return patientsWithtMedicalRecord.stream()
+                .map(patient -> mapPatientToPatientResponse(patient))
                 .collect(Collectors.toSet());
     }
 

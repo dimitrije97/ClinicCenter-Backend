@@ -114,7 +114,8 @@ public class VacationService implements IVacationService {
             for (Schedule s: examinations) {
                 if(s.getDate().getYear() == schedule.getDate().getYear()
                     && s.getDate().getMonth() == schedule.getDate().getMonth()
-                    && s.getDate().getDay() == schedule.getDate().getDay()){
+                    && s.getDate().getDay() == schedule.getDate().getDay()
+                    && s.getReasonOfUnavailability().equals(ReasonOfUnavailability.EXAMINATION)){
                     flag = true;
                     break;
                 }

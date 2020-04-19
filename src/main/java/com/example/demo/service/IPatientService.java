@@ -31,4 +31,8 @@ public interface IPatientService {
     PatientResponse approveRegistration(ApprovePatientRequest request) throws Exception;
 
     Set<PatientResponse> getAllPatientsByClinic(UUID clinicId);
+
+    Set<PatientResponse> getAllPatientsWithoutMedicalRecord() throws Exception;
+
+    Set<PatientResponse> getAllPatientsWithMedicalRecord() throws Exception;
 }
