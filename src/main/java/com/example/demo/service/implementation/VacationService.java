@@ -43,6 +43,11 @@ public class VacationService implements IVacationService {
 
     @Override
     public Set<VacationResponse> createVacationRequest(CreateVacationRequest request, UUID staffId) throws Exception {
+
+        if(request.getDates().isEmpty()){
+            throw new Exception("Pogrešno ste uneli datume.");
+        }
+
         Doctor doctor = _doctorRepository.findOneById(staffId);
         Nurse nurse = _nurseRepository.findOneById(staffId);
         Set<VacationResponse> responses = new HashSet<>();
