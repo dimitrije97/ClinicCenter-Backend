@@ -72,6 +72,10 @@ public class ReportService implements IReportService {
                 break;
             }
         }
+        MedicalRecord medicalRecord = _medicalRecordReposiroty.findOneByPatient_Id(examination.getSchedule().getPatient().getId());
+        if(medicalRecord != null){
+            medicalRecord.getReports().add(report);
+        }
         Report savedReport = _reportRepository.save(report);
         return mapReportToReportResponse(savedReport);
     }

@@ -9,6 +9,7 @@ import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.IAuthService;
 import com.example.demo.service.IClinicService;
+import com.example.demo.util.enums.ClinicCenterAdminType;
 import com.example.demo.util.enums.RequestType;
 import com.example.demo.util.enums.UserType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -153,6 +154,8 @@ public class AuthService implements IAuthService {
             clinicId = user.getAdmin().getClinic().getId();
         }else if(user.getUserType().equals(UserType.CLINIC_CENTER_ADMIN)){
             id = user.getClinicCenterAdmin().getId();
+            ClinicCenterAdminType ccadminType = user.getClinicCenterAdmin().getClinicCenterAdminType();
+            userResponse.setCcadminType(ccadminType);
         }else if(user.getUserType().equals(UserType.DOCTOR)){
             id = user.getDoctor().getId();
             clinicId = user.getDoctor().getClinic().getId();

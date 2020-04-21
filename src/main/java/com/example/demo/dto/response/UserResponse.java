@@ -1,5 +1,6 @@
 package com.example.demo.dto.response;
 
+import com.example.demo.util.enums.ClinicCenterAdminType;
 import com.example.demo.util.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,4 +38,6 @@ public class UserResponse {
     private boolean deleted;
 
     private ClinicResponse myClinic;
+
+    private ClinicCenterAdminType ccadminType;
 }
