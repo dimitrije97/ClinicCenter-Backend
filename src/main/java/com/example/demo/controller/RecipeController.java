@@ -38,4 +38,14 @@ public class RecipeController {
     public RecipeResponse certifieRecipe(@RequestBody CertfieRecipeRequest request) throws Exception {
         return _recipeService.certifieRecipe(request);
     }
+
+    @GetMapping("/certified")
+    public List<RecipeResponse> getAllCertifiedRecipes() throws Exception {
+        return _recipeService.getAllCertifedRecipes();
+    }
+
+    @GetMapping("/non-certified")
+    public List<RecipeResponse> getAllNonCertifiedRecipes() throws Exception {
+        return _recipeService.getAllNonCertifedRecipes();
+    }
 }

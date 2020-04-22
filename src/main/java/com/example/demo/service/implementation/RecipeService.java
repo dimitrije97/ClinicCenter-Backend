@@ -73,6 +73,28 @@ public class RecipeService implements IRecipeService {
         return mapRecipeToRecipeResponse(recipe);
     }
 
+    @Override
+    public List<RecipeResponse> getAllCertifedRecipes() throws Exception {
+        List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertified(false, true);
+        if(recipes.isEmpty()){
+            throw new Exception("Ne postoji nijedan overen recept.");
+        }
+        return recipes.stream()
+                .map(recipe -> mapRecipeToRecipeResponse(recipe))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RecipeResponse> getAllNonCertifedRecipes() throws Exception {
+        List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertified(false, false);
+        if(recipes.isEmpty()){
+            throw new Exception("Ne postoji nijedan neoveren recept.");
+        }
+        return recipes.stream()
+                .map(recipe -> mapRecipeToRecipeResponse(recipe))
+                .collect(Collectors.toList());
+    }
+
     public RecipeResponse mapRecipeToRecipeResponse(Recipe recipe){
         RecipeResponse response = new RecipeResponse();
         response.setDiagnosisName(recipe.getDiagnosis().getName());

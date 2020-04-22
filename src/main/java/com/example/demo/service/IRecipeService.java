@@ -16,4 +16,8 @@ public interface IRecipeService {
     List<RecipeResponse> getAllRecipes() throws Exception;
 
     RecipeResponse certifieRecipe(CertfieRecipeRequest request) throws Exception;
+
+    List<RecipeResponse> getAllCertifedRecipes() throws Exception;
+
+    List<RecipeResponse> getAllNonCertifedRecipes() throws Exception;
 }
