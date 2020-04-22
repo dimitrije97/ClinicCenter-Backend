@@ -38,6 +38,7 @@ public class RecipeService implements IRecipeService {
         Recipe recipe = new Recipe();
         recipe.setCertified(false);
         recipe.setDeleted(false);
+        recipe.setWaiting(false);
         recipe.setDiagnosis(diagnosis);
         recipe.setMedicine(medicine);
         Recipe savedRecipe = _recipeRepository.save(recipe);
@@ -69,13 +70,14 @@ public class RecipeService implements IRecipeService {
             throw new Exception("Recept je vec overen.");
         }
         recipe.setCertified(true);
+        recipe.setWaiting(false);
         _recipeRepository.save(recipe);
         return mapRecipeToRecipeResponse(recipe);
     }
 
     @Override
     public List<RecipeResponse> getAllCertifedRecipes() throws Exception {
-        List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertified(false, true);
+        List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertifiedAndWaiting(false, true, false);
         if(recipes.isEmpty()){
             throw new Exception("Ne postoji nijedan overen recept.");
         }
@@ -86,9 +88,20 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public List<RecipeResponse> getAllNonCertifedRecipes() throws Exception {
-        List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertified(false, false);
+        List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertifiedAndWaiting(false, false, false);
         if(recipes.isEmpty()){
             throw new Exception("Ne postoji nijedan neoveren recept.");
+        }
+        return recipes.stream()
+                .map(recipe -> mapRecipeToRecipeResponse(recipe))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RecipeResponse> getAllWaitingRecipes() throws Exception {
+        List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertifiedAndWaiting(false, false, true);
+        if(recipes.isEmpty()){
+            throw new Exception("Ne postoji nijedan recept koji treba da se overi.");
         }
         return recipes.stream()
                 .map(recipe -> mapRecipeToRecipeResponse(recipe))

@@ -48,4 +48,9 @@ public class RecipeController {
     public List<RecipeResponse> getAllNonCertifiedRecipes() throws Exception {
         return _recipeService.getAllNonCertifedRecipes();
     }
+
+    @GetMapping("/waiting")
+    public List<RecipeResponse> getAllWaitingRecipes() throws Exception {
+        return _recipeService.getAllWaitingRecipes();
+    }
 }

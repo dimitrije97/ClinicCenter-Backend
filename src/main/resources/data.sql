@@ -92,9 +92,9 @@ insert into diagnosis(id, name, deleted) values
 ('7a78f767-3cd9-44a2-9176-e1942a903e39', 'Dijagnoza2', 'false'),
 ('bdfcc5ed-53cd-4d50-af16-65134bd1dd0c', 'Dijagnoza3', 'true');
 
-insert into recipe(id, certified, deleted, medicine_id, diagnosis_id) values
-('a6287e51-24bf-4626-9762-c7a65d833670', 'false', 'false', 'd8572b0c-b38a-4021-b580-f4611789cadb', '09609161-8237-4c03-b0bf-6366e873cec8'),
-('3dcb5c03-917a-4c88-ba03-563fe4a6a524', 'true', 'false', '7fda0019-0ec4-41ca-a8e7-676a9ad35d16', '09609161-8237-4c03-b0bf-6366e873cec8');
+insert into recipe(id, certified, deleted, medicine_id, diagnosis_id, waiting) values
+('a6287e51-24bf-4626-9762-c7a65d833670', 'false', 'false', 'd8572b0c-b38a-4021-b580-f4611789cadb', '09609161-8237-4c03-b0bf-6366e873cec8', 'false'),
+('3dcb5c03-917a-4c88-ba03-563fe4a6a524', 'true', 'false', '7fda0019-0ec4-41ca-a8e7-676a9ad35d16', '09609161-8237-4c03-b0bf-6366e873cec8', 'false');
 
 insert into medical_record(id, height, weight, patient_id, allergy) values
 ('d838da48-b288-4acc-a01c-4c957d2c56ec', '190', '90', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'Aleregija1');

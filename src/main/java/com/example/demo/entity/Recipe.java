@@ -30,4 +30,6 @@ public class Recipe extends BaseEntity {
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports;
+
+    private boolean waiting;
 }

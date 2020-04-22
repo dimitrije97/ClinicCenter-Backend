@@ -4,6 +4,7 @@ import com.example.demo.dto.request.CreateReportRequest;
 import com.example.demo.dto.response.ReportResponse;
 import com.example.demo.entity.Examination;
 import com.example.demo.entity.MedicalRecord;
+import com.example.demo.entity.Recipe;
 import com.example.demo.entity.Report;
 import com.example.demo.repository.IExaminationRepository;
 import com.example.demo.repository.IMedicalRecordReposiroty;
@@ -61,7 +62,9 @@ public class ReportService implements IReportService {
 
 
         report.setDescription(reportRequest.getDescription());
-        report.setRecipe(_recipeRepository.findOneById(reportRequest.getRecipeId()));
+        Recipe recipe = _recipeRepository.findOneById(reportRequest.getRecipeId());
+        recipe.setWaiting(true);
+        report.setRecipe(recipe);
         report.setExamination(examination);
         examination.getReports().add(report);
         List<MedicalRecord> records = _medicalRecordReposiroty.findAll();

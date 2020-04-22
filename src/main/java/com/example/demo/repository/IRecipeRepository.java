@@ -14,5 +14,5 @@ public interface IRecipeRepository extends JpaRepository<Recipe, UUID> {
 
     List<Recipe> findAllByDeleted(boolean deleted);
 
-    List<Recipe> findAllByDeletedAndCertified(boolean deleted, boolean certified);
+    List<Recipe> findAllByDeletedAndCertifiedAndWaiting(boolean deleted, boolean certified, boolean waiting);
 }
