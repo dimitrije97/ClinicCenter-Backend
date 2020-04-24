@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.GetExaminationTypesIncomInClinicRequest;
 import com.example.demo.dto.response.IncomeResponse;
+import com.example.demo.dto.response.MonthlyIncomeResponse;
 import com.example.demo.service.IIncomeService;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +41,10 @@ public class IncomeController {
     @GetMapping("/examination-type/{id}/clinic")
     public IncomeResponse getExaminationTypesIncomeInClinic(@RequestBody GetExaminationTypesIncomInClinicRequest request, @PathVariable UUID id) throws Exception {
         return _incomeService.getExaminationTypesIncomInClinic(request, id);
+    }
+
+    @GetMapping("/monthly/{id}/clinic")
+    public MonthlyIncomeResponse getMonthlyClinicsIncome(@PathVariable UUID id) throws Exception {
+        return _incomeService.getClinicsMonthlyIncome(id);
     }
 }
