@@ -2,6 +2,7 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.GetExaminationTypesIncomInClinicRequest;
 import com.example.demo.dto.response.IncomeResponse;
+import com.example.demo.dto.response.MonthlyIncomeResponse;
 import com.example.demo.entity.Clinic;
 import com.example.demo.entity.Doctor;
 import com.example.demo.entity.ExaminationType;
@@ -14,7 +15,8 @@ import com.example.demo.service.IIncomeService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationHandler;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -141,5 +143,56 @@ public class IncomeService implements IIncomeService {
         response.setExaminationsNumber(String.valueOf(number));
         response.setIncome(String.valueOf(income));
         return response;
+    }
+
+    @Override
+    public MonthlyIncomeResponse getClinicsMonthlyIncome(UUID clinicId) throws Exception {
+        Clinic clinic = _clinicRepository.findOneById(clinicId);
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        float income = 0;
+        int number = 0;
+        float incomeThisMonth = 0;
+        int numberThisMonth = 0;
+        float incomeLastMonth = 0;
+        int numberLastMonth = 0;
+        float incomeLastLastMonth = 0;
+        int numberLastLastMonth = 0;
+        Date now = new Date();
+        Date lastMonth = lastMonth(now);
+        Date lastLastMonth = lastMonth(lastMonth);
+        for (Schedule schedule: schedules) {
+            if(clinic.getDoctors().contains(schedule.getDoctor())){
+                income += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
+                number++;
+                if(schedule.getDate().getMonth() == now.getMonth()){
+                    incomeThisMonth += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
+                    numberThisMonth++;
+                }else if(schedule.getDate().getMonth() == lastMonth.getMonth()){
+                    incomeLastMonth += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
+                    numberLastMonth++;
+                }else if(schedule.getDate().getMonth() == lastLastMonth.getMonth()) {
+                    incomeLastLastMonth += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
+                    numberLastLastMonth++;
+                }
+            }
+        }
+        MonthlyIncomeResponse response = new MonthlyIncomeResponse();
+        response.setExaminations(String.valueOf(number));
+        response.setIncome(String.valueOf(income));
+        response.setLastLastMonthExaminations(String.valueOf(numberLastLastMonth));
+        response.setLastLastMonthIncome(String.valueOf(incomeLastLastMonth));
+        response.setLastMonthExaminations(String.valueOf(numberLastMonth));
+        response.setLastMonthIncome(String.valueOf(incomeLastMonth));
+        response.setThisMonthExaminations(String.valueOf(numberThisMonth));
+        response.setThisMonthIncome(String.valueOf(incomeThisMonth));
+        return response;
+    }
+
+    private Date lastMonth(Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, -1);
+        return cal.getTime();
     }
 }
