@@ -2,20 +2,16 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.CreateReportRequest;
 import com.example.demo.dto.response.ReportResponse;
-import com.example.demo.entity.Examination;
-import com.example.demo.entity.MedicalRecord;
-import com.example.demo.entity.Recipe;
-import com.example.demo.entity.Report;
-import com.example.demo.repository.IExaminationRepository;
-import com.example.demo.repository.IMedicalRecordReposiroty;
-import com.example.demo.repository.IRecipeRepository;
-import com.example.demo.repository.IReportRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.IReportService;
+import com.example.demo.util.enums.RequestType;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -30,33 +26,41 @@ public class ReportService implements IReportService {
 
     private final IMedicalRecordReposiroty _medicalRecordReposiroty;
 
-    public ReportService(IReportRepository reportRepository, IRecipeRepository recipeRepository, IExaminationRepository examinationRepository, IMedicalRecordReposiroty medicalRecordReposiroty) {
+    private final IPatientRepository _patientRepository;
+
+    public ReportService(IReportRepository reportRepository, IRecipeRepository recipeRepository, IExaminationRepository examinationRepository, IMedicalRecordReposiroty medicalRecordReposiroty, IPatientRepository patientRepository) {
         _reportRepository = reportRepository;
         _recipeRepository = recipeRepository;
         _examinationRepository = examinationRepository;
         _medicalRecordReposiroty = medicalRecordReposiroty;
+        _patientRepository = patientRepository;
     }
 
     @Override
     public ReportResponse createReport(CreateReportRequest reportRequest) throws Exception {
         Report report = new Report();
 
-        Examination examination = _examinationRepository.findOneById(reportRequest.getExaminationId());
+        Patient patient = _patientRepository.findOneById(reportRequest.getPatientId());
         LocalTime currentTime = reportRequest.getCurrentTime();
         Date now = new Date();
-        boolean flag = false;
-        if(now.getYear() == examination.getSchedule().getDate().getYear()
-        && now.getMonth() == examination.getSchedule().getDate().getMonth()
-        && now.getDay() == examination.getSchedule().getDate().getDay()
-        && examination.getSchedule().getStartAt().isBefore(currentTime)
-        && examination.getSchedule().getEndAt().isAfter(currentTime)){
-            if(reportRequest.getExaminationId() != null && !reportRequest.getExaminationId().equals(examination.getSchedule().getDoctor().getId())){
-                throw new Exception("Trenutno ne vršite pregled ovog pacijenta.");
+        boolean flag = true;
+        Set<Examination> allExaminations = _examinationRepository.findAllByStatus(RequestType.APPROVED);
+        Examination examination = null;
+        for(Examination e: allExaminations){
+            if(now.getYear() == e.getSchedule().getDate().getYear()
+                    && now.getMonth() == e.getSchedule().getDate().getMonth()
+                    && now.getDay() == e.getSchedule().getDate().getDay()
+                    && e.getSchedule().getStartAt().isBefore(currentTime)
+                    && e.getSchedule().getEndAt().isAfter(currentTime)){
+                if(e.getSchedule().getDoctor() != null && e.getSchedule().getDoctor().getId().equals(reportRequest.getDoctorId())
+                        && e.getSchedule().getPatient().getId().equals(reportRequest.getPatientId())){
+                    examination = e;
+                    flag = false;
+                    break;
+                }
             }
-            flag = true;
         }
-
-        if(!flag) {
+        if(flag) {
             throw new Exception("Trenutno ne vršite pregled ovog pacijenta.");
         }
 
@@ -69,7 +73,7 @@ public class ReportService implements IReportService {
         examination.getReports().add(report);
         List<MedicalRecord> records = _medicalRecordReposiroty.findAll();
         for (MedicalRecord mr: records) {
-            if(mr.getPatient().getId().equals(examination.getSchedule().getPatient().getId())){
+            if(mr.getPatient().getId().equals(reportRequest.getPatientId())){
                 report.setMedicalRecord(mr);
                 mr.getReports().add(report);
                 break;

@@ -12,7 +12,7 @@ public class CreateReportRequest {
 
     private UUID recipeId;
 
-    private UUID examinationId;
+    private UUID patientId;
 
     private LocalTime currentTime;
 
