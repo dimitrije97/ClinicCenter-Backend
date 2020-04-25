@@ -14,4 +14,6 @@ public class CreateMedicalRecordRequest {
     private String weight;
 
     private String allergy;
+
+    private String diopter;
 }

@@ -26,6 +26,8 @@ public class MedicalRecord extends BaseEntity {
 
     private String allergy;
 
+    private String diopter;
+
     @OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports;
 }

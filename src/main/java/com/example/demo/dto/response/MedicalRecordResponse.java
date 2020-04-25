@@ -19,6 +19,8 @@ public class MedicalRecordResponse {
 
     private String allergy;
 
+    private String diopter;
+
     private String patientName;
 
     private String patientSurname;

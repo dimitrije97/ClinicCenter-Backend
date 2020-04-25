@@ -3,6 +3,7 @@ package com.example.demo.service.implementation;
 import com.example.demo.dto.request.CreateMedicalRecordRequest;
 import com.example.demo.dto.response.MedicalRecordResponse;
 import com.example.demo.entity.MedicalRecord;
+import com.example.demo.entity.Patient;
 import com.example.demo.repository.IMedicalRecordReposiroty;
 import com.example.demo.repository.IPatientRepository;
 import com.example.demo.service.IMedicalRecordService;
@@ -26,11 +27,21 @@ public class MedicalRecordService implements IMedicalRecordService {
 
     @Override
     public MedicalRecordResponse createMedicalRecord(CreateMedicalRecordRequest request) throws Exception {
+        if(request.getPatientId() == null){
+            throw new Exception("Niste izabrali pacijenta.");
+        }
         MedicalRecord medicalRecord = new MedicalRecord();
         medicalRecord.setAllergy(request.getAllergy());
         medicalRecord.setHeight(request.getHeight());
         medicalRecord.setWeight(request.getWeight());
-        medicalRecord.setPatient(_patientRepository.findOneById(request.getPatientId()));
+        medicalRecord.setDiopter(request.getDiopter());
+        Patient patient = _patientRepository.findOneById(request.getPatientId());
+        if(patient.getMedicalRecord() != null){
+            throw new Exception("Pacijent već poseduje zdravstveni karton.");
+        }
+        medicalRecord.setPatient(patient);
+        patient.setMedicalRecord(medicalRecord);
+//        _patientRepository.save(patient);
         MedicalRecord savedMedicalRecord = _medicalRecordReposiroty.save(medicalRecord);
         return mapMedicalRecordToMedicalRecordResponse(savedMedicalRecord);
     }
@@ -61,6 +72,7 @@ public class MedicalRecordService implements IMedicalRecordService {
         response.setAllergy(medicalRecord.getAllergy());
         response.setHeight(medicalRecord.getHeight());
         response.setWeight(medicalRecord.getWeight());
+        response.setDiopter(medicalRecord.getDiopter());
         response.setPatientEmail(medicalRecord.getPatient().getUser().getEmail());
         response.setPatientName(medicalRecord.getPatient().getUser().getFirstName());
         response.setPatientSurname(medicalRecord.getPatient().getUser().getLastName());
