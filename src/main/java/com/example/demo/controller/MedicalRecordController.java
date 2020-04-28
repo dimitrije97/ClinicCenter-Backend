@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.request.CreateMedicalRecordRequest;
+import com.example.demo.dto.request.UpdateMedicalRecordRequest;
+import com.example.demo.dto.request.UpdateMedicineRequest;
 import com.example.demo.dto.response.MedicalRecordResponse;
 import com.example.demo.service.IMedicalRecordService;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +33,10 @@ public class MedicalRecordController {
     @GetMapping("/{id}/patient")
     public MedicalRecordResponse getMedicalRecordByPatient(@PathVariable UUID id) throws Exception {
         return _medicalRecordService.getMedicalRecordByPatient(id);
+    }
+
+    @PutMapping
+    public MedicalRecordResponse updateMedicalRecord(@RequestBody UpdateMedicalRecordRequest request) throws Exception {
+        return _medicalRecordService.updateMedicalRecord(request);
     }
 }
