@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.request.CreateReportRequest;
+import com.example.demo.dto.request.UpdateReportRequest;
 import com.example.demo.dto.response.ReportResponse;
 import com.example.demo.service.IReportService;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +32,15 @@ public class ReportController {
     @GetMapping("/{id}/medical-record")
     public List<ReportResponse> getAllReportsByMedicalRecord(@PathVariable  UUID id) throws Exception {
         return _reportService.getAllReportsByMedicalRecord(id);
+    }
+
+    @GetMapping("/{id}/report")
+    public ReportResponse getReport(@PathVariable  UUID id) throws Exception {
+        return _reportService.getReport(id);
+    }
+
+    @PutMapping
+    public ReportResponse updateReport(@RequestBody UpdateReportRequest reportRequest) throws Exception {
+        return _reportService.updateReport(reportRequest);
     }
 }

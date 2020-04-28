@@ -1,6 +1,7 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.CreateReportRequest;
+import com.example.demo.dto.request.UpdateReportRequest;
 import com.example.demo.dto.response.ReportResponse;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
@@ -28,12 +29,15 @@ public class ReportService implements IReportService {
 
     private final IPatientRepository _patientRepository;
 
-    public ReportService(IReportRepository reportRepository, IRecipeRepository recipeRepository, IExaminationRepository examinationRepository, IMedicalRecordReposiroty medicalRecordReposiroty, IPatientRepository patientRepository) {
+    private final IDoctorRepository _doctorRepository;
+
+    public ReportService(IReportRepository reportRepository, IRecipeRepository recipeRepository, IExaminationRepository examinationRepository, IMedicalRecordReposiroty medicalRecordReposiroty, IPatientRepository patientRepository, IDoctorRepository doctorRepository) {
         _reportRepository = reportRepository;
         _recipeRepository = recipeRepository;
         _examinationRepository = examinationRepository;
         _medicalRecordReposiroty = medicalRecordReposiroty;
         _patientRepository = patientRepository;
+        _doctorRepository = doctorRepository;
     }
 
     @Override
@@ -104,6 +108,24 @@ public class ReportService implements IReportService {
         return reports.stream()
                 .map(report -> mapReportToReportResponse(report))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ReportResponse getReport(UUID id) throws Exception {
+        Report report = _reportRepository.findOneById(id);
+        return mapReportToReportResponse(report);
+    }
+
+    @Override
+    public ReportResponse updateReport(UpdateReportRequest request) throws Exception {
+        Report report = _reportRepository.findOneById(request.getReportId());
+        Doctor doctor = _doctorRepository.findOneById(request.getDoctorId());
+        if(report.getExamination().getSchedule().getDoctor() != doctor){
+            throw new Exception("Izmena izveštaja dozvoljena je samo lekarima koji su vršili taj pregled.");
+        }
+        report.setDescription(request.getDescription());
+        _reportRepository.save(report);
+        return mapReportToReportResponse(report);
     }
 
     public ReportResponse mapReportToReportResponse(Report report){

@@ -1,14 +1,19 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.CreateMedicalRecordRequest;
+import com.example.demo.dto.request.UpdateMedicalRecordRequest;
 import com.example.demo.dto.response.MedicalRecordResponse;
+import com.example.demo.entity.Doctor;
 import com.example.demo.entity.MedicalRecord;
 import com.example.demo.entity.Patient;
+import com.example.demo.repository.IDoctorRepository;
 import com.example.demo.repository.IMedicalRecordReposiroty;
 import com.example.demo.repository.IPatientRepository;
 import com.example.demo.service.IMedicalRecordService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,9 +25,12 @@ public class MedicalRecordService implements IMedicalRecordService {
 
     private final IPatientRepository _patientRepository;
 
-    public MedicalRecordService(IMedicalRecordReposiroty medicalRecordReposiroty, IPatientRepository patientRepository) {
+    private final IDoctorRepository _doctorRepository;
+
+    public MedicalRecordService(IMedicalRecordReposiroty medicalRecordReposiroty, IPatientRepository patientRepository, IDoctorRepository doctorRepository) {
         _medicalRecordReposiroty = medicalRecordReposiroty;
         _patientRepository = patientRepository;
+        _doctorRepository = doctorRepository;
     }
 
     @Override
@@ -64,6 +72,33 @@ public class MedicalRecordService implements IMedicalRecordService {
             throw new Exception("Zdravstveni karton nije napravljen.");
         }
         return mapMedicalRecordToMedicalRecordResponse(medicalRecord);
+    }
+
+    @Override
+    public MedicalRecordResponse updateMedicalRecord(UpdateMedicalRecordRequest request) throws Exception {
+        Doctor doctor = _doctorRepository.findOneById(request.getDoctorId());
+        Patient patient = _patientRepository.findOneByUser_Email(request.getPatientEmail());
+        Date now = new Date();
+        LocalTime currentTime = request.getCurrentTime();
+        boolean flag =  doctor.getSchedules().stream()
+                .anyMatch(schedule -> schedule.getDate().getYear() == now.getYear()
+                        && schedule.getDate().getMonth() == now.getMonth()
+                        && schedule.getDate().getDay() == now.getDay()
+                        && schedule.getStartAt().isBefore(currentTime)
+                        && schedule.getEndAt().isAfter(currentTime)
+                        && schedule.getPatient().getId().equals(patient.getId()));
+
+        if(!flag) {
+            throw new Exception("Trenutno ne vršite pregled ovog pacijenta.");
+        }
+
+        MedicalRecord medicalRecord = patient.getMedicalRecord();
+        medicalRecord.setDiopter(request.getDiopter());
+        medicalRecord.setWeight(request.getWeight());
+        medicalRecord.setHeight(request.getHeight());
+        medicalRecord.setAllergy(request.getAllergy());
+        MedicalRecord savedMedicalRecprd = _medicalRecordReposiroty.save(medicalRecord);
+        return mapMedicalRecordToMedicalRecordResponse(savedMedicalRecprd);
     }
 
 
