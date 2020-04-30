@@ -30,6 +30,20 @@ public class ScheduleService implements IScheduleService {
     @Override
     public List<ScheduleResponse> getAllDoctorsSchedules(UUID id) throws Exception {
         List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndDoctor(true, _doctorRepository.findOneById(id));
+        if(schedules.isEmpty()){
+            throw new Exception("Nemate za sada ništa u Vašem radnom kalendaru.");
+        }
+        return schedules.stream()
+                .map(schedule -> mapScheduleToScheduleResponse(schedule))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ScheduleResponse> getAllNursesSchedules(UUID id) throws Exception {
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndNurse(true, _nurseRepository.findOneById(id));
+        if(schedules.isEmpty()){
+            throw new Exception("Nemate za sada ništa u Vašem radnom kalendaru.");
+        }
         return schedules.stream()
                 .map(schedule -> mapScheduleToScheduleResponse(schedule))
                 .collect(Collectors.toList());
