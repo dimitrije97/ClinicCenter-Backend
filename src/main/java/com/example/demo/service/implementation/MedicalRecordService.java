@@ -1,6 +1,7 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.CreateMedicalRecordRequest;
+import com.example.demo.dto.request.GetMedicalRecordRequest;
 import com.example.demo.dto.request.UpdateMedicalRecordRequest;
 import com.example.demo.dto.response.MedicalRecordResponse;
 import com.example.demo.entity.Doctor;
@@ -66,8 +67,16 @@ public class MedicalRecordService implements IMedicalRecordService {
     }
 
     @Override
-    public MedicalRecordResponse getMedicalRecordByPatient(UUID id) throws Exception {
-        MedicalRecord medicalRecord = _medicalRecordReposiroty.findOneByPatient_Id(id);
+    public MedicalRecordResponse getMedicalRecordByPatient(GetMedicalRecordRequest request) throws Exception {
+        Doctor doctor = _doctorRepository.findOneById(request.getDoctorId());
+        if(doctor != null){
+            Patient patient = _patientRepository.findOneById(request.getPatientId());
+            if(!patient.getDoctors().contains(doctor)){
+                throw new Exception("Možete videti zdravstveni karton samo onih pacijenata koji su kod Vas imali pregled.");
+            }
+        }
+
+        MedicalRecord medicalRecord = _medicalRecordReposiroty.findOneByPatient_Id(request.getPatientId());
         if(medicalRecord == null){
             throw new Exception("Zdravstveni karton nije napravljen.");
         }

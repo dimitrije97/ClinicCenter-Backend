@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.request.CreateMedicalRecordRequest;
+import com.example.demo.dto.request.GetMedicalRecordRequest;
 import com.example.demo.dto.request.UpdateMedicalRecordRequest;
 import com.example.demo.dto.response.MedicalRecordResponse;
 
@@ -13,7 +14,7 @@ public interface IMedicalRecordService {
 
     List<MedicalRecordResponse> getAllMedicalRecords() throws Exception;
 
-    MedicalRecordResponse getMedicalRecordByPatient(UUID id) throws Exception;
+    MedicalRecordResponse getMedicalRecordByPatient(GetMedicalRecordRequest request) throws Exception;
 
     MedicalRecordResponse updateMedicalRecord(UpdateMedicalRecordRequest request) throws Exception;
 }
