@@ -1,8 +1,8 @@
-insert into clinic (id, address, deleted, description, name) values
-('f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b', 'Adresa1', 'false', 'Opis1', 'Ime1'),
-('7833aba3-bf46-4d25-a856-651d7d7ba279', 'Adresa2', 'false', 'Opis2', 'Ime2'),
-('5d26aa42-f1f9-45a5-9e31-db07d5df6c1a', 'Adresa3', 'false', 'Opis3', 'Ime3'),
-('229c6688-afd8-4137-8d15-92655b1f05ee', 'Adresa4', 'true', 'Opis4', 'Ime4');
+insert into clinic (id, address, deleted, description, name, lat, lon) values
+('f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b', 'Bulevar Cara Lazara 10', 'false', 'Opis1', 'Ime1', '45.248210', '19.850460'),
+('7833aba3-bf46-4d25-a856-651d7d7ba279', 'Svetislava Kasapinovica 10', 'false', 'Opis2', 'Ime2', '45.257890', '19.815500'),
+('5d26aa42-f1f9-45a5-9e31-db07d5df6c1a', 'Kace Dejanovic 5', 'false', 'Opis3', 'Ime3', '45.253300', '19.801740'),
+('229c6688-afd8-4137-8d15-92655b1f05ee', 'Partizanskih baza 5', 'true', 'Opis4', 'Ime4', null, null);
 
 insert into patient (id, request_type) values
 ('e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'APPROVED'),
