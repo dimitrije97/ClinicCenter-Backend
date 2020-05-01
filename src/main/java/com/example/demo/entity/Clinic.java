@@ -42,5 +42,7 @@ public class Clinic extends BaseEntity {
     @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Grade> grades = new ArrayList<>();
 
+    private String lat;
 
+    private String lon;
 }

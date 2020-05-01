@@ -18,4 +18,8 @@ public class ClinicResponse {
     private String description;
 
     private UUID id;
+
+    private String lat;
+
+    private String lon;
 }

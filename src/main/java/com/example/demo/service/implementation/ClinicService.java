@@ -14,6 +14,7 @@ import com.example.demo.service.IClinicService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -41,6 +42,19 @@ public class ClinicService implements IClinicService {
         clinic.setDescription(request.getDescription());
         clinic.setName(request.getName());
         clinic.setDeleted(false);
+        try{
+            Float.parseFloat(request.getLat());
+            clinic.setLat(request.getLat());
+        }catch (Exception var5){
+            clinic.setLat(null);
+        }
+
+        try{
+            Float.parseFloat(request.getLon());
+            clinic.setLat(request.getLon());
+        }catch (Exception var5){
+            clinic.setLon(null);
+        }
 
         Clinic savedClinic = _clinicRepository.save(clinic);
 
@@ -86,6 +100,19 @@ public class ClinicService implements IClinicService {
         clinic.setName(request.getName());
         clinic.setDescription(request.getDescription());
         clinic.setAddress(request.getAddress());
+        try{
+            Float.parseFloat(request.getLat());
+            clinic.setLat(request.getLat());
+        }catch (Exception var5){
+            clinic.setLat(null);
+        }
+
+        try{
+            Float.parseFloat(request.getLon());
+            clinic.setLat(request.getLon());
+        }catch (Exception var5){
+            clinic.setLon(null);
+        }
         Clinic savedClinic = _clinicRepository.save(clinic);
 
         return mapClinicToClinicResponse(savedClinic);
@@ -106,6 +133,8 @@ public class ClinicService implements IClinicService {
         clinicResponse.setDescription(clinic.getDescription());
         clinicResponse.setName(clinic.getName());
         clinicResponse.setId(clinic.getId());
+        clinicResponse.setLat(clinic.getLat());
+        clinicResponse.setLon(clinic.getLon());
 
         return clinicResponse;
     }
