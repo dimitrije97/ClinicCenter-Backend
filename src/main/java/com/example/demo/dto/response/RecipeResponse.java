@@ -16,4 +16,8 @@ public class RecipeResponse {
     private String medicineName;
 
     private String diagnosisName;
+
+    private String nurseName;
+
+    private String nurseSurname;
 }

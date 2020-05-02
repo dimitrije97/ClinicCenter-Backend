@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.request.GetExaminationTypesIncomInClinicRequest;
+import com.example.demo.dto.response.DailyIncomeResponse;
 import com.example.demo.dto.response.IncomeResponse;
 import com.example.demo.dto.response.MonthlyIncomeResponse;
 import com.example.demo.service.IIncomeService;
@@ -46,5 +47,10 @@ public class IncomeController {
     @GetMapping("/monthly/{id}/clinic")
     public MonthlyIncomeResponse getMonthlyClinicsIncome(@PathVariable UUID id) throws Exception {
         return _incomeService.getClinicsMonthlyIncome(id);
+    }
+
+    @GetMapping("/daily/{id}/clinic")
+    public DailyIncomeResponse getDailyClinicsIncome(@PathVariable UUID id) throws Exception {
+        return _incomeService.getClinicsDailyIncome(id);
     }
 }

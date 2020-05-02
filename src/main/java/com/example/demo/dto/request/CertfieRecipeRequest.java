@@ -8,4 +8,6 @@ import java.util.UUID;
 public class CertfieRecipeRequest {
 
     private UUID recipeId;
+
+    private UUID nurseId;
 }
