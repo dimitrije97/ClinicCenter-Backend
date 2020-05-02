@@ -5,9 +5,11 @@ import com.example.demo.dto.request.CreateRecipeRequest;
 import com.example.demo.dto.response.RecipeResponse;
 import com.example.demo.entity.Diagnosis;
 import com.example.demo.entity.Medicine;
+import com.example.demo.entity.Nurse;
 import com.example.demo.entity.Recipe;
 import com.example.demo.repository.IDiagnosisRepository;
 import com.example.demo.repository.IMedicineRepository;
+import com.example.demo.repository.INurseRepository;
 import com.example.demo.repository.IRecipeRepository;
 import com.example.demo.service.IRecipeService;
 import org.springframework.stereotype.Service;
@@ -25,10 +27,13 @@ public class RecipeService implements IRecipeService {
 
     private final IDiagnosisRepository _diagnosisRepository;
 
-    public RecipeService(IRecipeRepository recipeRepository, IMedicineRepository medicineRepository, IDiagnosisRepository diagnosisRepository) {
+    private final INurseRepository _nurseRepository;
+
+    public RecipeService(IRecipeRepository recipeRepository, IMedicineRepository medicineRepository, IDiagnosisRepository diagnosisRepository, INurseRepository nurseRepository) {
         _recipeRepository = recipeRepository;
         _medicineRepository = medicineRepository;
         _diagnosisRepository = diagnosisRepository;
+        _nurseRepository = nurseRepository;
     }
 
     @Override
@@ -69,6 +74,7 @@ public class RecipeService implements IRecipeService {
         if(recipe.isCertified()){
             throw new Exception("Recept je vec overen.");
         }
+        recipe.setNurseId(request.getNurseId());
         recipe.setCertified(true);
         recipe.setWaiting(false);
         _recipeRepository.save(recipe);
@@ -113,6 +119,11 @@ public class RecipeService implements IRecipeService {
         response.setDiagnosisName(recipe.getDiagnosis().getName());
         response.setMedicineName(recipe.getMedicine().getName());
         response.setId(recipe.getId());
+        Nurse nurse = _nurseRepository.findOneById(recipe.getNurseId());
+        if(nurse != null){
+            response.setNurseName(nurse.getUser().getFirstName());
+            response.setNurseSurname(nurse.getUser().getLastName());
+        }
         return response;
     }
 }

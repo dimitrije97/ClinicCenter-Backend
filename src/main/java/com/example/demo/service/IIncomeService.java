@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.request.GetExaminationTypesIncomInClinicRequest;
+import com.example.demo.dto.response.DailyIncomeResponse;
 import com.example.demo.dto.response.IncomeResponse;
 import com.example.demo.dto.response.MonthlyIncomeResponse;
 
@@ -19,4 +20,6 @@ public interface IIncomeService {
     IncomeResponse getExaminationTypesIncomInClinic(GetExaminationTypesIncomInClinicRequest request, UUID clinicId) throws Exception;
 
     MonthlyIncomeResponse getClinicsMonthlyIncome(UUID clinicId) throws Exception;
+
+    DailyIncomeResponse getClinicsDailyIncome(UUID clinicId) throws Exception;
 }

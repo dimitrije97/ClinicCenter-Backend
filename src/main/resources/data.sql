@@ -50,7 +50,7 @@ insert into emergency_room(id, name, number, deleted, clinic_id) values
 ('05a4c407-834c-47ed-be62-1ab76c70a629', 'SalaE', '4001', 'true', '229c6688-afd8-4137-8d15-92655b1f05ee');
 
 insert into schedule(id, approved, date, start_at, end_at, doctor_id, patient_id, reason_of_unavailability, nurse_id) values
-('bb17dce6-632c-4eca-ab3e-977d7ffc0780', 'true', '2020/05/01', '08:30:00', '09:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION', null),
+('bb17dce6-632c-4eca-ab3e-977d7ffc0780', 'true', '2020/05/03', '08:30:00', '09:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION', null),
 ('ca33f7c5-3555-499b-923a-d8bb12fcd358', 'true', '2020/04/02', '16:30:00', '17:30:00', '8dbea129-360a-4d77-afca-5c5bb94174c1', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION', null),
 ('8e7819c1-df81-4b28-96d7-ca3206e45f8f', 'true', '2020/04/01', '10:30:00', '11:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION', null),
 ('ca00ff6a-bc8c-46ab-83a5-9d64cb62aa6b', 'true', '2020/04/03', '12:30:00', '13:30:00', 'b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION', null),
@@ -92,12 +92,12 @@ insert into diagnosis(id, name, deleted) values
 ('7a78f767-3cd9-44a2-9176-e1942a903e39', 'Dijagnoza2', 'false'),
 ('bdfcc5ed-53cd-4d50-af16-65134bd1dd0c', 'Dijagnoza3', 'true');
 
-insert into recipe(id, certified, deleted, medicine_id, diagnosis_id, waiting) values
-('a6287e51-24bf-4626-9762-c7a65d833670', 'false', 'false', 'd8572b0c-b38a-4021-b580-f4611789cadb', '09609161-8237-4c03-b0bf-6366e873cec8', 'false'),
-('3dcb5c03-917a-4c88-ba03-563fe4a6a524', 'true', 'false', '7fda0019-0ec4-41ca-a8e7-676a9ad35d16', '09609161-8237-4c03-b0bf-6366e873cec8', 'false');
+insert into recipe(id, certified, deleted, medicine_id, diagnosis_id, waiting, nurse_id) values
+('a6287e51-24bf-4626-9762-c7a65d833670', 'false', 'false', 'd8572b0c-b38a-4021-b580-f4611789cadb', '09609161-8237-4c03-b0bf-6366e873cec8', 'false', null),
+('3dcb5c03-917a-4c88-ba03-563fe4a6a524', 'true', 'false', '7fda0019-0ec4-41ca-a8e7-676a9ad35d16', '09609161-8237-4c03-b0bf-6366e873cec8', 'false', '767609d0-dd8a-487f-9ef0-a2433b71d49b');
 
 insert into medical_record(id, height, weight, patient_id, allergy) values
 ('d838da48-b288-4acc-a01c-4c957d2c56ec', '190', '90', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'Aleregija1');
 
 insert into report(id, description, medical_record_id, recipe_id, examination_id) values
-('45277f2b-ba19-4898-8567-8ce1cea812e9', 'Izvestai1', 'd838da48-b288-4acc-a01c-4c957d2c56ec', 'a6287e51-24bf-4626-9762-c7a65d833670', 'a3102c53-f2b6-4476-aa2a-ee63fc553e4f');
+('45277f2b-ba19-4898-8567-8ce1cea812e9', 'Izvestai1', 'd838da48-b288-4acc-a01c-4c957d2c56ec', '3dcb5c03-917a-4c88-ba03-563fe4a6a524', 'a3102c53-f2b6-4476-aa2a-ee63fc553e4f');

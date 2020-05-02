@@ -1,6 +1,7 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.GetExaminationTypesIncomInClinicRequest;
+import com.example.demo.dto.response.DailyIncomeResponse;
 import com.example.demo.dto.response.IncomeResponse;
 import com.example.demo.dto.response.MonthlyIncomeResponse;
 import com.example.demo.entity.Clinic;
@@ -164,13 +165,13 @@ public class IncomeService implements IIncomeService {
             if(clinic.getDoctors().contains(schedule.getDoctor())){
                 income += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
                 number++;
-                if(schedule.getDate().getMonth() == now.getMonth()){
+                if(schedule.getDate().getYear() == now.getYear() && schedule.getDate().getMonth() == now.getMonth()){
                     incomeThisMonth += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
                     numberThisMonth++;
-                }else if(schedule.getDate().getMonth() == lastMonth.getMonth()){
+                }else if(schedule.getDate().getYear() == lastMonth.getYear() && schedule.getDate().getMonth() == lastMonth.getMonth()){
                     incomeLastMonth += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
                     numberLastMonth++;
-                }else if(schedule.getDate().getMonth() == lastLastMonth.getMonth()) {
+                }else if(schedule.getDate().getYear() == lastLastMonth.getYear() && schedule.getDate().getMonth() == lastLastMonth.getMonth()) {
                     incomeLastLastMonth += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
                     numberLastLastMonth++;
                 }
@@ -197,11 +198,71 @@ public class IncomeService implements IIncomeService {
         return response;
     }
 
+    @Override
+    public DailyIncomeResponse getClinicsDailyIncome(UUID clinicId) throws Exception {
+        Clinic clinic = _clinicRepository.findOneById(clinicId);
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        float income = 0;
+        int number = 0;
+        float incomeThisDay = 0;
+        int numberThisDay = 0;
+        float incomeLastDay = 0;
+        int numberLastDay = 0;
+        float incomeLastLastDay = 0;
+        int numberLastLastDay = 0;
+        Date now = new Date();
+        Date lastDay = lastDay(now);
+        Date lastLastDay = lastDay(lastDay);
+        for (Schedule schedule: schedules) {
+            if(clinic.getDoctors().contains(schedule.getDoctor())){
+                income += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
+                number++;
+                if(schedule.getDate().getYear() == now.getYear() && schedule.getDate().getMonth() == now.getMonth() && schedule.getDate().getDay() == now.getDay()){
+                    incomeThisDay += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
+                    numberThisDay++;
+                }else if(schedule.getDate().getYear() == lastDay.getYear() && schedule.getDate().getMonth() == lastDay.getMonth() && schedule.getDate().getDay() == lastDay.getDay()){
+                    incomeLastDay += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
+                    numberLastDay++;
+                }else if(schedule.getDate().getYear() == lastLastDay.getYear() && schedule.getDate().getMonth() == lastLastDay.getMonth() && schedule.getDate().getDay() == lastLastDay.getDay() ) {
+                    incomeLastLastDay += Float.valueOf(schedule.getDoctor().getExaminationType().getPrice());
+                    numberLastLastDay++;
+                }
+            }
+        }
+        DailyIncomeResponse response = new DailyIncomeResponse();
+
+        response.setLastLastDayIncome(String.valueOf(incomeLastLastDay));
+        response.setLastDayIncome(String.valueOf(incomeLastDay));
+        response.setThisDayIncome(String.valueOf(incomeThisDay));
+
+        float thisDayIncomePercent = (incomeThisDay * 100) / income;
+        float lastDayIncomePercent = (incomeLastDay * 100) / income;
+        float lastLastDayIncomePercent = (incomeLastLastDay * 100) / income;
+
+        response.setThisDayIncomePercent(String.valueOf(thisDayIncomePercent));
+        response.setLastDayIncomePercent(String.valueOf(lastDayIncomePercent));
+        response.setLastLastDayIncomePercent(String.valueOf(lastLastDayIncomePercent));
+
+        response.setThisDayExaminations(String.valueOf(numberThisDay));
+        response.setLastDayExaminations(String.valueOf(numberLastDay));
+        response.setLastLastDayExaminations(String.valueOf(numberLastLastDay));
+
+        return response;
+    }
+
     private Date lastMonth(Date date)
     {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.MONTH, -1);
+        return cal.getTime();
+    }
+
+    private Date lastDay(Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, -1);
         return cal.getTime();
     }
 }
