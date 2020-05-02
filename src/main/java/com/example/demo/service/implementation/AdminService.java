@@ -41,6 +41,10 @@ public class AdminService implements IAdminService {
     @Override
     public AdminResponse createAdmin(CreateAdminRequest request) throws Exception {
 
+        Clinic clinic = _clinicRepository.findOneById(request.getClinicId());
+        if(clinic == null){
+            throw new Exception("Niste dodelili kliniku.");
+        }
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setPassword("admin");
         userRequest.setRePassword("admin");
@@ -60,7 +64,6 @@ public class AdminService implements IAdminService {
         Admin admin = new Admin();
         admin.setUser(user);
 
-        Clinic clinic = _clinicRepository.findOneById(request.getClinicId());
         admin.setClinic(clinic);
 
         Admin savedAdmin = _adminRepository.save(admin);

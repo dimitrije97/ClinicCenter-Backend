@@ -48,6 +48,9 @@ public class DoctorService implements IDoctorService {
     @Override
     public DoctorResponse createDoctor(CreateDoctorRequest doctorRequest, UUID clinicId) throws Exception {
 
+        if(doctorRequest.getExaminationTypeId() == null){
+            throw new Exception("Niste odabrali specijalnost.");
+        }
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setPassword("doctor");
         userRequest.setRePassword("doctor");
