@@ -185,6 +185,15 @@ public class IncomeService implements IIncomeService {
         response.setLastMonthIncome(String.valueOf(incomeLastMonth));
         response.setThisMonthExaminations(String.valueOf(numberThisMonth));
         response.setThisMonthIncome(String.valueOf(incomeThisMonth));
+
+        float thisMonthIncomePercent = (incomeThisMonth * 100) / income;
+        float lastMonthIncomePercent = (incomeLastMonth * 100) / income;
+        float lastLastMonthIncomePercent = (incomeLastLastMonth * 100) / income;
+
+        response.setThisMonthIncomePercent(String.valueOf(thisMonthIncomePercent));
+        response.setLastMonthIncomePercent(String.valueOf(lastMonthIncomePercent));
+        response.setLastLastMonthIncomePercent(String.valueOf(lastLastMonthIncomePercent));
+
         return response;
     }
 

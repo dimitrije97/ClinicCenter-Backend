@@ -25,4 +25,10 @@ public class MonthlyIncomeResponse {
     private String lastMonthExaminations;
 
     private String lastLastMonthExaminations;
+
+    private String thisMonthIncomePercent;
+
+    private String lastMonthIncomePercent;
+
+    private String lastLastMonthIncomePercent;
 }
