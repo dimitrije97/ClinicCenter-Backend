@@ -2,6 +2,7 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.CreateClinicRequest;
 import com.example.demo.dto.request.NewClinicAdminRequest;
+import com.example.demo.dto.request.SearchClinicsRequest;
 import com.example.demo.dto.request.UpdateClinicRequest;
 import com.example.demo.dto.response.ClinicResponse;
 import com.example.demo.entity.Admin;
@@ -15,6 +16,7 @@ import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -124,6 +126,29 @@ public class ClinicService implements IClinicService {
         Admin newAdmin = _adminRepository.findOneById(request.getAdminId());
         clinic.getAdmins().add(newAdmin);
         _clinicRepository.save(clinic);
+    }
+
+    @Override
+    public Set<ClinicResponse> getAllClinics(SearchClinicsRequest request) throws Exception {
+        Set<Clinic> clinics = _clinicRepository.findAllByDeleted(false);
+        Set<Clinic> searchedClinicsByName = new HashSet<>();
+        Set<Clinic> searchedClinicsByNameAndAddress = new HashSet<>();
+
+        for(Clinic clinic: clinics){
+            if(clinic.getName().toLowerCase().contains(request.getName().toLowerCase())){
+                searchedClinicsByName.add(clinic);
+            }
+        }
+
+        for(Clinic clinic: searchedClinicsByName){
+            if(clinic.getAddress().toLowerCase().contains(request.getAddress().toLowerCase())){
+                searchedClinicsByNameAndAddress.add(clinic);
+            }
+        }
+
+        return searchedClinicsByNameAndAddress.stream()
+                .map(clinic -> mapClinicToClinicResponse(clinic))
+                .collect(Collectors.toSet());
     }
 
     public ClinicResponse mapClinicToClinicResponse(Clinic clinic){

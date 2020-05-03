@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.request.CreateClinicRequest;
 import com.example.demo.dto.request.NewClinicAdminRequest;
+import com.example.demo.dto.request.SearchClinicsRequest;
 import com.example.demo.dto.request.UpdateClinicRequest;
 import com.example.demo.dto.response.ClinicResponse;
 
@@ -21,4 +22,6 @@ public interface IClinicService {
     ClinicResponse updateClinic(UpdateClinicRequest request, UUID id);
 
     void addNewClinicAdmin(NewClinicAdminRequest request);
+
+    Set<ClinicResponse> getAllClinics(SearchClinicsRequest request) throws Exception;
 }
