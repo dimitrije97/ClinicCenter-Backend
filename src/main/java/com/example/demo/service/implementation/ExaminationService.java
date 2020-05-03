@@ -566,6 +566,30 @@ public class ExaminationService implements IExaminationService {
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public Set<ExaminationResponse> getPatientsExaminationHistory(SearchPatientsExaminationHistoryRequest request, UUID patientId) throws Exception {
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndPatientId(true, patientId);
+        Date now = new Date();
+        Set<Examination> patientsHistory = new HashSet<>();
+        for (Schedule s: schedules) {
+            if(s.getDate().before(now)){
+                patientsHistory.add(s.getExamination());
+            }
+        }
+
+        Set<Examination> serchedByName = new HashSet<>();
+
+        for(Examination examination: patientsHistory){
+            if(examination.getSchedule().getDoctor().getExaminationType().getName().toLowerCase().contains(request.getName().toLowerCase())){
+                serchedByName.add(examination);
+            }
+        }
+
+        return serchedByName.stream()
+                .map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
     public ExaminationResponse mapExaminationToExaminationResponse(Examination examination, Schedule schedule){
         ExaminationResponse examinationResponse = new ExaminationResponse();
         examinationResponse.setId(examination.getId());

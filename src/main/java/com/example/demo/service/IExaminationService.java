@@ -49,4 +49,6 @@ public interface IExaminationService {
     Set<ExaminationResponse> getExaminationsWhichPatientCanCancel(UUID patientId) throws Exception;
 
     Set<ExaminationResponse> getExaminationsWhichDoctorCanCancel(UUID doctorId) throws Exception;
+
+    Set<ExaminationResponse> getPatientsExaminationHistory(SearchPatientsExaminationHistoryRequest request, UUID patientId) throws Exception;
 }
