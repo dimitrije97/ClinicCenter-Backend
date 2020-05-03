@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.request.AdminsMessageAboutDenyingRegistrationRequest;
-import com.example.demo.dto.request.ApprovePatientRequest;
-import com.example.demo.dto.request.CreatePatientRequest;
-import com.example.demo.dto.request.UpdatePatientRequest;
+import com.example.demo.dto.request.*;
 import com.example.demo.dto.response.PatientResponse;
 
 import java.util.List;
@@ -35,4 +32,6 @@ public interface IPatientService {
     Set<PatientResponse> getAllPatientsWithoutMedicalRecord() throws Exception;
 
     Set<PatientResponse> getAllPatientsWithMedicalRecord() throws Exception;
+
+    Set<PatientResponse> getAllPatientsByClinic(SearchPatientsRequest request, UUID clinicId) throws Exception;
 }

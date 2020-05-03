@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.AdminsMessageAboutDenyingRegistrationRequest;
 import com.example.demo.dto.request.ApprovePatientRequest;
+import com.example.demo.dto.request.SearchPatientsRequest;
 import com.example.demo.dto.request.UpdatePatientRequest;
 import com.example.demo.dto.response.PatientResponse;
 import com.example.demo.entity.Patient;
@@ -76,5 +77,10 @@ public class PatientController {
     @GetMapping("without-medical-record")
     public Set<PatientResponse> getAllPatientsWithoutMedicalRecord() throws Exception {
         return _patientService.getAllPatientsWithoutMedicalRecord();
+    }
+
+    @GetMapping("/search/{id}/clinic")
+    public Set<PatientResponse> getAllPatientsByFirstNameAndLastNameAndSsn(SearchPatientsRequest request, @PathVariable UUID id) throws Exception {
+        return _patientService.getAllPatientsByClinic(request, id);
     }
 }
