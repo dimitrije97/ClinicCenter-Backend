@@ -235,6 +235,46 @@ public class PatientService implements IPatientService {
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public Set<PatientResponse> getAllPatientsByClinic(SearchPatientsRequest request, UUID clinicId) throws Exception {
+        Set<Patient> allPatients = _patientRepository.findAllByRequestTypeAndUser_Deleted(RequestType.APPROVED, false);
+        Set<Patient> patients = new HashSet<>();
+        for (Patient patient: allPatients) {
+            for (Doctor doctor: patient.getDoctors()) {
+                if(doctor.getClinic() == _clinicRepository.findOneById(clinicId)){
+                    patients.add(patient);
+                    break;
+                }
+            }
+        }
+
+        Set<Patient> searchedByFirstName = new HashSet<>();
+        Set<Patient> searchedByFirstNameAndLastName = new HashSet<>();
+        Set<Patient> searchedByFirstNameAndLastNameAndSsn = new HashSet<>();
+
+        for(Patient patient: patients){
+            if(patient.getUser().getFirstName().toLowerCase().contains(request.getFirstName().toLowerCase())){
+                searchedByFirstName.add(patient);
+            }
+        }
+
+        for(Patient patient: searchedByFirstName){
+            if(patient.getUser().getLastName().toLowerCase().contains(request.getLastName().toLowerCase())){
+                searchedByFirstNameAndLastName.add(patient);
+            }
+        }
+
+        for(Patient patient: searchedByFirstNameAndLastName){
+            if(patient.getUser().getSsn().toLowerCase().contains(request.getSsn().toLowerCase())){
+                searchedByFirstNameAndLastNameAndSsn.add(patient);
+            }
+        }
+
+        return searchedByFirstNameAndLastNameAndSsn.stream()
+                .map(patient -> mapPatientToPatientResponse(patient))
+                .collect(Collectors.toSet());
+    }
+
     private PatientResponse mapPatientToPatientResponse(Patient patient) {
         PatientResponse patientResponse = new PatientResponse();
         User user = patient.getUser();
