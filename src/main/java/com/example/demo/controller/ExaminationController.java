@@ -97,4 +97,9 @@ public class ExaminationController {
     public Set<ExaminationResponse> getAllExaminationsWhichDoctorCanCancel(@PathVariable UUID id) throws Exception {
         return _examinationService.getExaminationsWhichDoctorCanCancel(id);
     }
+
+    @GetMapping("/search/history/{id}/patient")
+    public Set<ExaminationResponse> getPatientsExaminationHistoryByName(SearchPatientsExaminationHistoryRequest request, @PathVariable UUID id) throws Exception {
+        return _examinationService.getPatientsExaminationHistory(request, id);
+    }
 }
