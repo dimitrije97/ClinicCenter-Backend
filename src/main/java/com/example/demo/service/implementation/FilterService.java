@@ -3,6 +3,7 @@ package com.example.demo.service.implementation;
 import com.example.demo.dto.request.AvailableClinicsRequest;
 import com.example.demo.dto.request.AvailableDoctorsRequest;
 import com.example.demo.dto.request.AvailableEmergencyRoomsRequest;
+import com.example.demo.dto.request.SearchAvailableDoctors;
 import com.example.demo.dto.response.ClinicResponse;
 import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.EmergencyRoomResponse;
@@ -164,6 +165,65 @@ public class FilterService implements IFilterService {
         }
 
         return emergencyRooms.stream().map(emergencyRoom -> mapEmergencyRoomToEmergencyRoomResponse(emergencyRoom))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(SearchAvailableDoctors request) throws Exception {
+        Clinic clinic = _clinicRepository.findOneById(request.getClinicId());
+        ExaminationType examinationType = _examinationTypeRepository.findOneById(request.getExaminationTypeId());
+        List<Doctor> allDoctors = clinic.getDoctors();
+        Set<Doctor> doctors = new HashSet<>();
+
+        String[] tokens = request.getStartAt().split(":");
+        LocalTime startAt =  LocalTime.of(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+//        if(tokens[0].equals("23")){
+//            throw new Exception("Ne možete zakazati pregled između 23h i ponoći.");
+//        }
+
+        for (Doctor d: allDoctors) {
+            if(d.getExaminationType() == examinationType && startAt.isAfter(d.getStartAt()) && startAt.plusHours(1L).isBefore(d.getEndAt())){
+                boolean flag = false;
+                for (Schedule s: d.getSchedules()) {
+                    if(request.getDate().getYear() == s.getDate().getYear()
+                            && request.getDate().getMonth() == s.getDate().getMonth()
+                            && request.getDate().getDay() == s.getDate().getDay()){
+                        if(s.getReasonOfUnavailability().equals(ReasonOfUnavailability.VACATION)){
+                            flag = true;
+                        }
+                        if(s.getReasonOfUnavailability().equals(ReasonOfUnavailability.EXAMINATION)
+                                && startAt.isAfter(s.getStartAt().minusHours(1L))
+                                && startAt.isBefore(s.getEndAt())){
+                            flag = true;
+                        }
+                    }
+                    if(flag){
+                        break;
+                    }
+                }
+                if(!flag){
+                    doctors.add(d);
+                }
+            }
+        }
+
+        Set<Doctor> searchedByFirstName = new HashSet<>();
+        Set<Doctor> searchedByFirstNameAndLastName = new HashSet<>();
+
+        for(Doctor doctor: doctors){
+            if(doctor.getUser().getFirstName().toLowerCase().contains(request.getFirstName().toLowerCase())){
+                searchedByFirstName.add(doctor);
+            }
+        }
+
+        for(Doctor doctor: searchedByFirstName){
+            if(doctor.getUser().getLastName().toLowerCase().contains(request.getLastName().toLowerCase())){
+                searchedByFirstNameAndLastName.add(doctor);
+            }
+        }
+
+        return searchedByFirstNameAndLastName.stream()
+                .map(doctor -> mapDoctorToDoctorResponse(doctor))
                 .collect(Collectors.toSet());
     }
 
