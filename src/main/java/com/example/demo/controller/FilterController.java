@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.AvailableClinicsRequest;
-import com.example.demo.dto.request.AvailableDoctorsRequest;
-import com.example.demo.dto.request.AvailableEmergencyRoomsRequest;
+import com.example.demo.dto.request.*;
 import com.example.demo.dto.response.ClinicResponse;
 import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.EmergencyRoomResponse;
@@ -34,5 +32,10 @@ public class FilterController {
     @GetMapping("/emergency-rooms")
     public Set<EmergencyRoomResponse> getAvailableEmergencyRooms(AvailableEmergencyRoomsRequest request) throws Exception {
         return _filterService.getAvailableEmergencyRooms(request);
+    }
+
+    @GetMapping("/doctors/search")
+    public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(SearchAvailableDoctors request) throws Exception {
+        return _filterService.getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(request);
     }
 }
