@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.CreateClinicRequest;
 import com.example.demo.dto.request.NewClinicAdminRequest;
+import com.example.demo.dto.request.SearchClinicsRequest;
 import com.example.demo.dto.request.UpdateClinicRequest;
 import com.example.demo.dto.response.ClinicResponse;
 import com.example.demo.repository.IClinicRepository;
@@ -40,6 +41,11 @@ public class ClinicController {
     @PutMapping("/{id}/clinic")
     public ClinicResponse updateClinic(@RequestBody UpdateClinicRequest request, @PathVariable UUID id) { return _clinicService.updateClinic(request, id); }
 
-    @PutMapping("add-clinic-admin")
+    @PutMapping("/add-clinic-admin")
     public void addClinicAdmin(@RequestBody NewClinicAdminRequest request) {  _clinicService.addNewClinicAdmin(request); }
+
+    @GetMapping("/search")
+    public Set<ClinicResponse> getAllClinicsByNameAndAddress(SearchClinicsRequest request) throws Exception {
+        return _clinicService.getAllClinics(request);
+    }
 }
