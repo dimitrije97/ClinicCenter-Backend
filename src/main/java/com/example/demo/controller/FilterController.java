@@ -35,7 +35,12 @@ public class FilterController {
     }
 
     @GetMapping("/doctors/search")
-    public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(SearchAvailableDoctors request) throws Exception {
+    public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(SearchAvailableDoctorsRequest request) throws Exception {
         return _filterService.getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(request);
+    }
+
+    @GetMapping("/emergency-rooms/search")
+    public Set<EmergencyRoomResponse> getAvailableEmergencyRoomsByNameAndNumber(SearchAvailableEmergencyRoomsRequest request) throws Exception {
+        return _filterService.getAvailableEmergencyRooms(request);
     }
 }
