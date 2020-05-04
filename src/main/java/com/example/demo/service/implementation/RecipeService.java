@@ -2,6 +2,7 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.CertfieRecipeRequest;
 import com.example.demo.dto.request.CreateRecipeRequest;
+import com.example.demo.dto.request.SearchCertifiedRecipesRequest;
 import com.example.demo.dto.response.RecipeResponse;
 import com.example.demo.entity.Diagnosis;
 import com.example.demo.entity.Medicine;
@@ -69,7 +70,7 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public RecipeResponse certifieRecipe(CertfieRecipeRequest request) throws Exception {
+    public RecipeResponse certifyRecipe(CertfieRecipeRequest request) throws Exception {
         Recipe recipe = _recipeRepository.findOneById(request.getRecipeId());
         if(recipe.isCertified()){
             throw new Exception("Recept je vec overen.");
@@ -82,7 +83,7 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public List<RecipeResponse> getAllCertifedRecipes() throws Exception {
+    public List<RecipeResponse> getAllCertifiedRecipes() throws Exception {
         List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertifiedAndWaiting(false, true, false);
         if(recipes.isEmpty()){
             throw new Exception("Ne postoji nijedan overen recept.");
@@ -93,7 +94,7 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public List<RecipeResponse> getAllNonCertifedRecipes() throws Exception {
+    public List<RecipeResponse> getAllNonCertifiedRecipes() throws Exception {
         List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertifiedAndWaiting(false, false, false);
         if(recipes.isEmpty()){
             throw new Exception("Ne postoji nijedan neoveren recept.");
@@ -111,6 +112,30 @@ public class RecipeService implements IRecipeService {
         }
         return recipes.stream()
                 .map(recipe -> mapRecipeToRecipeResponse(recipe))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RecipeResponse> getAllCertifiedRecipes(SearchCertifiedRecipesRequest request) throws Exception {
+        List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertifiedAndWaiting(false, true, false);
+
+        return recipes
+                .stream()
+                .filter(recipe -> {
+                    if(request.getMedicineName() != null) {
+                        return recipe.getMedicine().getName().toLowerCase().contains(request.getMedicineName().toLowerCase());
+                    } else {
+                        return true;
+                    }
+                })
+                .filter(recipe -> {
+                    if(request.getDiagnosisName() != null) {
+                        return recipe.getDiagnosis().getName().toLowerCase().contains(request.getDiagnosisName().toLowerCase());
+                    } else {
+                        return true;
+                    }
+                })
+                .map(r -> mapRecipeToRecipeResponse(r))
                 .collect(Collectors.toList());
     }
 

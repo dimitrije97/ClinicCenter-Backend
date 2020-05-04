@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.request.CertfieRecipeRequest;
 import com.example.demo.dto.request.CreateRecipeRequest;
+import com.example.demo.dto.request.SearchCertifiedRecipesRequest;
 import com.example.demo.dto.response.RecipeResponse;
 
 import java.util.List;
@@ -15,11 +16,13 @@ public interface IRecipeService {
 
     List<RecipeResponse> getAllRecipes() throws Exception;
 
-    RecipeResponse certifieRecipe(CertfieRecipeRequest request) throws Exception;
+    RecipeResponse certifyRecipe(CertfieRecipeRequest request) throws Exception;
 
-    List<RecipeResponse> getAllCertifedRecipes() throws Exception;
+    List<RecipeResponse> getAllCertifiedRecipes() throws Exception;
 
-    List<RecipeResponse> getAllNonCertifedRecipes() throws Exception;
+    List<RecipeResponse> getAllNonCertifiedRecipes() throws Exception;
 
     List<RecipeResponse> getAllWaitingRecipes() throws Exception;
+
+    List<RecipeResponse> getAllCertifiedRecipes(SearchCertifiedRecipesRequest request) throws Exception;
 }

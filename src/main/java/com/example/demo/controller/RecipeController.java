@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.CertfieRecipeRequest;
 import com.example.demo.dto.request.CreateRecipeRequest;
+import com.example.demo.dto.request.SearchCertifiedRecipesRequest;
 import com.example.demo.dto.response.RecipeResponse;
 import com.example.demo.service.IRecipeService;
 import org.springframework.web.bind.annotation.*;
@@ -35,22 +36,27 @@ public class RecipeController {
     }
 
     @PutMapping
-    public RecipeResponse certifieRecipe(@RequestBody CertfieRecipeRequest request) throws Exception {
-        return _recipeService.certifieRecipe(request);
+    public RecipeResponse certifyRecipe(@RequestBody CertfieRecipeRequest request) throws Exception {
+        return _recipeService.certifyRecipe(request);
     }
 
     @GetMapping("/certified")
     public List<RecipeResponse> getAllCertifiedRecipes() throws Exception {
-        return _recipeService.getAllCertifedRecipes();
+        return _recipeService.getAllCertifiedRecipes();
     }
 
     @GetMapping("/non-certified")
     public List<RecipeResponse> getAllNonCertifiedRecipes() throws Exception {
-        return _recipeService.getAllNonCertifedRecipes();
+        return _recipeService.getAllNonCertifiedRecipes();
     }
 
     @GetMapping("/waiting")
     public List<RecipeResponse> getAllWaitingRecipes() throws Exception {
         return _recipeService.getAllWaitingRecipes();
+    }
+
+    @GetMapping("/certified/search")
+    public List<RecipeResponse> getAllCertifiedRecipesByMedicineNameAndDiagnosisName(SearchCertifiedRecipesRequest request) throws Exception {
+        return _recipeService.getAllCertifiedRecipes(request);
     }
 }

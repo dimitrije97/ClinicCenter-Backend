@@ -56,7 +56,7 @@ insert into schedule(id, approved, date, start_at, end_at, doctor_id, patient_id
 ('ca00ff6a-bc8c-46ab-83a5-9d64cb62aa6b', 'true', '2020/04/03', '12:30:00', '13:30:00', 'b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION', null),
 ('6999e7cd-f174-4e74-8048-f192f2052092', 'false', '2020/07/04', '06:20:00', '07:20:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'POTENTIAL_EXAMINATION', null),
 ('922b6438-600b-4e03-b82f-25850e56dbf8', 'true', '2020/04/04', '05:00:00', '06:00:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION', null),
-('75d40c59-ba01-4831-930c-13ce06f7e4fe', 'false', '2020/08/04', '04:30:00', '05:30:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', null, 'POTENTIAL_EXAMINATION', null),
+('75d40c59-ba01-4831-930c-13ce06f7e4fe', 'false', '2020/05/05', '11:40:00', '12:30:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', null, 'POTENTIAL_EXAMINATION', null),
 ('092d2cc8-0479-413f-a760-469bccd63057', 'false', '2020/07/04', '07:30:00', '08:30:00', '9608b8fe-4cff-49ee-8997-2ef2494e21cb', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'POTENTIAL_EXAMINATION', null),
 ('31cd744d-d915-4b3b-a531-500535903706', 'true', '2020/07/05', null, null, '8dbea129-360a-4d77-afca-5c5bb94174c1', null, 'VACATION', null),
 ('c9dfb134-6d4d-4a98-b8b3-04b1e38bba88', 'true', '2020/07/06', null, null, '8dbea129-360a-4d77-afca-5c5bb94174c1', null, 'VACATION', null),
