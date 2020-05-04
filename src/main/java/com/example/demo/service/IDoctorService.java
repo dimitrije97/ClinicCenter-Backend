@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.request.CreateDoctorRequest;
+import com.example.demo.dto.request.SearchDoctorsRequest;
 import com.example.demo.dto.request.UpdateDoctorRequest;
 import com.example.demo.dto.response.DoctorResponse;
 
@@ -20,4 +21,6 @@ public interface IDoctorService {
     Set<DoctorResponse> getAllDoctors() throws Exception;
 
     Set<DoctorResponse> getAllDoctorsOfClinic(UUID clinicId) throws Exception;
+
+    Set<DoctorResponse> getAllDoctorsOfClinic(SearchDoctorsRequest request, UUID clinicId) throws Exception;
 }

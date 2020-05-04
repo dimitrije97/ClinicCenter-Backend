@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.request.SearchDoctorsRequest;
 import com.example.demo.dto.request.UpdateDoctorRequest;
 import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.repository.IDoctorRepository;
@@ -41,4 +42,6 @@ public class DoctorContoller {
     @PutMapping("/{id}/doctor")
     public DoctorResponse updateDoctor(@RequestBody UpdateDoctorRequest request, @PathVariable UUID id) throws Exception { return _doctorService.updateDoctor(request, id); }
 
+    @GetMapping("/search/{id}/clinic")
+    public Set<DoctorResponse> getAllDoctorsOfClinicByFirstNameAndLastNameAndName(SearchDoctorsRequest request, @PathVariable UUID id) throws Exception { return _doctorService.getAllDoctorsOfClinic(request, id); }
 }

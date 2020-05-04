@@ -38,4 +38,6 @@ public class DoctorResponse {
 
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime endAt;
+
+    private String examinationTypeName;
 }
