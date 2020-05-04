@@ -1,9 +1,6 @@
 package com.example.demo.service.implementation;
 
-import com.example.demo.dto.request.AvailableClinicsRequest;
-import com.example.demo.dto.request.AvailableDoctorsRequest;
-import com.example.demo.dto.request.AvailableEmergencyRoomsRequest;
-import com.example.demo.dto.request.SearchAvailableDoctors;
+import com.example.demo.dto.request.*;
 import com.example.demo.dto.response.ClinicResponse;
 import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.EmergencyRoomResponse;
@@ -169,7 +166,7 @@ public class FilterService implements IFilterService {
     }
 
     @Override
-    public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(SearchAvailableDoctors request) throws Exception {
+    public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(SearchAvailableDoctorsRequest request) throws Exception {
         Clinic clinic = _clinicRepository.findOneById(request.getClinicId());
         ExaminationType examinationType = _examinationTypeRepository.findOneById(request.getExaminationTypeId());
         List<Doctor> allDoctors = clinic.getDoctors();
@@ -224,6 +221,52 @@ public class FilterService implements IFilterService {
 
         return searchedByFirstNameAndLastName.stream()
                 .map(doctor -> mapDoctorToDoctorResponse(doctor))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<EmergencyRoomResponse> getAvailableEmergencyRooms(SearchAvailableEmergencyRoomsRequest request) throws Exception {
+        Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+        Clinic clinic = examination.getSchedule().getDoctor().getClinic();
+        List<EmergencyRoom> allEmergencyRooms = clinic.getEmergencyRooms();
+        Set<EmergencyRoom> emergencyRooms = new HashSet<>();
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+
+        for (EmergencyRoom er: allEmergencyRooms) {
+            boolean flag = false;
+            for (Schedule s: schedules) {
+                if(examination.getSchedule().getDate().getYear() == s.getDate().getYear()
+                        && examination.getSchedule().getDate().getMonth() == s.getDate().getMonth()
+                        && examination.getSchedule().getDate().getDay() == s.getDate().getDay()
+                        && examination.getSchedule().getStartAt().isAfter(s.getStartAt().minusHours(1L))
+                        && examination.getSchedule().getStartAt().isBefore(s.getEndAt())
+                        && s.getExamination().getEmergencyRoom() == er){
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag){
+                emergencyRooms.add(er);
+            }
+        }
+
+        Set<EmergencyRoom> searchedByName = new HashSet<>();
+        Set<EmergencyRoom> searchedByNameAndNumber = new HashSet<>();
+
+        for(EmergencyRoom er: emergencyRooms){
+            if(er.getName().toLowerCase().contains(request.getName().toLowerCase())){
+                searchedByName.add(er);
+            }
+        }
+
+        for(EmergencyRoom er: searchedByName){
+            if(er.getNumber().toLowerCase().contains(request.getNumber().toLowerCase())){
+                searchedByNameAndNumber.add(er);
+            }
+        }
+
+        return searchedByNameAndNumber.stream()
+                .map(emergencyRoom -> mapEmergencyRoomToEmergencyRoomResponse(emergencyRoom))
                 .collect(Collectors.toSet());
     }
 

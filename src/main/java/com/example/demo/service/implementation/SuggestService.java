@@ -46,7 +46,13 @@ public class SuggestService implements ISuggestService {
                 _examinationRepository.save(examination);
                 suggest(request);
             }
-            LocalTime currentTime = temp.plusHours(hour);
+            LocalTime currentTime = null;
+            if(hour == 1){
+                currentTime = temp;
+            }else{
+                currentTime = temp.plusHours(hour);
+            }
+
             List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndDoctorAndDate(true, examination.getSchedule().getDoctor(), examination.getSchedule().getDate());
             boolean flag = false;
             for (Schedule s: schedules) {
