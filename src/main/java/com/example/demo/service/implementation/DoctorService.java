@@ -2,6 +2,7 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.CreateDoctorRequest;
 import com.example.demo.dto.request.CreateUserRequest;
+import com.example.demo.dto.request.SearchDoctorsRequest;
 import com.example.demo.dto.request.UpdateDoctorRequest;
 import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.UserResponse;
@@ -16,6 +17,7 @@ import com.example.demo.util.enums.ReasonOfUnavailability;
 import com.example.demo.util.enums.UserType;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -149,6 +151,37 @@ public class DoctorService implements IDoctorService {
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public Set<DoctorResponse> getAllDoctorsOfClinic(SearchDoctorsRequest request, UUID clinicId) throws Exception {
+        Set<Doctor> doctors = _doctorRepository.findAllByClinic_IdAndUser_Deleted(clinicId, false);
+
+        Set<Doctor> searchedByFirstName = new HashSet<>();
+        Set<Doctor> searchedByFirstNameAndLastName = new HashSet<>();
+        Set<Doctor> searchedByFirstNameAndLastNameAndName = new HashSet<>();
+
+        for(Doctor doctor: doctors){
+            if(doctor.getUser().getFirstName().toLowerCase().contains(request.getFirstName().toLowerCase())){
+                searchedByFirstName.add(doctor);
+            }
+        }
+
+        for(Doctor doctor: searchedByFirstName){
+            if(doctor.getUser().getLastName().toLowerCase().contains(request.getLastName().toLowerCase())){
+                searchedByFirstNameAndLastName.add(doctor);
+            }
+        }
+
+        for(Doctor doctor: searchedByFirstNameAndLastName){
+            if(doctor.getExaminationType().getName().toLowerCase().contains(request.getName().toLowerCase())){
+                searchedByFirstNameAndLastNameAndName.add(doctor);
+            }
+        }
+
+        return searchedByFirstNameAndLastNameAndName.stream()
+                .map(doctor -> mapDoctorToDoctorResponse(doctor))
+                .collect(Collectors.toSet());
+    }
+
     private DoctorResponse mapDoctorToDoctorResponse(Doctor doctor) {
         DoctorResponse doctorResponse = new DoctorResponse();
 
@@ -165,6 +198,7 @@ public class DoctorService implements IDoctorService {
         doctorResponse.setExaminationTypeId(doctor.getExaminationType().getId());
         doctorResponse.setStartAt(doctor.getStartAt());
         doctorResponse.setEndAt(doctor.getEndAt());
+        doctorResponse.setExaminationTypeName(doctor.getExaminationType().getName());
 
         return doctorResponse;
     }
