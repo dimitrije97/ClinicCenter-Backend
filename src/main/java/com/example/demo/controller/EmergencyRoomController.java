@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.request.SearchEmergencyRoomsRequest;
 import com.example.demo.dto.request.UpdateEmergencyRoomRequest;
 import com.example.demo.dto.response.EmergencyRoomResponse;
 import com.example.demo.service.IEmergencyRoomService;
@@ -32,4 +33,8 @@ public class EmergencyRoomController {
 
     @DeleteMapping("/{id}/emergency-room")
     public void deleteEmergencyRoom(@PathVariable UUID id) throws Exception { _emergencyRoomService.deleteEmergencyRoom(id); }
+
+    @GetMapping("/search/{id}/clinic")
+    public Set<EmergencyRoomResponse> getAllEmergencyRoomsOfClinicByNameAndNumber(SearchEmergencyRoomsRequest request, @PathVariable UUID id) throws Exception { return _emergencyRoomService.getAllEmergencyRoomsOfClinic(request, id); }
+
 }
