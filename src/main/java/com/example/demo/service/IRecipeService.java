@@ -18,11 +18,11 @@ public interface IRecipeService {
 
     RecipeResponse certifyRecipe(CertfieRecipeRequest request) throws Exception;
 
-    List<RecipeResponse> getAllCertifiedRecipes() throws Exception;
+    List<RecipeResponse> getAllCertifiedRecipes(UUID clinicId) throws Exception;
 
-    List<RecipeResponse> getAllNonCertifiedRecipes() throws Exception;
+    List<RecipeResponse> getAllNonCertifiedRecipes(UUID clinicId) throws Exception;
 
-    List<RecipeResponse> getAllWaitingRecipes() throws Exception;
+    List<RecipeResponse> getAllWaitingRecipes(UUID clinicId) throws Exception;
 
-    List<RecipeResponse> getAllCertifiedRecipes(SearchCertifiedRecipesRequest request) throws Exception;
+    List<RecipeResponse> getAllCertifiedRecipes(SearchCertifiedRecipesRequest request, UUID clinicId) throws Exception;
 }

@@ -34,4 +34,6 @@ public class Recipe extends BaseEntity {
     private boolean waiting;
 
     private UUID nurseId;
+
+    private UUID clinicId;
 }

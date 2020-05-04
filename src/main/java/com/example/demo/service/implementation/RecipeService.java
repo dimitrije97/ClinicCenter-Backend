@@ -15,6 +15,7 @@ import com.example.demo.repository.IRecipeRepository;
 import com.example.demo.service.IRecipeService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -47,6 +48,7 @@ public class RecipeService implements IRecipeService {
         recipe.setWaiting(false);
         recipe.setDiagnosis(diagnosis);
         recipe.setMedicine(medicine);
+        recipe.setClinicId(recipeRequest.getClinicId());
         Recipe savedRecipe = _recipeRepository.save(recipe);
         return mapRecipeToRecipeResponse(savedRecipe);
     }
@@ -83,43 +85,67 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public List<RecipeResponse> getAllCertifiedRecipes() throws Exception {
+    public List<RecipeResponse> getAllCertifiedRecipes(UUID clinicId) throws Exception {
         List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertifiedAndWaiting(false, true, false);
-        if(recipes.isEmpty()){
-            throw new Exception("Ne postoji nijedan overen recept.");
+        List<Recipe> recipesByClinic = new ArrayList<>();
+        for(Recipe r: recipes){
+            if(r.getClinicId().equals(clinicId)){
+                recipesByClinic.add(r);
+            }
         }
-        return recipes.stream()
+        if(recipesByClinic.isEmpty()){
+            throw new Exception("Ne postoji nijedan overen recept u Vašoj klinici.");
+        }
+        return recipesByClinic.stream()
                 .map(recipe -> mapRecipeToRecipeResponse(recipe))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<RecipeResponse> getAllNonCertifiedRecipes() throws Exception {
+    public List<RecipeResponse> getAllNonCertifiedRecipes(UUID clinicId) throws Exception {
         List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertifiedAndWaiting(false, false, false);
-        if(recipes.isEmpty()){
-            throw new Exception("Ne postoji nijedan neoveren recept.");
+        List<Recipe> recipesByClinic = new ArrayList<>();
+        for(Recipe r: recipes){
+            if(r.getClinicId().equals(clinicId)){
+                recipesByClinic.add(r);
+            }
         }
-        return recipes.stream()
+        if(recipesByClinic.isEmpty()){
+            throw new Exception("Ne postoji nijedan neoveren recept u Vašoj klinici.");
+        }
+        return recipesByClinic.stream()
                 .map(recipe -> mapRecipeToRecipeResponse(recipe))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<RecipeResponse> getAllWaitingRecipes() throws Exception {
+    public List<RecipeResponse> getAllWaitingRecipes(UUID clinicId) throws Exception {
         List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertifiedAndWaiting(false, false, true);
-        if(recipes.isEmpty()){
-            throw new Exception("Ne postoji nijedan recept koji treba da se overi.");
+        List<Recipe> recipesByClinic = new ArrayList<>();
+        for(Recipe r: recipes){
+            if(r.getClinicId().equals(clinicId)){
+                recipesByClinic.add(r);
+            }
         }
-        return recipes.stream()
+        if(recipesByClinic.isEmpty()){
+            throw new Exception("Ne postoji nijedan recept koji treba da se overi u Vašoj klinici.");
+        }
+        return recipesByClinic.stream()
                 .map(recipe -> mapRecipeToRecipeResponse(recipe))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<RecipeResponse> getAllCertifiedRecipes(SearchCertifiedRecipesRequest request) throws Exception {
+    public List<RecipeResponse> getAllCertifiedRecipes(SearchCertifiedRecipesRequest request, UUID clinicId) throws Exception {
         List<Recipe> recipes = _recipeRepository.findAllByDeletedAndCertifiedAndWaiting(false, true, false);
+        List<Recipe> recipesByClinic = new ArrayList<>();
+        for(Recipe r: recipes){
+            if(r.getClinicId().equals(clinicId)){
+                recipesByClinic.add(r);
+            }
+        }
 
-        return recipes
+        return recipesByClinic
                 .stream()
                 .filter(recipe -> {
                     if(request.getMedicineName() != null) {

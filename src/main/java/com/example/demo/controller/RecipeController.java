@@ -40,23 +40,23 @@ public class RecipeController {
         return _recipeService.certifyRecipe(request);
     }
 
-    @GetMapping("/certified")
-    public List<RecipeResponse> getAllCertifiedRecipes() throws Exception {
-        return _recipeService.getAllCertifiedRecipes();
+    @GetMapping("/certified/{id}/clinic")
+    public List<RecipeResponse> getAllCertifiedRecipes(@PathVariable UUID id) throws Exception {
+        return _recipeService.getAllCertifiedRecipes(id);
     }
 
-    @GetMapping("/non-certified")
-    public List<RecipeResponse> getAllNonCertifiedRecipes() throws Exception {
-        return _recipeService.getAllNonCertifiedRecipes();
+    @GetMapping("/non-certified/{id}/clinic")
+    public List<RecipeResponse> getAllNonCertifiedRecipes(@PathVariable UUID id) throws Exception {
+        return _recipeService.getAllNonCertifiedRecipes(id);
     }
 
-    @GetMapping("/waiting")
-    public List<RecipeResponse> getAllWaitingRecipes() throws Exception {
-        return _recipeService.getAllWaitingRecipes();
+    @GetMapping("/waiting/{id}/clinic")
+    public List<RecipeResponse> getAllWaitingRecipes(@PathVariable UUID id) throws Exception {
+        return _recipeService.getAllWaitingRecipes(id);
     }
 
-    @GetMapping("/certified/search")
-    public List<RecipeResponse> getAllCertifiedRecipesByMedicineNameAndDiagnosisName(SearchCertifiedRecipesRequest request) throws Exception {
-        return _recipeService.getAllCertifiedRecipes(request);
+    @GetMapping("/certified/search/{id}/clinic")
+    public List<RecipeResponse> getAllCertifiedRecipesByMedicineNameAndDiagnosisName(SearchCertifiedRecipesRequest request, @PathVariable UUID id) throws Exception {
+        return _recipeService.getAllCertifiedRecipes(request, id);
     }
 }
