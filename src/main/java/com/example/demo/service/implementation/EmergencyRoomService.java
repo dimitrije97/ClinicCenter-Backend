@@ -1,6 +1,7 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.dto.request.CreateEmergencyRoomRequest;
+import com.example.demo.dto.request.SearchEmergencyRoomsRequest;
 import com.example.demo.dto.request.UpdateEmergencyRoomRequest;
 import com.example.demo.dto.response.EmergencyRoomResponse;
 import com.example.demo.entity.Clinic;
@@ -13,6 +14,7 @@ import com.example.demo.service.IEmergencyRoomService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -96,6 +98,30 @@ public class EmergencyRoomService implements IEmergencyRoomService {
         emergencyRoom.setDeleted(true);
         emergencyRoom.getClinic().getEmergencyRooms().remove(emergencyRoom);
         _emergencyRoomRepository.save(emergencyRoom);
+    }
+
+    @Override
+    public Set<EmergencyRoomResponse> getAllEmergencyRoomsOfClinic(SearchEmergencyRoomsRequest request, UUID id) throws Exception {
+        Set<EmergencyRoom> emergencyRooms = _emergencyRoomRepository.findAllByDeletedAndClinic_Id(false, id);
+
+        Set<EmergencyRoom> searchedByName = new HashSet<>();
+        Set<EmergencyRoom> searchedByNameAndNumber = new HashSet<>();
+
+        for(EmergencyRoom er: emergencyRooms){
+            if(er.getName().toLowerCase().contains(request.getName().toLowerCase())){
+                searchedByName.add(er);
+            }
+        }
+
+        for(EmergencyRoom er: searchedByName){
+            if(er.getNumber().toLowerCase().contains(request.getNumber().toLowerCase())){
+                searchedByNameAndNumber.add(er);
+            }
+        }
+
+        return searchedByNameAndNumber.stream()
+                .map(emergencyRoom -> mapEmergencyRoomToEmergencyRoomResponse(emergencyRoom))
+                .collect(Collectors.toSet());
     }
 
     public EmergencyRoomResponse mapEmergencyRoomToEmergencyRoomResponse(EmergencyRoom emergencyRoom){
