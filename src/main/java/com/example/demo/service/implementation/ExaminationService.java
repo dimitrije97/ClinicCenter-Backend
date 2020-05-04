@@ -293,8 +293,9 @@ public class ExaminationService implements IExaminationService {
     public Set<ExaminationResponse> getAllPotentialExaminations() throws Exception {
         List<Examination> allExaminations = _examinationRepository.findAll();
         Set<Examination> examinations = new HashSet<>();
+        Date now = new Date();
         for(int i = 0;i < allExaminations.size();i++){
-            if(allExaminations.get(i).getSchedule().getPatient() == null){
+            if(allExaminations.get(i).getSchedule().getPatient() == null && now.before(allExaminations.get(i).getSchedule().getDate())){
                 examinations.add(allExaminations.get(i));
             }
         }
