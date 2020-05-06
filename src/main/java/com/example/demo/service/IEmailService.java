@@ -35,4 +35,8 @@ public interface IEmailService {
     void approveOperationToPatientMail(Patient patient);
 
     void approveOperationToDoctorMail(Doctor doctor);
+
+    void denyOperationToPatientMail(Patient patient, String reason);
+
+    void denyOperationToDoctorMail(Doctor doctor, String reason);
 }

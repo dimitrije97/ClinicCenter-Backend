@@ -580,6 +580,7 @@ public class ExaminationService implements IExaminationService {
         examination.setStatus(RequestType.DENIED);
         examination.getSchedule().setApproved(false);
         examination.getSchedule().setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_EXAMINATION);
+        _scheduleRepository.save(examination.getSchedule());
         _examinationRepository.save(examination);
     }
 
@@ -848,10 +849,10 @@ public class ExaminationService implements IExaminationService {
         examination.setStatus(RequestType.DENIED);
         _examinationRepository.save(examination);
 
-//        if(!request.getReason().equals("")){
-//            _emailService.denyExaminationToPatientMail(examination.getSchedule().getPatient(), request.getReason());
-//            _emailService.denyExaminationToDoctorMail(examination.getSchedule().getDoctor(), request.getReason());
-//        }
+        if(!request.getReason().equals("")){
+            _emailService.denyOperationToPatientMail(examination.getSchedule().getPatient(), request.getReason());
+            _emailService.denyOperationToDoctorMail(examination.getSchedule().getDoctor(), request.getReason());
+        }
     }
 
     @Override
@@ -984,6 +985,7 @@ public class ExaminationService implements IExaminationService {
         examination.setStatus(RequestType.DENIED);
         examination.getSchedule().setApproved(false);
         examination.getSchedule().setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_EXAMINATION);
+        _scheduleRepository.save(examination.getSchedule());
         _examinationRepository.save(examination);
     }
 

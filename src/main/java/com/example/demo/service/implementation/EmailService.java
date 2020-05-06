@@ -59,7 +59,7 @@ public class EmailService implements IEmailService {
     @Override
     public void denyExaminationToPatientMail(Patient patient, String reason) {
         String to = patient.getUser().getEmail();
-        String subject = "Vaš zahtev za pregled je odbijen!";
+        String subject = "Novi zahtev za pregled je odbijen!";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", patient.getUser().getFirstName(), patient.getUser().getLastName()));
         context.setVariable("reason", String.format("%s", reason));
@@ -148,5 +148,25 @@ public class EmailService implements IEmailService {
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", doctor.getUser().getFirstName(), doctor.getUser().getLastName()));
         _emailContext.send(to, subject, "approvedOperationToDoctor", context);
+    }
+
+    @Override
+    public void denyOperationToPatientMail(Patient patient, String reason) {
+        String to = patient.getUser().getEmail();
+        String subject = "Novi zahtev za operaciju je odbijen!";
+        Context context = new Context();
+        context.setVariable("name", String.format("%s %s", patient.getUser().getFirstName(), patient.getUser().getLastName()));
+        context.setVariable("reason", String.format("%s", reason));
+        _emailContext.send(to, subject, "deniedOperationToPatient", context);
+    }
+
+    @Override
+    public void denyOperationToDoctorMail(Doctor doctor, String reason) {
+        String to = doctor.getUser().getEmail();
+        String subject = "Novi zahtev za operaciju je odbijen!";
+        Context context = new Context();
+        context.setVariable("name", String.format("%s %s", doctor.getUser().getFirstName(), doctor.getUser().getLastName()));
+        context.setVariable("reason", String.format("%s", reason));
+        _emailContext.send(to, subject, "deniedOperationToDoctor", context);
     }
 }
