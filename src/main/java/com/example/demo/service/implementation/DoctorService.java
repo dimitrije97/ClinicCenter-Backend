@@ -53,6 +53,21 @@ public class DoctorService implements IDoctorService {
         if(doctorRequest.getExaminationTypeId() == null){
             throw new Exception("Niste odabrali specijalnost.");
         }
+
+        String startAtString = doctorRequest.getStartAt().toString();
+        String[] startAtTokens = startAtString.split(":");
+
+        String endAtString = doctorRequest.getEndAt().toString();
+        String[] endAtTokens = endAtString.split(":");
+
+        if(Integer.parseInt(startAtTokens[0]) >= Integer.parseInt(endAtTokens[0])){
+            throw new Exception("Niste dobro uneli vreme početka i kraja radnog vremena lekara.");
+        }
+
+        if(Integer.parseInt(endAtTokens[0]) - Integer.parseInt(startAtTokens[0]) < 4){
+            throw new Exception("Radno vreme najmanje mora biti 4h.");
+        }
+
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setPassword("doctor");
         userRequest.setRePassword("doctor");

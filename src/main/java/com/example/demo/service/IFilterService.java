@@ -15,6 +15,8 @@ public interface IFilterService {
 
     Set<EmergencyRoomResponse> getAvailableEmergencyRooms(AvailableEmergencyRoomsRequest request) throws Exception;
 
+    Set<EmergencyRoomResponse> getAvailableEmergencyRoomsOp(AvailableEmergencyRoomsRequest request) throws Exception;
+
     Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(SearchAvailableDoctorsRequest request) throws Exception;
 
     Set<EmergencyRoomResponse> getAvailableEmergencyRooms(SearchAvailableEmergencyRoomsRequest request) throws Exception;
