@@ -122,4 +122,31 @@ public class EmailService implements IEmailService {
         context.setVariable("reason", String.format("%s", reason));
         _emailContext.send(to, subject, "deniedVacation", context);
     }
+
+    @Override
+    public void announceAdminsAboutOperationRequestMail(Admin admin) {
+        String to = admin.getUser().getEmail();
+        String subject = "Novi zahtev za operaciju!";
+        Context context = new Context();
+        context.setVariable("name", String.format("%s %s", admin.getUser().getFirstName(), admin.getUser().getLastName()));
+        _emailContext.send(to, subject, "operationRequest", context);
+    }
+
+    @Override
+    public void approveOperationToPatientMail(Patient patient) {
+        String to = patient.getUser().getEmail();
+        String subject = "Imate zakazanu operaciju!";
+        Context context = new Context();
+        context.setVariable("name", String.format("%s %s", patient.getUser().getFirstName(), patient.getUser().getLastName()));
+        _emailContext.send(to, subject, "approvedExaminationToPatient", context);
+    }
+
+    @Override
+    public void approveOperationToDoctorMail(Doctor doctor) {
+        String to = doctor.getUser().getEmail();
+        String subject = "Novi zahtev za operaciju je odobren!";
+        Context context = new Context();
+        context.setVariable("name", String.format("%s %s", doctor.getUser().getFirstName(), doctor.getUser().getLastName()));
+        _emailContext.send(to, subject, "approvedOperationToDoctor", context);
+    }
 }

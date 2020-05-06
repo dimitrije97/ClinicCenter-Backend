@@ -51,4 +51,23 @@ public interface IExaminationService {
     Set<ExaminationResponse> getExaminationsWhichDoctorCanCancel(UUID doctorId) throws Exception;
 
     Set<ExaminationResponse> getPatientsExaminationHistory(SearchPatientsExaminationHistoryRequest request, UUID patientId) throws Exception;
+
+    ExaminationResponse createOperationRequest(CreateOperationRequest request) throws Exception;
+
+    ExaminationResponse approveOperation(ApproveOperationRequest request) throws Exception;
+
+    void denyOperation(DenyOperationRequest request) throws Exception;
+
+    Set<ExaminationResponse> getAllPendingOperations() throws Exception;
+
+    Set<ExaminationResponse> getAllPendingOperationsByClinic(UUID clinicId) throws Exception;
+
+    Set<ExaminationResponse> getPatientsOperationHistory(UUID patientId) throws Exception;
+
+    Set<ExaminationResponse> getOperationsWhichPatientCanCancel(UUID patientId) throws Exception;
+
+    Set<ExaminationResponse> getOperationsWhichDoctorCanCancel(UUID doctorId) throws Exception;
+
+    void cancelOperation(UUID id) throws Exception;
+
 }

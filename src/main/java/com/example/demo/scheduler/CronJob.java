@@ -28,8 +28,17 @@ public class CronJob {
         for (Examination e: examinations) {
             SuggestRequest request = new SuggestRequest();
             request.setExaminationId(e.getId());
-            _suggestService.suggest(request);
-            System.out.println("CRONJOB");
+            String startAtString = e.getSchedule().getStartAt().toString();
+            String[] startAtTokens = startAtString.split(":");
+            String startEndString = e.getSchedule().getEndAt().toString();
+            String[] startEndTokens = startEndString.split(":");
+            if((Integer.parseInt(startAtTokens[0]) - Integer.parseInt(startEndTokens[0]) != -1)){
+                _suggestService.suggestOp(request);
+                System.out.println("CRONJOB-OPERATION");
+            }else {
+                _suggestService.suggest(request);
+                System.out.println("CRONJOB-EXAMINATION");
+            }
         }
     }
 }

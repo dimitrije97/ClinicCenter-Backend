@@ -29,4 +29,10 @@ public interface IEmailService {
     void approveVacationToNurseMail(Nurse nurse);
 
     void denyVacationToNurseMail(Nurse nurse, String reason);
+
+    void announceAdminsAboutOperationRequestMail(Admin admin);
+
+    void approveOperationToPatientMail(Patient patient);
+
+    void approveOperationToDoctorMail(Doctor doctor);
 }

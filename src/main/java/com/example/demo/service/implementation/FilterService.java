@@ -166,6 +166,40 @@ public class FilterService implements IFilterService {
     }
 
     @Override
+    public Set<EmergencyRoomResponse> getAvailableEmergencyRoomsOp(AvailableEmergencyRoomsRequest request) throws Exception {
+        Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+        Clinic clinic = examination.getSchedule().getDoctor().getClinic();
+        List<EmergencyRoom> allEmergencyRooms = clinic.getEmergencyRooms();
+        Set<EmergencyRoom> emergencyRooms = new HashSet<>();
+        List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+
+        for (EmergencyRoom er: allEmergencyRooms) {
+            boolean flag = false;
+            for (Schedule s: schedules) {
+                if(examination.getSchedule().getDate().getYear() == s.getDate().getYear()
+                        && examination.getSchedule().getDate().getMonth() == s.getDate().getMonth()
+                        && examination.getSchedule().getDate().getDay() == s.getDate().getDay()
+                        && examination.getSchedule().getStartAt().isAfter(s.getStartAt().minusHours(2L))
+                        && examination.getSchedule().getStartAt().isBefore(s.getEndAt())
+                        && s.getExamination().getEmergencyRoom() == er){
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag){
+                emergencyRooms.add(er);
+            }
+        }
+
+        if(emergencyRooms.isEmpty()){
+            throw new Exception("Nijedna sala nije slobodna u tom terminu.");
+        }
+
+        return emergencyRooms.stream().map(emergencyRoom -> mapEmergencyRoomToEmergencyRoomResponse(emergencyRoom))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
     public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(SearchAvailableDoctorsRequest request) throws Exception {
         Clinic clinic = _clinicRepository.findOneById(request.getClinicId());
         ExaminationType examinationType = _examinationTypeRepository.findOneById(request.getExaminationTypeId());

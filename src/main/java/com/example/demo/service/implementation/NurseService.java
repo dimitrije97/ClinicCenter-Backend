@@ -40,6 +40,21 @@ public class NurseService implements INurseService {
 
     @Override
     public NurseResponse createNurse(CreateNurseRequest request, UUID clinicId) throws Exception {
+
+        String startAtString = request.getStartAt().toString();
+        String[] startAtTokens = startAtString.split(":");
+
+        String endAtString = request.getEndAt().toString();
+        String[] endAtTokens = endAtString.split(":");
+
+        if(Integer.parseInt(startAtTokens[0]) >= Integer.parseInt(endAtTokens[0])){
+            throw new Exception("Niste dobro uneli vreme početka i kraja radnog vremena medicinske sestre.");
+        }
+
+        if(Integer.parseInt(endAtTokens[0]) - Integer.parseInt(startAtTokens[0]) < 4){
+            throw new Exception("Radno vreme najmanje mora biti 4h.");
+        }
+
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setPassword("nurse");
         userRequest.setRePassword("nurse");

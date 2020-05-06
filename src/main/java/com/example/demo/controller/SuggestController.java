@@ -20,4 +20,9 @@ public class SuggestController {
     public void suggest(@RequestBody SuggestRequest request) throws Exception {
          _suggestService.suggest(request);
     }
+
+    @PutMapping("/operation")
+    public void suggestOp(@RequestBody SuggestRequest request) throws Exception {
+        _suggestService.suggestOp(request);
+    }
 }

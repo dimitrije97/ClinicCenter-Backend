@@ -25,7 +25,7 @@ insert into examination_type(id, name, price, deleted) values
 ('342265d1-3282-4bb7-b689-cefb42b92818', 'Plucni', '2500', 'false');
 
 insert into doctor(id, clinic_id, examination_type_id, start_at, end_at) values
-('adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b','e823e955-6001-434a-9fd3-c80e490d0184', '17:00:00', '20:00:00'),
+('adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b','e823e955-6001-434a-9fd3-c80e490d0184', '17:00:00', '21:00:00'),
 ('8dbea129-360a-4d77-afca-5c5bb94174c1', 'f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b', 'e823e955-6001-434a-9fd3-c80e490d0184', '15:00:00', '22:00:00'),
 ('b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '7833aba3-bf46-4d25-a856-651d7d7ba279', 'e823e955-6001-434a-9fd3-c80e490d0184', '08:00:00', '20:00:00'),
 ('9608b8fe-4cff-49ee-8997-2ef2494e21cb', '5d26aa42-f1f9-45a5-9e31-db07d5df6c1a', 'b26933ae-484a-4b3f-a15b-1e1796e0a8ad', '01:00:00', '09:00:00'),
@@ -50,7 +50,7 @@ insert into emergency_room(id, name, number, deleted, clinic_id) values
 ('05a4c407-834c-47ed-be62-1ab76c70a629', 'SalaE', '4001', 'true', '229c6688-afd8-4137-8d15-92655b1f05ee');
 
 insert into schedule(id, approved, date, start_at, end_at, doctor_id, patient_id, reason_of_unavailability, nurse_id) values
-('bb17dce6-632c-4eca-ab3e-977d7ffc0780', 'true', '2020/05/03', '08:30:00', '09:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION', null),
+('bb17dce6-632c-4eca-ab3e-977d7ffc0780', 'true', '2020/05/02', '08:30:00', '09:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION', null),
 ('ca33f7c5-3555-499b-923a-d8bb12fcd358', 'true', '2020/04/02', '16:30:00', '17:30:00', '8dbea129-360a-4d77-afca-5c5bb94174c1', 'e14cf27c-cd22-4004-b0f7-c94fcd13aabf', 'EXAMINATION', null),
 ('8e7819c1-df81-4b28-96d7-ca3206e45f8f', 'true', '2020/04/01', '10:30:00', '11:30:00', 'adfa0bd5-c1b5-41d7-adc4-b6951beb9055', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION', null),
 ('ca00ff6a-bc8c-46ab-83a5-9d64cb62aa6b', 'true', '2020/04/03', '12:30:00', '13:30:00', 'b3fd3799-83ff-4f8d-bc2f-38f0a3980c4a', '170dccaf-cf4d-4e9e-aa4e-1e3498d17a97', 'EXAMINATION', null),

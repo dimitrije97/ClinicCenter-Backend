@@ -34,6 +34,11 @@ public class FilterController {
         return _filterService.getAvailableEmergencyRooms(request);
     }
 
+    @GetMapping("/emergency-rooms-operations")
+    public Set<EmergencyRoomResponse> getAvailableEmergencyRoomsOp(AvailableEmergencyRoomsRequest request) throws Exception {
+        return _filterService.getAvailableEmergencyRoomsOp(request);
+    }
+
     @GetMapping("/doctors/search")
     public Set<DoctorResponse> getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(SearchAvailableDoctorsRequest request) throws Exception {
         return _filterService.getDoctorsByDateAndStartAtAndExaminationTypeAndClinicByFirstNameAndLastName(request);
