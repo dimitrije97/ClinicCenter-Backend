@@ -10,7 +10,6 @@ import com.example.demo.util.enums.ReasonOfUnavailability;
 import com.example.demo.util.enums.RequestType;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Executable;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -113,7 +112,7 @@ public class ExaminationService implements IExaminationService {
                     if(schedules.get(i).getReasonOfUnavailability().equals(ReasonOfUnavailability.VACATION)){
                         examination.setStatus(RequestType.DENIED);
                         _examinationRepository.save(examination);
-                        throw new Exception("Doktor je na godisnjem odmoru.");
+                        throw new Exception("Doktor je na godišnjem odmoru.");
                     }
                     if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
                             || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
@@ -121,13 +120,7 @@ public class ExaminationService implements IExaminationService {
                         break;
                     }
 
-                    String startAtString = examination.getSchedule().getStartAt().toString();
-                    String[] startAtTokens = startAtString.split(":");
-                    String startAtEString = schedules.get(i).getStartAt().toString();
-                    String[] startAtETokens = startAtEString.split(":");
-                    if(Integer.parseInt(startAtTokens[0]) == Integer.parseInt(startAtETokens[0])
-                            && Integer.parseInt(startAtTokens[1]) == Integer.parseInt(startAtETokens[1])
-                            && Integer.parseInt(startAtTokens[2]) == Integer.parseInt(startAtETokens[2])){
+                    if(examination.getSchedule().getStartAt().toString().equals(schedules.get(i).getStartAt().toString())){
                         flag = true;
                         break;
                     }
@@ -206,7 +199,7 @@ public class ExaminationService implements IExaminationService {
                     if(schedules.get(i).getReasonOfUnavailability().equals(ReasonOfUnavailability.VACATION)){
                         examination.setStatus(RequestType.DENIED);
                         _examinationRepository.save(examination);
-                        throw new Exception("Doktor je na godisnjem odmoru.");
+                        throw new Exception("Doktor je na godišnjem odmoru.");
                     }
                     if ((request.getStartAt().plusHours(1L).isBefore(schedules.get(i).getEndAt()) && request.getStartAt().plusHours(1L).isAfter(schedules.get(i).getStartAt()))
                             || (request.getStartAt().isBefore(schedules.get(i).getEndAt()) && request.getStartAt().isAfter(schedules.get(i).getStartAt())) ) {
@@ -215,11 +208,7 @@ public class ExaminationService implements IExaminationService {
                     }
                     String startAtString = examination.getSchedule().getStartAt().toString();
                     String[] startAtTokens = startAtString.split(":");
-                    String startAtEString = schedules.get(i).getStartAt().toString();
-                    String[] startAtETokens = startAtEString.split(":");
-                    if(Integer.parseInt(startAtTokens[0]) == Integer.parseInt(startAtETokens[0])
-                            && Integer.parseInt(startAtTokens[1]) == Integer.parseInt(startAtETokens[1])
-                            && Integer.parseInt(startAtTokens[2]) == Integer.parseInt(startAtETokens[2])){
+                    if(examination.getSchedule().getStartAt().toString().equals(schedules.get(i).getStartAt().toString())){
                         flag = true;
                         break;
                     }
@@ -417,11 +406,7 @@ public class ExaminationService implements IExaminationService {
 
                     String startAtString = examination.getSchedule().getStartAt().toString();
                     String[] startAtTokens = startAtString.split(":");
-                    String startAtEString = schedules.get(i).getStartAt().toString();
-                    String[] startAtETokens = startAtEString.split(":");
-                    if(Integer.parseInt(startAtTokens[0]) == Integer.parseInt(startAtETokens[0])
-                            && Integer.parseInt(startAtTokens[1]) == Integer.parseInt(startAtETokens[1])
-                            && Integer.parseInt(startAtTokens[2]) == Integer.parseInt(startAtETokens[2])){
+                    if(examination.getSchedule().getStartAt().toString().equals(schedules.get(i).getStartAt().toString())){
                         flag = true;
                         break;
                     }
@@ -785,7 +770,7 @@ public class ExaminationService implements IExaminationService {
                     if(schedules.get(i).getReasonOfUnavailability().equals(ReasonOfUnavailability.VACATION)){
                         examination.setStatus(RequestType.DENIED);
                         _examinationRepository.save(examination);
-                        throw new Exception("Doktor je na godisnjem odmoru.");
+                        throw new Exception("Doktor je na godišnjem odmoru.");
                     }
                     if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
                             || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt()))) {
@@ -793,13 +778,7 @@ public class ExaminationService implements IExaminationService {
                         break;
                     }
 
-                    String startAtString = examination.getSchedule().getStartAt().toString();
-                    String[] startAtTokens = startAtString.split(":");
-                    String startAtEString = schedules.get(i).getStartAt().toString();
-                    String[] startAtETokens = startAtEString.split(":");
-                    if(Integer.parseInt(startAtTokens[0]) == Integer.parseInt(startAtETokens[0])
-                    && Integer.parseInt(startAtTokens[1]) == Integer.parseInt(startAtETokens[1])
-                    && Integer.parseInt(startAtTokens[2]) == Integer.parseInt(startAtETokens[2])){
+                    if(examination.getSchedule().getStartAt().toString().equals(schedules.get(i).getStartAt().toString())){
                         flag = true;
                         break;
                     }
@@ -987,6 +966,119 @@ public class ExaminationService implements IExaminationService {
         examination.getSchedule().setReasonOfUnavailability(ReasonOfUnavailability.POTENTIAL_EXAMINATION);
         _scheduleRepository.save(examination.getSchedule());
         _examinationRepository.save(examination);
+    }
+
+    @Override
+    public Set<ExaminationResponse> getFutureOperationsByAdmin(UUID clinicId) throws Exception {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Clinic clinic = _clinicRepository.findOneById(clinicId);
+        Set<Examination> examinations = new HashSet<>();
+        Date now = new Date();
+        for(int i = 0;i < allExaminations.size();i++){
+            if(allExaminations.get(i).getStatus().equals(RequestType.APPROVED) && allExaminations.get(i).getSchedule().getDoctor().getClinic() == clinic  && now.before(allExaminations.get(i).getSchedule().getDate())){
+                String startAtString = allExaminations.get(i).getSchedule().getStartAt().toString();
+                String[] startAtTokens = startAtString.split(":");
+                String startEndString = allExaminations.get(i).getSchedule().getEndAt().toString();
+                String[] startEndTokens = startEndString.split(":");
+                if((Integer.parseInt(startAtTokens[0]) - Integer.parseInt(startEndTokens[0]) != -1)) {
+                    boolean flag = true;
+                    for(Examination e: examinations){
+                        if(e.getSchedule().getStartAt().toString().equals(allExaminations.get(i).getSchedule().getStartAt().toString()) && e.getSchedule().getEndAt().toString().equals(allExaminations.get(i).getSchedule().getEndAt().toString()) && e.getSchedule().getPatient() == allExaminations.get(i).getSchedule().getPatient() && e.getSchedule().getDate().getYear() == allExaminations.get(i).getSchedule().getDate().getYear() && e.getSchedule().getDate().getMonth() == allExaminations.get(i).getSchedule().getDate().getMonth() && e.getSchedule().getDate().getDay() == allExaminations.get(i).getSchedule().getDate().getDay()){
+                            flag = false;
+                        }
+                    }
+                    if(flag){
+                        examinations.add(allExaminations.get(i));
+                    }
+                }
+            }
+        }
+        if(examinations.isEmpty()){
+            throw new Exception("Klinika nema nijednu zakazanu operaciju.");
+        }
+
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<ExaminationResponse> getFutureExaminationsByAdmin(UUID clinicId) throws Exception {
+        List<Examination> allExaminations = _examinationRepository.findAll();
+        Clinic clinic = _clinicRepository.findOneById(clinicId);
+        Set<Examination> examinations = new HashSet<>();
+        Date now = new Date();
+        for(int i = 0;i < allExaminations.size();i++){
+            if(allExaminations.get(i).getStatus().equals(RequestType.APPROVED) && allExaminations.get(i).getSchedule().getDoctor().getClinic() == clinic && now.before(allExaminations.get(i).getSchedule().getDate())){
+                String startAtString = allExaminations.get(i).getSchedule().getStartAt().toString();
+                String[] startAtTokens = startAtString.split(":");
+                String startEndString = allExaminations.get(i).getSchedule().getEndAt().toString();
+                String[] startEndTokens = startEndString.split(":");
+                if((Integer.parseInt(startAtTokens[0]) - Integer.parseInt(startEndTokens[0]) == -1)) {
+                    examinations.add(allExaminations.get(i));
+                }
+            }
+        }
+        if(examinations.isEmpty()){
+            throw new Exception("Klinika nema nijedan zakazan pregled.");
+        }
+
+        return examinations.stream().map(examination -> mapExaminationToExaminationResponse(examination, examination.getSchedule()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public ExaminationResponse assignDoctor(AssignDoctorRequest request) throws Exception {
+        Doctor doctor = _doctorRepository.findOneById(request.getDoctorId());
+        Examination examination = _examinationRepository.findOneById(request.getExaminationId());
+
+        if(!(examination.getSchedule().getStartAt().isAfter(doctor.getStartAt()) && examination.getSchedule().getEndAt().isBefore(doctor.getEndAt()))){
+            throw new Exception("Doktor tada ne radi.");
+        }
+
+        List<Schedule> schedules = _scheduleRepository.findAllByApprovedAndNurse(true, null);
+        boolean flag = false;
+        for(int i = 0;i < schedules.size();i++){
+            if(schedules.get(i).getDoctor().getId().equals(doctor.getId())){
+                if(schedules.get(i).getDate().getYear() == examination.getSchedule().getDate().getYear()
+                        && schedules.get(i).getDate().getMonth() == examination.getSchedule().getDate().getMonth()
+                        && schedules.get(i).getDate().getDay() == examination.getSchedule().getDate().getDay()) {
+                    if(schedules.get(i).getReasonOfUnavailability().equals(ReasonOfUnavailability.VACATION)){
+                        throw new Exception("Doktor je na godišnjem odmoru.");
+                    }
+                    if ((examination.getSchedule().getEndAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getEndAt().isAfter(schedules.get(i).getStartAt()))
+                            || (examination.getSchedule().getStartAt().isBefore(schedules.get(i).getEndAt()) && examination.getSchedule().getStartAt().isAfter(schedules.get(i).getStartAt()))) {
+                        flag = true;
+                        break;
+                    }
+
+                    if(examination.getSchedule().getStartAt().toString().equals(schedules.get(i).getStartAt().toString())){
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if(flag){
+            throw new Exception("Doktor je tada zauzet.");
+        }
+
+        Examination newExamination = new Examination();
+        newExamination.setStatus(RequestType.APPROVED);
+        newExamination.setEmergencyRoom(examination.getEmergencyRoom());
+        Schedule schedule = new Schedule();
+        schedule.setStartAt(examination.getSchedule().getStartAt());
+        schedule.setEndAt(examination.getSchedule().getEndAt());
+        schedule.setReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
+        schedule.setApproved(true);
+        schedule.setDate(examination.getSchedule().getDate());
+        schedule.setDoctor(doctor);
+        schedule.setPatient(examination.getSchedule().getPatient());
+        schedule.setExamination(newExamination);
+        Schedule savedSchedule = _scheduleRepository.save(schedule);
+        newExamination.setSchedule(savedSchedule);
+        Examination savedExamination = _examinationRepository.save(newExamination);
+
+        return mapExaminationToExaminationResponse(savedExamination, savedSchedule);
     }
 
     public ExaminationResponse mapExaminationToExaminationResponse(Examination examination, Schedule schedule){

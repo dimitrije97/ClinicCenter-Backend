@@ -70,4 +70,9 @@ public interface IExaminationService {
 
     void cancelOperation(UUID id) throws Exception;
 
+    Set<ExaminationResponse> getFutureOperationsByAdmin(UUID clinicId) throws Exception;
+
+    Set<ExaminationResponse> getFutureExaminationsByAdmin(UUID clinicId) throws Exception;
+
+    ExaminationResponse assignDoctor(AssignDoctorRequest request) throws Exception;
 }

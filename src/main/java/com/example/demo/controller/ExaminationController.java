@@ -102,4 +102,9 @@ public class ExaminationController {
     public Set<ExaminationResponse> getPatientsExaminationHistoryByName(SearchPatientsExaminationHistoryRequest request, @PathVariable UUID id) throws Exception {
         return _examinationService.getPatientsExaminationHistory(request, id);
     }
+
+    @GetMapping("/future/{id}/clinic")
+    public Set<ExaminationResponse> getAllExaminationsByAdmin(@PathVariable UUID id) throws Exception {
+        return _examinationService.getFutureExaminationsByAdmin(id);
+    }
 }

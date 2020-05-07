@@ -62,4 +62,14 @@ public class OperationController {
     public Set<ExaminationResponse> getAllOperationsWhichDoctorCanCancel(@PathVariable UUID id) throws Exception {
         return _examinationService.getOperationsWhichDoctorCanCancel(id);
     }
+
+    @GetMapping("/future/{id}/clinic")
+    public Set<ExaminationResponse> getAllOperationsByAdmin(@PathVariable UUID id) throws Exception {
+        return _examinationService.getFutureOperationsByAdmin(id);
+    }
+
+    @PostMapping("/assign-doctor")
+    public ExaminationResponse assignDoctor(@RequestBody AssignDoctorRequest request) throws Exception {
+        return _examinationService.assignDoctor(request);
+    }
 }
