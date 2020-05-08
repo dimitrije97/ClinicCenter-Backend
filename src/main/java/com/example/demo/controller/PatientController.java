@@ -5,7 +5,6 @@ import com.example.demo.dto.request.ApprovePatientRequest;
 import com.example.demo.dto.request.SearchPatientsRequest;
 import com.example.demo.dto.request.UpdatePatientRequest;
 import com.example.demo.dto.response.PatientResponse;
-import com.example.demo.entity.Patient;
 import com.example.demo.repository.IPatientRepository;
 import com.example.demo.service.IPatientService;
 import org.springframework.web.bind.annotation.*;

@@ -81,7 +81,7 @@ public class AuthController {
     }
 
     @PostMapping("/clinics")
-    public ClinicResponse createClinic(@RequestBody CreateClinicRequest request) {
+    public ClinicResponse createClinic(@RequestBody CreateClinicRequest request) throws Exception {
 
         return  _clinicService.createClinic(request);
     }

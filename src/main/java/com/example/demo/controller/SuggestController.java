@@ -4,7 +4,6 @@ import com.example.demo.dto.request.SuggestRequest;
 import com.example.demo.service.ISuggestService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/suggests")

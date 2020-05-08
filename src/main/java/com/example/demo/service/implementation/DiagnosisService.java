@@ -23,6 +23,12 @@ public class DiagnosisService implements IDiagnosisService {
 
     @Override
     public DiagnosisResponse createDiagnosis(CreateDiagnosisRequest request) throws Exception {
+        List<Diagnosis> diagnoses = _diagnosisRepository.findAllByDeleted(false);
+        for (Diagnosis d: diagnoses){
+            if(d.getName().equals(request.getName())){
+                throw new Exception("Već postoji dijagnoza sa istim imenom.");
+            }
+        }
         Diagnosis diagnosis = new Diagnosis();
         diagnosis.setName(request.getName());
         diagnosis.setDeleted(false);
@@ -32,6 +38,12 @@ public class DiagnosisService implements IDiagnosisService {
 
     @Override
     public DiagnosisResponse updateDiagnosis(UpdateDiagnosisRequest request) throws Exception {
+        List<Diagnosis> diagnoses = _diagnosisRepository.findAllByDeleted(false);
+        for (Diagnosis d: diagnoses){
+            if(d.getName().equals(request.getName())){
+                throw new Exception("Već postoji dijagnoza sa istim imenom.");
+            }
+        }
         Diagnosis diagnosis = _diagnosisRepository.findOneById(request.getId());
         diagnosis.setName(request.getName());
         Diagnosis savedDiagnosis = _diagnosisRepository.save(diagnosis);

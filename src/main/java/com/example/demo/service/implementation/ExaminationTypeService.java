@@ -37,6 +37,12 @@ public class ExaminationTypeService implements IExaminationTypeService {
 
     @Override
     public ExaminationTypeResponse createExaminationType(CreateExaminationTypeRequest request) throws Exception {
+        Set<ExaminationType> examinationTypes = _examinationTypeRepository.findAllByDeleted(false);
+        for (ExaminationType et: examinationTypes){
+            if(et.getName().equals(request.getName())){
+                throw new Exception("Već postoji tip pregleda sa istim imenom.");
+            }
+        }
         ExaminationType examinationType = new ExaminationType();
         examinationType.setDeleted(false);
         examinationType.setName(request.getName());
@@ -47,6 +53,12 @@ public class ExaminationTypeService implements IExaminationTypeService {
 
     @Override
     public ExaminationTypeResponse updateExaminationType(UpdateExaminationRequest request, UUID id) throws Exception {
+        Set<ExaminationType> examinationTypes = _examinationTypeRepository.findAllByDeleted(false);
+        for (ExaminationType et: examinationTypes){
+            if(et.getName().equals(request.getName())){
+                throw new Exception("Već postoji tip pregleda sa istim imenom.");
+            }
+        }
         ExaminationType examinationType = _examinationTypeRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         for(int i = 0;i < schedules.size();i++){

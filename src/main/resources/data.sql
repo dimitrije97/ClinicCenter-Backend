@@ -1,5 +1,5 @@
 insert into clinic (id, address, deleted, description, name, lat, lon) values
-('f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b', 'Bulevar Cara Lazara 10', 'false', 'Opis1', 'Ime1', '45.248210', '19.850460'),
+('f82b1f9a-d9ce-49a3-b6b3-7d13e7248a7b', 'Bulevar Cara Lazara 10', 'false', 'Opis1', 'Ime1', '45.248211', '19.850460'),
 ('7833aba3-bf46-4d25-a856-651d7d7ba279', 'Bulevar Kralja Petra I 20', 'false', 'Opis2', 'Ime2', '44.772182', '17.191000'),
 ('5d26aa42-f1f9-45a5-9e31-db07d5df6c1a', 'Bulevar Ivana Crnojevica 5', 'false', 'Opis3', 'Ime3', '42.442574', '19.268646'),
 ('229c6688-afd8-4137-8d15-92655b1f05ee', 'Partizanskih baza 5', 'true', 'Opis4', 'Ime4', null, null);

@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.CreateAdminRequest;
 import com.example.demo.dto.request.UpdateAdminRequest;
 import com.example.demo.dto.response.AdminResponse;
 import com.example.demo.repository.IAdminRepository;

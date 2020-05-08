@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface IClinicService {
 
-    ClinicResponse createClinic(CreateClinicRequest request);
+    ClinicResponse createClinic(CreateClinicRequest request) throws Exception;
 
     ClinicResponse getClinic(UUID id);
 
@@ -19,7 +19,7 @@ public interface IClinicService {
 
     void deleteClinic(UUID id) throws Exception;
 
-    ClinicResponse updateClinic(UpdateClinicRequest request, UUID id);
+    ClinicResponse updateClinic(UpdateClinicRequest request, UUID id) throws Exception;
 
     void addNewClinicAdmin(NewClinicAdminRequest request);
 

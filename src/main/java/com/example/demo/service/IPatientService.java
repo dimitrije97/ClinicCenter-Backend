@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.dto.request.*;
 import com.example.demo.dto.response.PatientResponse;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 

@@ -3,13 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.dto.request.CreateMedicalRecordRequest;
 import com.example.demo.dto.request.GetMedicalRecordRequest;
 import com.example.demo.dto.request.UpdateMedicalRecordRequest;
-import com.example.demo.dto.request.UpdateMedicineRequest;
 import com.example.demo.dto.response.MedicalRecordResponse;
 import com.example.demo.service.IMedicalRecordService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("medical-records")

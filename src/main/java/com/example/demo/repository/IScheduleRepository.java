@@ -1,6 +1,5 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.Clinic;
 import com.example.demo.entity.Doctor;
 import com.example.demo.entity.Nurse;
 import com.example.demo.entity.Schedule;

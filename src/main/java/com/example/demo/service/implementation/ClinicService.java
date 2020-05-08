@@ -15,7 +15,6 @@ import com.example.demo.service.IClinicService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +37,14 @@ public class ClinicService implements IClinicService {
     }
 
     @Override
-    public ClinicResponse createClinic(CreateClinicRequest request) {
+    public ClinicResponse createClinic(CreateClinicRequest request) throws Exception{
+        Set<Clinic> clinics = _clinicRepository.findAllByDeleted(false);
+        for (Clinic c: clinics){
+            if(c.getName().equals(request.getName())){
+                throw new Exception("Već postoji klinika sa istim imenom.");
+            }
+        }
+
         Clinic clinic = new Clinic();
         clinic.setAddress(request.getAddress());
         clinic.setDescription(request.getDescription());
@@ -97,7 +103,13 @@ public class ClinicService implements IClinicService {
     }
 
     @Override
-    public ClinicResponse updateClinic(UpdateClinicRequest request, UUID id) {
+    public ClinicResponse updateClinic(UpdateClinicRequest request, UUID id) throws Exception {
+        Set<Clinic> clinics = _clinicRepository.findAllByDeleted(false);
+        for (Clinic c: clinics){
+            if(c.getName().equals(request.getName())){
+                throw new Exception("Već postoji klinika sa istim imenom.");
+            }
+        }
         Clinic clinic = _clinicRepository.findOneById(id);
         clinic.setName(request.getName());
         clinic.setDescription(request.getDescription());

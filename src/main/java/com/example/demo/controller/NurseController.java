@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.UpdateDoctorRequest;
 import com.example.demo.dto.request.UpdateNurseRequest;
-import com.example.demo.dto.response.DoctorResponse;
 import com.example.demo.dto.response.NurseResponse;
 import com.example.demo.service.INurseService;
 import org.springframework.web.bind.annotation.*;

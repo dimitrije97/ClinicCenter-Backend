@@ -6,7 +6,6 @@ import com.example.demo.dto.request.UpdateMedicalRecordRequest;
 import com.example.demo.dto.response.MedicalRecordResponse;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface IMedicalRecordService {
 

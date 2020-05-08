@@ -14,7 +14,6 @@ import com.example.demo.repository.IScheduleRepository;
 import com.example.demo.service.IEmailService;
 import com.example.demo.service.IVacationService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
-import com.example.demo.util.enums.RequestType;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

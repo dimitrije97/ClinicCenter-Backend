@@ -23,6 +23,12 @@ public class MedicineService implements IMedicineService {
 
     @Override
     public MedicineResponse createMedicine(CreateMedicineRequest request) throws Exception {
+        List<Medicine> medicines = _medicineRepository.findAllByDeleted(false);
+        for (Medicine m: medicines){
+            if(m.getName().equals(request.getName())){
+                throw new Exception("Već postoji lek sa istim imenom.");
+            }
+        }
         Medicine medicine = new Medicine();
         medicine.setName(request.getName());
         medicine.setDeleted(false);
@@ -32,6 +38,12 @@ public class MedicineService implements IMedicineService {
 
     @Override
     public MedicineResponse updateMedicine(UpdateMedicineRequest request) throws Exception {
+        List<Medicine> medicines = _medicineRepository.findAllByDeleted(false);
+        for (Medicine m: medicines){
+            if(m.getName().equals(request.getName())){
+                throw new Exception("Već postoji lek sa istim imenom.");
+            }
+        }
         Medicine medicine = _medicineRepository.findOneById(request.getId());
         medicine.setName(request.getName());
         Medicine savedMedicine = _medicineRepository.save(medicine);

@@ -37,6 +37,12 @@ public class EmergencyRoomService implements IEmergencyRoomService {
 
     @Override
     public EmergencyRoomResponse createEmergencyRoom(CreateEmergencyRoomRequest request, UUID id) throws Exception {
+        Set<EmergencyRoom> emergencyRooms = _emergencyRoomRepository.findAllByDeleted(false);
+        for (EmergencyRoom er: emergencyRooms){
+            if(er.getNumber().equals(request.getNumber())){
+                throw new Exception("Već postoji sala sa istim brojem.");
+            }
+        }
         EmergencyRoom emergencyRoom = new EmergencyRoom();
         emergencyRoom.setDeleted(false);
         emergencyRoom.setName(request.getName());
@@ -50,6 +56,12 @@ public class EmergencyRoomService implements IEmergencyRoomService {
 
     @Override
     public EmergencyRoomResponse updateEmergencyRoom(UpdateEmergencyRoomRequest request, UUID id) throws Exception {
+        Set<EmergencyRoom> emergencyRooms = _emergencyRoomRepository.findAllByDeleted(false);
+        for (EmergencyRoom er: emergencyRooms){
+            if(er.getNumber().equals(request.getNumber())){
+                throw new Exception("Već postoji sala sa istim brojem.");
+            }
+        }
         EmergencyRoom emergencyRoom = _emergencyRoomRepository.findOneById(id);
         List<Schedule> schedules = _scheduleRepository.findAllByReasonOfUnavailability(ReasonOfUnavailability.EXAMINATION);
         for(int i = 0;i < schedules.size();i++){
