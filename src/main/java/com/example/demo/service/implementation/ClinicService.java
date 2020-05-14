@@ -38,6 +38,7 @@ public class ClinicService implements IClinicService {
         _scheduleRepository = scheduleRepository;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public ClinicResponse createClinic(CreateClinicRequest request) throws Exception{
         Set<Clinic> clinics = _clinicRepository.findAllByDeleted(false);
