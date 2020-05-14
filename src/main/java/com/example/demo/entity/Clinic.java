@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,4 +42,10 @@ public class Clinic extends BaseEntity {
     private String lat;
 
     private String lon;
+
+    //ako je neka klinika izmenjena, dodata ili obrisana u momentu kada je pacijent prikazao klinike, pacijent ce dobiti nevalidne podatke
+    //vise adminitratora ne sme da izmeni istu kliniku u isto vreme
+    @Version
+    @Column(name="version",columnDefinition = "integer DEFAULT 0",nullable = false)
+    private int version;
 }

@@ -14,6 +14,8 @@ import com.example.demo.repository.IScheduleRepository;
 import com.example.demo.service.IClinicService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -72,6 +74,7 @@ public class ClinicService implements IClinicService {
     @Override
     public ClinicResponse getClinic(UUID id) { return mapClinicToClinicResponse(_clinicRepository.findOneById(id)); }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Set<ClinicResponse> getAllClinics() throws Exception {
         Set<Clinic> clinics = _clinicRepository.findAllByDeleted(false);
@@ -102,6 +105,7 @@ public class ClinicService implements IClinicService {
         _clinicRepository.save(clinic);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public ClinicResponse updateClinic(UpdateClinicRequest request, UUID id) throws Exception {
         Set<Clinic> clinics = _clinicRepository.findAllByDeleted(false);

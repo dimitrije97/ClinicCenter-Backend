@@ -29,4 +29,10 @@ public class Examination extends BaseEntity {
 
     @OneToMany(mappedBy = "examination", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports;
+
+    //vise pacijenata ne moze da zakaze isti predefinisani pregled
+    //vise pacijenata ne moze da odobri pregled kojem je dodeljena sala od strane admina u isto vreme
+    @Version
+    @Column(name="version",columnDefinition = "integer DEFAULT 0",nullable = false)
+    private int version;
 }

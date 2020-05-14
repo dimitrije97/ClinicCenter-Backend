@@ -9,6 +9,8 @@ import com.example.demo.service.IExaminationService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
 import com.example.demo.util.enums.RequestType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -91,6 +93,7 @@ public class ExaminationService implements IExaminationService {
         return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public ExaminationResponse approveExamination(ApproveExaminationRequest request) throws Exception{
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
@@ -376,6 +379,7 @@ public class ExaminationService implements IExaminationService {
                 .collect(Collectors.toSet());
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public ExaminationResponse approvePotentialExamination(ApprovePotentialExaminationRequest request) throws Exception{
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
