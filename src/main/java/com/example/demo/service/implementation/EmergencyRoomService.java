@@ -13,6 +13,8 @@ import com.example.demo.repository.IScheduleRepository;
 import com.example.demo.service.IEmergencyRoomService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -54,6 +56,7 @@ public class EmergencyRoomService implements IEmergencyRoomService {
         return mapEmergencyRoomToEmergencyRoomResponse(savedEmergencyRoom);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public EmergencyRoomResponse updateEmergencyRoom(UpdateEmergencyRoomRequest request, UUID id) throws Exception {
         Set<EmergencyRoom> emergencyRooms = _emergencyRoomRepository.findAllByDeleted(false);

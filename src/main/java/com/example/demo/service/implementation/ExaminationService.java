@@ -79,6 +79,7 @@ public class ExaminationService implements IExaminationService {
         return mapExaminationToExaminationResponse(savedExamination, savedSchedule);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public ExaminationResponse confirmExaminationRequestByAdmin(CreateExaminationRequestByAdmin request) {
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
