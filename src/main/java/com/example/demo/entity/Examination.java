@@ -33,6 +33,7 @@ public class Examination extends BaseEntity {
     //vise pacijenata ne moze da zakaze isti predefinisani pregled
     //vise pacijenata ne moze da odobri pregled kojem je dodeljena sala od strane admina u isto vreme
     //dva administratora ne smeju dodeljivati salu za isti zahtev za pregled
+    //dva administratora ne smeju dodeljivati istog lekara za operaciju  u isto vreme
     @Version
     @Column(name="version",columnDefinition = "integer DEFAULT 0",nullable = false)
     private int version;
