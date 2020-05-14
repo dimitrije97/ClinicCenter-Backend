@@ -168,6 +168,7 @@ public class ExaminationService implements IExaminationService {
         return mapExaminationToExaminationResponse(savedExamination, savedExamination.getSchedule());
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void denyExaminationRequest(DenyExaminationRequest request) {
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
@@ -1031,6 +1032,7 @@ public class ExaminationService implements IExaminationService {
                 .collect(Collectors.toSet());
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public ExaminationResponse assignDoctor(AssignDoctorRequest request) throws Exception {
         Doctor doctor = _doctorRepository.findOneById(request.getDoctorId());
