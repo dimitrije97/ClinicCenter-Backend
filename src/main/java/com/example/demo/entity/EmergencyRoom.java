@@ -29,4 +29,9 @@ public class EmergencyRoom extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "emergencyRoom")
     private Set<Examination> examinations = new HashSet<>();
+
+    //dva administratore ne smeju da izmene istu salu u isto vreme
+    @Version
+    @Column(name="version",columnDefinition = "integer DEFAULT 0",nullable = false)
+    private int version;
 }
