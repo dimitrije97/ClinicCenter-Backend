@@ -1,5 +1,5 @@
-# ClinicCenter-Backend
-# TIM 29
+# ClinicCenter
+
 Web application for clinical center.
 
 ## Prerequisites
