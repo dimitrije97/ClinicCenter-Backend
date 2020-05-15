@@ -20,6 +20,7 @@ Open cmd or terminal and navigate to Frontend folder. When opened type *npm inst
 ## Starting
 
 Frontend: open cmd or terminal and navigate to Frontend folder. When opened type ng serve or npm start and application should start.
+
 Backend: go to the Backend directory inside the application's root directory, open cmd or terminal and type: mvn spring-boot:run
 
 ## Other repositories
