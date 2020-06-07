@@ -8,10 +8,12 @@ import com.example.demo.service.IEmailService;
 import com.example.demo.service.IExaminationService;
 import com.example.demo.util.enums.ReasonOfUnavailability;
 import com.example.demo.util.enums.RequestType;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -95,6 +97,7 @@ public class ExaminationService implements IExaminationService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Override
     public ExaminationResponse approveExamination(ApproveExaminationRequest request) throws Exception{
         Examination examination = _examinationRepository.findOneById(request.getExaminationId());
