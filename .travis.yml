@@ -6,3 +6,13 @@ deploy:
   api-key:
     secure: $HEROKU_API_KEY
   app: isa-b
+addons:
+  sonarcloud:
+    organization: "dimitrije97"
+    token:
+      secure: $SONAR_API_KEY # encrypted value of your token
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -DskipTests sonar:sonar -Dsonar.projectKey=dimitrije97_ClinicCenter-Backend
+  
