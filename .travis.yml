@@ -20,5 +20,5 @@ deploy:
   app: isa-b
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - sudo./mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=dimitrije97_ClinicCenter-Backend
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=dimitrije97_ClinicCenter-Backend
   
