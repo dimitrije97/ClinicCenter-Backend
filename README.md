@@ -1,6 +1,6 @@
 # ClinicCenter
 
-Web application for clinical center.
+Web application for clinic center.
 
 ## Prerequisites
 
