@@ -110,11 +110,11 @@ public class ClinicService implements IClinicService {
     @Override
     public ClinicResponse updateClinic(UpdateClinicRequest request, UUID id) throws Exception {
         Set<Clinic> clinics = _clinicRepository.findAllByDeleted(false);
-        for (Clinic c: clinics){
-            if(c.getName().equals(request.getName())){
-                throw new Exception("Već postoji klinika sa istim imenom.");
-            }
-        }
+//        for (Clinic c: clinics){
+//            if(c.getName().equals(request.getName())){
+//                throw new Exception("Već postoji klinika sa istim imenom.");
+//            }
+//        }
         Clinic clinic = _clinicRepository.findOneById(id);
         clinic.setName(request.getName());
         clinic.setDescription(request.getDescription());
