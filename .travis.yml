@@ -5,11 +5,11 @@ sudo: true
 dist: trusty
 before_install:
   - chmod +x mvnw
-addons:
-  sonarcloud:
-    organization: "dimitrije97"
-    token:
-      secure: $SONAR_API_KEY # encrypted value of your token
+#addons:
+ # sonarcloud:
+  #  organization: "dimitrije97"
+   # token:
+    #  secure: $SONAR_API_KEY # encrypted value of your token
 deploy:
   provider: heroku
   api-key:
