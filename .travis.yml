@@ -5,17 +5,17 @@ sudo: true
 dist: trusty
 before_install:
   - chmod +x mvnw
-#addons:
- # sonarcloud:
-  #  organization: "dimitrije97"
-   # token:
-    #  secure: $SONAR_API_KEY # encrypted value of your token
+addons:
+  sonarcloud:
+    organization: "dimitrije97"
+    token:
+      secure: $SONAR_API_KEY # encrypted value of your token
 deploy:
   provider: heroku
   api-key:
     secure: $HEROKU_API_KEY
   app: isa-b
 script:
-  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  # here we need command line which builds the project, runs the tests with coverage and then execute the SonarCloud analysis
   - mvn clean install
   
